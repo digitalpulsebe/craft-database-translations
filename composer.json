@@ -1,0 +1,47 @@
+{
+    "name": "digitalpulsebe/craft-database-translations",
+    "description": "Manage Craft i18n translations and store in database",
+    "type": "craft-plugin",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "utm tracker"
+    ],
+    "support": {
+        "docs": "https://github.com/digitalpulsebe/craft-database-translations/blob/master/README.md",
+        "issues": "https://github.com/digitalpulsebe/craft-database-translations/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Digital Pulse",
+            "homepage": "https://www.digitalpulse.be/"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "craftcms/cms": "^3.7.0"
+    },
+    "autoload": {
+        "psr-4": {
+          "digitalpulsebe\\database_translations\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Database Translations",
+        "handle": "database-translations",
+        "developer": "Digital Pulse",
+        "developerUrl": "https://www.digitalpulse.be/",
+        "documentationUrl": "https://github.com/digitalpulsebe/craft-database-translations/blob/master/README.md",
+        "changelogUrl": "https://raw.githubusercontent.com/digitalpulsebe/craft-database-translations/master/CHANGELOG.md",
+        "components": {
+            "utmTrackerService": "DatabaseTranslationsService"
+        },
+        "class": "digitalpulsebe\\database_translations\\DatabaseTranslations"
+    },
+    "require-dev": {
+        "verbb/formie": "1.6"
+    }
+}

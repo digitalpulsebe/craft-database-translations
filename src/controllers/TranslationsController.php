@@ -1,0 +1,75 @@
+<?php
+
+namespace digitalpulsebe\database_translations\controllers;
+
+use digitalpulsebe\database_translations\models\Message;
+use digitalpulsebe\database_translations\models\SourceMessage;
+use yii\web\Response;
+use craft\web\Controller;
+
+class TranslationsController extends Controller
+{
+    public function actionCreate(): Response
+    {
+        $this->requirePostRequest();
+
+        $sourceMessage = new SourceMessage();
+        $sourceMessage->message = $this->request->post('message');
+        $sourceMessage->category = $this->request->post('category');
+
+        if (!$sourceMessage->validate()) {
+            // todo
+
+            return $this->asJson([
+                'errors' => $sourceMessage->errors
+            ]);
+        }
+
+        $sourceMessage->save();
+
+        $this->setSuccessFlash('Message created');
+        return $this->redirectToPostedUrl();
+    }
+
+    public function actionUpdate(): Response
+    {
+        $this->requirePostRequest();
+
+        /* @var SourceMessage[] $sourceMessages */
+        $sourceMessages = SourceMessage::find()->with('messages')->indexBy('id')->all();
+
+//        \Craft::dd($sourceMessages);
+        $errors = [];
+
+        foreach ($this->request->post('messages') as $id => $values) {
+            $sourceMessage = $sourceMessages[$id] ?? null;
+
+            if ($sourceMessage) {
+                foreach ($values as $language => $value) {
+                    $message = $sourceMessage->getMessage($language);
+
+                    if (!$message) {
+                        $message = new Message();
+                        $message->id = $id;
+                        $message->language = $language;
+                    }
+
+                    if ($value === '') {
+                        $value = null;
+                    }
+
+                    $message->translation = $value;
+                    $message->save();
+                }
+            }
+        }
+
+        if (count($errors)) {
+            return $this->asJson([
+                'errors' => $errors
+            ]);
+        }
+
+        return $this->redirectToPostedUrl();
+    }
+}

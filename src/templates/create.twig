@@ -1,0 +1,17 @@
+{% extends "_layouts/cp" %}
+
+{% set title = 'Create Translations' %}
+{% set selectedSubnavItem = 'create' %}
+
+{% import "_includes/forms" as forms %}
+
+{% block content %}
+    <div class="main">
+        <h2>Create manually</h2>
+        {% include 'database-translations/_partials/create-form' %}
+        <hr>
+        <h2>Scrape templates</h2>
+        <hr>
+        <h2>Import</h2>
+    </div>
+{% endblock %}

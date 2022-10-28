@@ -1,0 +1,34 @@
+{# @var craft \craft\web\twig\variables\CraftVariable #}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+    label: "Plugin Name"|t('database-translations'),
+    instructions: "Override the plugin name for use in the control panel."|t('database-translations'),
+    id: 'pluginName',
+    name: 'pluginName',
+    value: settings.pluginName,
+    errors: settings.getErrors('pluginName')
+}) }}
+
+
+{{ forms.editableTableField({
+    label: "Translation categories"|t('database-translations'),
+    instructions: 'Enter the translation categories to process with this plugin.',
+    name: "categories",
+    id: "categories",
+    cols: {
+        'key': {
+            type: 'singleline',
+            heading: "Translation category"|t('database-translations'),
+            rows: 1
+        },
+    },
+    rows: settings.categories,
+    allowAdd: true,
+    allowDelete: true,
+    allowReorder: true,
+    addRowLabel: 'Add a category'|t('database-translations'),
+    errors: settings.getErrors('categories'),
+    required: true
+})|spaceless }}
