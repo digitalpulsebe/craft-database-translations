@@ -1,0 +1,69 @@
+{% extends "_layouts/cp" %}
+
+{% set title = 'Export Translations' %}
+{% set selectedSubnavItem = 'export' %}
+{% set locales = craft.app.i18n.siteLocales|map(locale => locale.id) %}
+
+{% import "_includes/forms" as forms %}
+
+{% block content %}
+    <div class="main">
+        <h2>Export</h2>
+
+        <form action="" method="post">
+            {{ actionInput('database-translations/translations/export') }}
+            {{ csrfInput() }}
+
+            {{ forms.selectField({
+                label: "Separator",
+                instructions: "Select the separator for the export format.",
+                id: 'separator',
+                name: 'separator',
+                options: {
+                    semicolon: "Semicolon (;)",
+                    comma: "Comma (,)"
+                }
+            }) }}
+
+            {% set categoryOptions = { '': '-'} %}
+            {% for category in craft.databaseTranslations.categories %}
+                {% set categoryOptions = categoryOptions|merge({(category): category}) %}
+            {% endfor %}
+
+            {{ forms.selectField({
+                label: "Filter Category",
+                instructions: "Select the category to export.",
+                id: 'filters-category',
+                name: 'filters[category]',
+                options: categoryOptions
+            }) }}
+
+            {% set missingOptions = { '': '-'} %}
+            {% set localeOptions = {} %}
+            {% for locale in locales %}
+                {% set missingOptions = missingOptions|merge({(locale): locale}) %}
+                {% set localeOptions = localeOptions|merge({(locale): locale}) %}
+            {% endfor %}
+
+            {{ forms.selectField({
+                label: "Filter missing",
+                instructions: "Select to filter only empty translations.",
+                id: 'filters-missing',
+                name: 'filters[missing]',
+                options: missingOptions
+            }) }}
+
+            {{ forms.multiselectField({
+                label: "Language columns",
+                instructions: "Select the languages to export.",
+                id: 'languages',
+                name: 'languages',
+                options: localeOptions,
+                multiple: true,
+                values: localeOptions,
+            }) }}
+
+            <button type="submit" class="btn submit">Export</button>
+        </form>
+    </div>
+{% endblock %}

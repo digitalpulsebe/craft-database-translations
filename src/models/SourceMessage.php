@@ -4,6 +4,7 @@ namespace digitalpulsebe\database_translations\models;
 
 use craft\db\ActiveRecord;
 use craft\db\ActiveQuery;
+use yii\db\Query;
 
 /**
  * @property string $message
@@ -72,5 +73,42 @@ class SourceMessage extends ActiveRecord
             ['category', 'string'] ,
             [['message', 'category'], 'required']
         ];
+    }
+
+    /**
+     * @param array|null $filters
+     * @return ActiveQuery
+     */
+    public static function filter($filters = []): ActiveQuery
+    {
+        $query = static::find();
+
+        if (is_array($filters)) {
+            foreach ($filters as $filterKey => $filterValues) {
+                if (!empty($filterValues)) {
+                    if ($filterKey == 'category') {
+//                    \Craft::dd(['category' =>  $filterValues]);
+                        $query->andWhere(['category' =>  $filterValues]);
+                    }
+                    if ($filterKey == 'search') {
+                        $query->andWhere(['like', 'message', $filterValues]);
+                    }
+                    if ($filterKey == 'missing') {
+                        $query->andWhere(['not exists', (new Query())
+                            ->from(Message::tableName())
+                            ->where('dp_translations_message.id = dp_translations_source_message.id')
+                            ->andWhere(['language' => $filterValues])
+                            ->andWhere('translation is not null')
+                            ->andWhere('translation <> \'\'')
+                        ]);
+                    }
+                    if ($filterKey == 'order') {
+                        $query->orderBy($filterValues);
+                    }
+                }
+            }
+        }
+
+        return $query;
     }
 }

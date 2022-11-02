@@ -118,6 +118,7 @@ class DatabaseTranslations extends Plugin
         $nav = parent::getCpNavItem();
         $nav['subnav']['translations'] = ['label' => 'Translations', 'url' => 'database-translations'];
         $nav['subnav']['create'] = ['label' => 'Create', 'url' => 'database-translations/create'];
+        $nav['subnav']['export'] = ['label' => 'Export', 'url' => 'database-translations/export'];
 
         if (Craft::$app->getConfig()->getGeneral()->allowAdminChanges) {
             $nav['subnav']['settings'] = ['label' => 'Settings', 'url' => 'database-translations/settings'];
