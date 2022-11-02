@@ -32,3 +32,12 @@
     errors: settings.getErrors('categories'),
     required: true
 })|spaceless }}
+
+{{ forms.lightswitchField({
+    label: "Add missing translations"|t("database-translations"),
+    instructions: "Create new translations when missing translations occur."|t("database-translations"),
+    id: "handleMissingTranslationEvent",
+    name: "handleMissingTranslationEvent",
+    on: settings.handleMissingTranslationEvent,
+    errors: settings.getErrors("handleMissingTranslationEvent"),
+}) }}

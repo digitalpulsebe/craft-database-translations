@@ -73,6 +73,17 @@ class TranslationsController extends Controller
         return $this->redirectToPostedUrl();
     }
 
+    public function actionDelete($id = null): Response
+    {
+        if ($id == null) {
+            $id = $this->request->post('messages');
+        }
+
+        SourceMessage::deleteAll(['id' => $id]);
+
+        return $this->redirect('database-translations');
+    }
+
     public function actionExport()
     {
         $separatorsMap = [

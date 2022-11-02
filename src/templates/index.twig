@@ -24,7 +24,7 @@
     <div class="main">
         <div class="elements">
             <div class="tableview tablepane">
-                <form id="translations-table" method="post" accept-charset="UTF-8" saveshortcut data-confirm-unload>
+                <form id="translations-table" method="post" accept-charset="UTF-8">
                     {{ actionInput('database-translations/translations/update') }}
                     {{ csrfInput() }}
                     <table class="data fullwidth">
@@ -46,6 +46,9 @@
                                 </th>
                                 <th class="{{ filters.order|default(null) == 'dateUpdated' ? 'ordered asc' }} {{ filters.order|default(null) == 'dateUpdated desc' ? 'ordered desc' }}">
                                     Updated
+                                </th>
+                                <th>
+                                    Delete
                                 </th>
                             </tr>
                         </thead>
@@ -74,6 +77,14 @@
                                     <td>
                                         {{ sourceMessage.lastUpdated }}
                                     </td>
+                                    <td>
+                                        <a
+                                            href="{{ url('database-translations/translations/delete/'~sourceMessage.id) }}"
+                                            class="btn btn-sm"
+                                        >
+                                            delete
+                                        </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -88,6 +99,5 @@
     <div id="count-container" class="light flex-grow">
         {% include '_includes/pagination' %}
     </div>
-    <button type="button" id="export-btn" class="btn">Export</button>
     <button type="submit" class="btn submit" form="translations-table">Save All</button>
 {% endblock %}
