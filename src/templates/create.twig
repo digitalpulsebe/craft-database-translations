@@ -9,9 +9,23 @@
     <div class="main">
         <h2>Create manually</h2>
         {% include 'database-translations/_partials/create-form' %}
+
         <hr>
-        <h2>Scrape templates</h2>
+
+        <h2>Parse templates</h2>
+        <p>Look for usage of |t in template files</p>
+        <a href="{{ url('database-translations/parse/review') }}" class="btn secondary">Review</a>
+
         <hr>
+
         <h2>Import</h2>
+        <p>Import CSV files</p>
+        <a href="{{ url('database-translations/import/review') }}" class="btn secondary">Review</a>
+
+        <hr>
+
+        <h2>Import</h2>
+        <p>Import PHP files from translations-folder</p>
+        <a href="{{ url('database-translations/import/review') }}" class="btn secondary">Review</a>
     </div>
 {% endblock %}

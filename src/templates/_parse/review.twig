@@ -1,0 +1,43 @@
+{% extends "_layouts/cp" %}
+
+{% set title = 'Parse Templates Translations' %}
+{% set selectedSubnavItem = 'create' %}
+
+{% import "_includes/forms" as forms %}
+
+{% block content %}
+    <div class="main">
+        <h2>New</h2>
+        <form action="" method="post">
+            {{ actionInput('database-translations/parse/import') }}
+            {{ csrfInput() }}
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="all" value="1" checked></th>
+                        <th>Message</th>
+                        <th>Template</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% set index = 0 %}
+                {% for message in templateMessages['new'] %}
+                    <tr>
+                        <td>
+                            <input type="hidden" name="messages[{{ index }}][include]" value="0">
+                            <input type="checkbox" name="messages[{{ index }}][include]" value="1" checked>
+                            <input type="hidden" name="messages[{{ index }}][message]" value="{{ message.message }}">
+                            <input type="hidden" name="messages[{{ index }}][category]" value="{{ message.category }}">
+                        </td>
+                        <td>{{ message.message }}</td>
+                        <td>{{ message.file }}</td>
+                    </tr>
+                    {% set index = index+1 %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn submit">Import</button>
+        </form>
+    </div>
+{% endblock %}

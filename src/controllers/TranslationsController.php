@@ -72,4 +72,48 @@ class TranslationsController extends Controller
 
         return $this->redirectToPostedUrl();
     }
+
+    public function actionDelete($id = null): Response
+    {
+        if ($id == null) {
+            $id = $this->request->post('messages');
+        }
+
+        SourceMessage::deleteAll(['id' => $id]);
+
+        return $this->redirect('database-translations');
+    }
+
+    public function actionExport()
+    {
+        $separatorsMap = [
+            'semicolon' => ';',
+            'comma' => ',',
+        ];
+
+        $this->requirePostRequest();
+        $filters = $this->request->post('filters');
+        $separatorName = $this->request->post('separator');
+        $separator = $separatorsMap[$separatorName];
+        $languages = $this->request->post('languages');
+
+        $sourceMessages = SourceMessage::filter($filters)->orderBy('message')->with('messages')->all();
+
+        $columns = array_merge(['category', 'message'], array_values($languages));
+
+        $file = tmpfile();
+        fputcsv($file, array_values($columns), $separator);
+
+        foreach ($sourceMessages as $sourceMessage)
+        {
+            $row = [$sourceMessage->category, $sourceMessage->message];
+            foreach ($languages as $language) {
+                $row[] = $sourceMessage->getTranslation($language);
+            }
+            fputcsv($file, $row, $separator);
+        }
+
+        $date = strftime('%Y%m%d_%H%M%S');
+        return $this->response->sendStreamAsFile($file, "export_translations-$date.csv");
+    }
 }

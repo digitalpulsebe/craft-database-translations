@@ -19,10 +19,13 @@ use craft\web\twig\variables\CraftVariable;
 use craft\web\UrlManager;
 use digitalpulsebe\database_translations\components\DbMessageSource;
 use digitalpulsebe\database_translations\models\Settings;
+use digitalpulsebe\database_translations\models\SourceMessage;
 use digitalpulsebe\database_translations\services\DatabaseTranslationsService;
 use digitalpulsebe\database_translations\variables\DatabaseTranslationsVariable;
 use digitalpulsebe\database_translations\variables\ManifestVariable;
 use yii\base\Event;
+use yii\i18n\MessageSource;
+use yii\i18n\MissingTranslationEvent;
 
 /**
  *
@@ -87,6 +90,7 @@ class DatabaseTranslations extends Plugin
 
         $this->initRoutes();
         $this->initDbMessageSource();
+        $this->initHandleMissingTranslations();
     }
 
     private function initDbMessageSource()
@@ -112,15 +116,44 @@ class DatabaseTranslations extends Plugin
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
                 $event->rules['database-translations/settings'] = 'database-translations/settings/index';
+                $event->rules['database-translations/parse/review'] = 'database-translations/parse/review';
+                $event->rules['database-translations/translations/delete/<id:\d+>'] = 'database-translations/translations/delete';
             }
         );
+    }
+
+    private function initHandleMissingTranslations() {
+        if ($this->settings->handleMissingTranslationEvent) {
+            Event::on(
+                MessageSource::class,
+                MessageSource::EVENT_MISSING_TRANSLATION,
+                function (MissingTranslationEvent $event) {
+                    if (!$event->message || !in_array($event->category, $this->settings->getCategories(), true)) {
+                        return;
+                    }
+
+                    $sourceMessage = SourceMessage::find()->where([
+                        'category' => $event->category,
+                        'message' => $event->message
+                    ])->one();
+
+                    if (!$sourceMessage) {
+                        $sourceMessage = new SourceMessage();
+                        $sourceMessage->category = $event->category;
+                        $sourceMessage->message = $event->message;
+                        $sourceMessage->save();
+                    }
+                }
+            );
+        }
     }
 
     public function getCpNavItem()
     {
         $nav = parent::getCpNavItem();
         $nav['subnav']['translations'] = ['label' => 'Translations', 'url' => 'database-translations'];
-        $nav['subnav']['create'] = ['label' => 'Create', 'url' => 'database-translations/create'];
+        $nav['subnav']['create'] = ['label' => 'Add / Import', 'url' => 'database-translations/create'];
+        $nav['subnav']['export'] = ['label' => 'Export', 'url' => 'database-translations/export'];
 
         if (Craft::$app->getConfig()->getGeneral()->allowAdminChanges) {
             $nav['subnav']['settings'] = ['label' => 'Settings', 'url' => 'database-translations/settings'];
