@@ -130,4 +130,11 @@ class SourceMessage extends ActiveRecord
 
         return $query;
     }
+
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        $data = parent::toArray($fields, $expand, $recursive);
+        $data['messages'] = $this->messages ?? [];
+        return $data;
+    }
 }
