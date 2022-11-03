@@ -21,6 +21,7 @@ use digitalpulsebe\database_translations\components\DbMessageSource;
 use digitalpulsebe\database_translations\models\Settings;
 use digitalpulsebe\database_translations\services\DatabaseTranslationsService;
 use digitalpulsebe\database_translations\variables\DatabaseTranslationsVariable;
+use digitalpulsebe\database_translations\variables\ManifestVariable;
 use yii\base\Event;
 
 /**
@@ -79,6 +80,8 @@ class DatabaseTranslations extends Plugin
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('databaseTranslations', DatabaseTranslationsVariable::class);
+                $variable->set('manifest', ManifestVariable::class);
+
             }
         );
 

@@ -1,5 +1,19 @@
 {% extends "_layouts/cp" %}
 
+{% from 'database-translations/_includes/macros.twig' import registerJsModules %}
+
+{% do view.registerAssetBundle("digitalpulsebe\\database_translations\\assetbundles\\CraftDatabaseTranslationsAsset") %}
+{% set baseAssetsUrl = view.getAssetManager().getPublishedUrl('@digitalpulsebe/database_translations/assetbundles/database_translations/dist', true) %}
+
+{% block foot %}
+    {{ parent() }}
+    {% set jsModules = [
+        'filters.js',
+        'dashboard.js',
+    ] %}
+    {{ registerJsModules(jsModules) }}
+{% endblock %}
+
 {% set title = 'Translations' %}
 
 {% set crumbs = [
@@ -10,6 +24,7 @@
 {% set locales = craft.app.i18n.siteLocales|map(locale => locale.id) %}
 {% set filters = craft.app.request.get('filters') %}
 {% set sourceMessageQuery = craft.databaseTranslations.sourceMessages(filters).limit(10) %}
+
 {% paginate sourceMessageQuery as pageInfo, sourceMessages %}
 
 {% block actionButton %}
@@ -17,70 +32,81 @@
 {% endblock %}
 
 {% block toolbar %}
-    {% include 'database-translations/_partials/filters' %}
+    <script>
+        window.locales = '{{ locales|json_encode|e("js")|raw }}';
+    </script>
+
+    <div id="filters">
+        <filters></filters>
+        {# {% include 'database-translations/_partials/filters' %} #}
+    </div>
+
 {% endblock %}
 
 {% block content %}
-    <div class="main">
-        <div class="elements">
-            <div class="tableview tablepane">
-                <form id="translations-table" method="post" accept-charset="UTF-8" saveshortcut data-confirm-unload>
-                    {{ actionInput('database-translations/translations/update') }}
-                    {{ csrfInput() }}
-                    <table class="data fullwidth">
-                        <thead>
-                            <tr>
-                                <th class="{{ filters.order|default(null) == 'category' ? 'ordered asc' }}">
-                                    Category
-                                </th>
-                                <th class="{{ filters.order|default(null) == 'message' ? 'ordered asc' }}">
-                                    Message
-                                </th>
-                                {% for locale in locales %}
-                                    <th class="{{ filters.order|default(null) == 'locale' ? 'ordered asc' }}">
-                                        {{ locale }}
-                                    </th>
-                                {% endfor %}
-                                <th class="{{ filters.order|default(null) == 'dateCreated' ? 'ordered asc' }} {{ filters.order|default(null) == 'dateCreated desc' ? 'ordered desc' }}">
-                                    Created
-                                </th>
-                                <th class="{{ filters.order|default(null) == 'dateUpdated' ? 'ordered asc' }} {{ filters.order|default(null) == 'dateUpdated desc' ? 'ordered desc' }}">
-                                    Updated
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for sourceMessage in sourceMessages %}
+    <div id="dashboard">
+        <dashboard></dashboard>
+        {# <div class="main">
+            <div class="elements">
+                <div class="tableview tablepane">
+                    <form id="translations-table" method="post" accept-charset="UTF-8" saveshortcut data-confirm-unload>
+                        {{ actionInput('database-translations/translations/update') }}
+                        {{ csrfInput() }}
+                        <table class="data fullwidth">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        {{ sourceMessage.category }}
-                                    </td>
-                                    <td>
-                                        {{ sourceMessage.message }}
-                                    </td>
+                                    <th class="{{ filters.order|default(null) == 'category' ? 'ordered asc' }}">
+                                        Category
+                                    </th>
+                                    <th class="{{ filters.order|default(null) == 'message' ? 'ordered asc' }}">
+                                        Message
+                                    </th>
                                     {% for locale in locales %}
-                                        <td>
-                                            <input
-                                                class="text fullwidth"
-                                                type="text"
-                                                name="messages[{{ sourceMessage.id }}][{{ locale }}]"
-                                                value="{{ sourceMessage.translation(locale) }}"
-                                            >
-                                        </td>
+                                        <th class="{{ filters.order|default(null) == 'locale' ? 'ordered asc' }}">
+                                            {{ locale }}
+                                        </th>
                                     {% endfor %}
-                                    <td>
-                                        {{ sourceMessage.dateCreated }}
-                                    </td>
-                                    <td>
-                                        {{ sourceMessage.lastUpdated }}
-                                    </td>
+                                    <th class="{{ filters.order|default(null) == 'dateCreated' ? 'ordered asc' }} {{ filters.order|default(null) == 'dateCreated desc' ? 'ordered desc' }}">
+                                        Created
+                                    </th>
+                                    <th class="{{ filters.order|default(null) == 'dateUpdated' ? 'ordered asc' }} {{ filters.order|default(null) == 'dateUpdated desc' ? 'ordered desc' }}">
+                                        Updated
+                                    </th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </form>
+                            </thead>
+                            <tbody>
+                                {% for sourceMessage in sourceMessages %}
+                                    <tr>
+                                        <td>
+                                            {{ sourceMessage.category }}
+                                        </td>
+                                        <td>
+                                            {{ sourceMessage.message }}
+                                        </td>
+                                        {% for locale in locales %}
+                                            <td>
+                                                <input
+                                                    class="text fullwidth"
+                                                    type="text"
+                                                    name="messages[{{ sourceMessage.id }}][{{ locale }}]"
+                                                    value="{{ sourceMessage.translation(locale) }}"
+                                                >
+                                            </td>
+                                        {% endfor %}
+                                        <td>
+                                            {{ sourceMessage.dateCreated }}
+                                        </td>
+                                        <td>
+                                            {{ sourceMessage.lastUpdated }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
             </div>
-        </div>
+        </div> #}
     </div>
 {% endblock %}
 

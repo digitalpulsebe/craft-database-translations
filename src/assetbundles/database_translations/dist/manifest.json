@@ -1,0 +1,8 @@
+{
+  "vendors~dashboard~filters.js": "js/vendors~dashboard~filters.js",
+  "vendors~dashboard~filters.js.map": "js/vendors~dashboard~filters.js.map",
+  "dashboard.js": "js/dashboard.js",
+  "dashboard.js.map": "js/dashboard.js.map",
+  "filters.js": "js/filters.js",
+  "filters.js.map": "js/filters.js.map"
+}
