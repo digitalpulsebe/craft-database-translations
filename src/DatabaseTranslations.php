@@ -113,7 +113,8 @@ class DatabaseTranslations extends Plugin
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
                 $event->rules['database-translations/settings'] = 'database-translations/settings/index';
-                $event->rules['database-translations/translations/delete/<id:\d>'] = 'database-translations/translations/delete';
+                $event->rules['database-translations/parse/review'] = 'database-translations/parse/review';
+                $event->rules['database-translations/translations/delete/<id:\d+>'] = 'database-translations/translations/delete';
             }
         );
     }
@@ -148,7 +149,7 @@ class DatabaseTranslations extends Plugin
     {
         $nav = parent::getCpNavItem();
         $nav['subnav']['translations'] = ['label' => 'Translations', 'url' => 'database-translations'];
-        $nav['subnav']['create'] = ['label' => 'Create', 'url' => 'database-translations/create'];
+        $nav['subnav']['create'] = ['label' => 'Add / Import', 'url' => 'database-translations/create'];
         $nav['subnav']['export'] = ['label' => 'Export', 'url' => 'database-translations/export'];
 
         if (Craft::$app->getConfig()->getGeneral()->allowAdminChanges) {

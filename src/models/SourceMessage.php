@@ -83,6 +83,8 @@ class SourceMessage extends ActiveRecord
     {
         $query = static::find();
 
+        $orderIsSet = false;
+
         if (is_array($filters)) {
             foreach ($filters as $filterKey => $filterValues) {
                 if (!empty($filterValues)) {
@@ -114,11 +116,16 @@ class SourceMessage extends ActiveRecord
                     }
 
                     if ($filterKey == 'order') {
+                        $orderIsSet = true;
                         $query->orderBy($filterValues);
                     }
 
                 }
             }
+        }
+
+        if (!$orderIsSet) {
+            $query->orderBy('message');
         }
 
         return $query;
