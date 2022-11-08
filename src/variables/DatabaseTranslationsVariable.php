@@ -27,4 +27,23 @@ class DatabaseTranslationsVariable
     {
         return DatabaseTranslations::$plugin->settings->getCategories();
     }
+
+    public function bestMatch($column, $fields)
+    {
+        // exact match
+        foreach ($fields as $handle => $name) {
+            if (strtolower($column) == strtolower($name)) {
+                return $handle;
+            }
+        }
+
+        // match inside name
+        foreach ($fields as $handle => $name) {
+            if (str_contains(strtolower($column),strtolower($name))||str_contains(strtolower($name),strtolower($column))) {
+                return $handle;
+            }
+        }
+
+        return null;
+    }
 }

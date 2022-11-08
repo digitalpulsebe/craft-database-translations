@@ -115,6 +115,8 @@ class DatabaseTranslations extends Plugin
                 $event->rules['database-translations/settings'] = 'database-translations/settings/index';
                 $event->rules['database-translations/parse/review'] = 'database-translations/parse/review';
                 $event->rules['database-translations/translations/delete/<id:\d+>'] = 'database-translations/translations/delete';
+                $event->rules['database-translations/import/map/<sessionKey:{slug}>'] = 'database-translations/import/map';
+                $event->rules['database-translations/import/review/<sessionKey:{slug}>'] = 'database-translations/import/review';
             }
         );
     }

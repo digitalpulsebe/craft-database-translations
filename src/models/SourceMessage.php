@@ -7,6 +7,7 @@ use craft\db\ActiveQuery;
 use yii\db\Query;
 
 /**
+ * @property int $id
  * @property string $message
  * @property string $category
  */

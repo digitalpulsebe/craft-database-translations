@@ -70,7 +70,8 @@ class TranslationsController extends Controller
             ]);
         }
 
-        return $this->redirectToPostedUrl();
+        return $this->asJson(['success' => true]);
+//        return $this->redirectToPostedUrl();
     }
 
     public function actionDelete($id = null): Response
