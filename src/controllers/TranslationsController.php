@@ -9,6 +9,8 @@ use craft\web\Controller;
 
 class TranslationsController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function actionCreate(): Response
     {
         $this->requirePostRequest();
@@ -38,10 +40,18 @@ class TranslationsController extends Controller
         /* @var SourceMessage[] $sourceMessages */
         $sourceMessages = SourceMessage::find()->with('messages')->indexBy('id')->all();
 
-//        \Craft::dd($sourceMessages);
         $errors = [];
 
-        foreach ($this->request->post('messages') as $id => $values) {
+        $inputMessages = $this->request->post('messages');
+
+        if (empty($inputMessages)) {
+            return $this->asJson([
+                'success' => false,
+                'errors' => ['Missing messages']
+            ]);
+        }
+
+        foreach ($inputMessages as $id => $values) {
             $sourceMessage = $sourceMessages[$id] ?? null;
 
             if ($sourceMessage) {
@@ -59,17 +69,30 @@ class TranslationsController extends Controller
                     }
 
                     $message->translation = $value;
-                    $message->save();
+
+                    if(!$message->save()) {
+                        $errors[$id] = $message->errors;
+                    }
                 }
             }
         }
 
         if (count($errors)) {
             return $this->asJson([
+                'success' => false,
                 'errors' => $errors
             ]);
         }
 
+        if ($this->request->getAcceptsJson()) {
+            $updatedIds = array_keys($inputMessages);
+            return $this->asJson([
+                'success' => true,
+                'sourceMessages' => SourceMessage::find()->id($updatedIds)->with('messages')->all()
+            ]);
+        }
+
+        $this->setSuccessFlash();
         return $this->redirectToPostedUrl();
     }
 
