@@ -6,11 +6,5 @@ const vm = new Vue({
     el: "#filters",
     components: {
         'filters': Filters,
-    },
-    data: {
-    },
-    methods: {
-    },
-    mounted() {
-    },
+    }
 });

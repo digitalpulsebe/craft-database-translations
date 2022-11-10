@@ -4,5 +4,7 @@
   "dashboard.js": "js/dashboard.js",
   "dashboard.js.map": "js/dashboard.js.map",
   "filters.js": "js/filters.js",
-  "filters.js.map": "js/filters.js.map"
+  "filters.js.map": "js/filters.js.map",
+  "vendors~dashboard.js": "js/vendors~dashboard.js",
+  "vendors~dashboard.js.map": "js/vendors~dashboard.js.map"
 }

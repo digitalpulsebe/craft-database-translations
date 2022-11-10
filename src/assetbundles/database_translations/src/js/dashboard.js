@@ -6,11 +6,5 @@ const vm = new Vue({
     el: "#dashboard",
     components: {
         'dashboard': Dashboard,
-    },
-    data: {
-    },
-    methods: {
-    },
-    mounted() {
-    },
+    }
 });

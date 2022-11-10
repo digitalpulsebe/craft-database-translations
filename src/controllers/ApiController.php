@@ -10,6 +10,9 @@ use craft\web\Controller;
 
 class ApiController extends Controller
 {
+
+    public $enableCsrfValidation = false;
+    
     public function actionIndex(): Response
     {
         $settings = DatabaseTranslations::$plugin->getSettings();

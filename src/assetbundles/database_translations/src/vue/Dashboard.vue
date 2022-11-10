@@ -6,36 +6,19 @@
                     <table class="data fullwidth">
                         <thead>
                             <tr>
-                                <th v-for="column in columns" v-html="column.title" @click="orderBy(column.handle)" :class="{ 'ordered': column.handle == order.column, 'asc': column.handle == order.column && order.direction == 'asc', 'desc': column.handle == order.column && order.direction == 'desc' }"></th>
+                                <th v-for="item in columns" v-html="item.title" @click="orderBy(item.handle)" :class="{ 'ordered': item.handle == column, 'asc': item.handle == column && direction == 'asc', 'desc': item.handle == column && direction == 'desc' }"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="sourceMessage in sourceMessages">
-                                <td>
-                                    {{ sourceMessage.category }}
+                                <td v-html="sourceMessage.category"></td>
+                                <td v-html="sourceMessage.message"></td>
+                                <td v-for="locale in locales">
+                                    <input v-if="sourceMessage.messages.length > 0 && sourceMessage.messages.filter(message => message.language == locale).length > 0" class="text fullwidth" type="text" v-model="sourceMessage.messages.filter(message => message.language == locale)[0]['translation']">
+                                    <input v-else class="text fullwidth" type="text" value="">
                                 </td>
-                                <td>
-                                    {{ sourceMessage.message }}
-                                </td>
-                                    <td v-for="locale in locales">
-                                        <input
-                                            class="text fullwidth"
-                                            type="text"
-                                            value=""
-                                        >
-                                        <!-- <input
-                                            class="text fullwidth"
-                                            type="text"
-                                            name="messages[{{ sourceMessage.id }}][{{ locale }}]"
-                                            value="{{ sourceMessage.translation(locale) }}"
-                                        > -->
-                                    </td>
-                                <td>
-                                    {{ sourceMessage.dateCreated }}
-                                </td>
-                                <td>
-                                    {{ sourceMessage.lastUpdated }}
-                                </td>
+                                <td v-html="sourceMessage.dateCreated"></td>
+                                <td v-html="sourceMessage.dateUpdated"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -46,100 +29,104 @@
 </template>
 
 <script>
+import axios from 'axios';
 
-    // Our component exports
-    export default {
-        components: {
+// Our component exports
+export default {
+    components: {
+    },
+    props: {
+    },
+    methods: {
+        orderBy(column) {
+            this.direction = this.column == column ? this.direction == 'asc' ? 'desc' : 'asc' : 'asc';
+            this.column = column;
+            this.$root.$emit('emit-order-by', this.column, this.direction);
         },
-        props: {
-        },
-        methods: {
-            orderBy(column) {
-                console.log(column)
-            },
-            getLocales() {
-                JSON.parse(window.locales).forEach((item) => {
-                    this.locales.push({
-                        title: item,
-                        handle: item
-                    });
-                })
-            },
-            getColumns() {
-                let firstColumns = [
-                    {
-                        title: 'Category',
-                        handle: 'category'
-                    },
-                    {
-                        title: 'Message',
-                        handle: 'message'
-                    }
-                ];
-                let lastColumns = [
-                    {
-                        title: 'Created',
-                        handle: 'created'
-                    },
-                    {
-                        title: 'Updated',
-                        handle: 'updated'
-                    }
-                ];
-
-                let columns = [];
-
-                firstColumns.forEach((column) => {
-                    columns.push(column)
-                })
-
-                this.locales.forEach((column) => {
-                    columns.push(column)
-                })
-
-                lastColumns.forEach((column) => {
-                    columns.push(column)
-                })
-
-                this.columns = columns;
-            },
-            getSourceMessages() {
-                // JSON.parse(window.sourceMessages).forEach((item) => {
-                //     this.sourceMessages.push(item);
-                // })
-
-                this.sourceMessages = [{
-                    'id': 1,
-                    'category': 'site',
-                    'message': 'Volgende',
-                    'dateCreated': '2022-11-02 14:37:56',
-                    'lastUpdated': '2022-11-02 14:37:56',
+        getColumns() {
+            let firstColumns = [
+                {
+                    title: 'Category',
+                    handle: 'category'
                 },
                 {
-                    'id': 2,
-                    'category': 'site',
-                    'message': 'Vorige',
-                    'dateCreated': '2022-11-02 14:37:59',
-                    'lastUpdated': '2022-11-02 14:37:59',
-                }]
-            }
-        },
-        created: function() {
-            this.getLocales();
-            this.getColumns();
-            this.getSourceMessages();
-        },
-        data: function() {
-            return {
-                locales: [],
-                columns: [],
-                sourceMessages: [],
-                messages: [],
-                order: {
-                    column: 'category',
-                    direction: 'asc'
+                    title: 'Message',
+                    handle: 'message'
                 }
-            }
+            ];
+            let lastColumns = [
+                {
+                    title: 'Created',
+                    handle: 'dateCreated'
+                },
+                {
+                    title: 'Updated',
+                    handle: 'dateUpdated'
+                }
+            ];
+
+            let columns = [];
+
+            firstColumns.forEach((column) => {
+                columns.push(column)
+            })
+
+            this.locales.forEach((column) => {
+                columns.push({
+                    title: column,
+                    handle: 'language_' + column
+                })
+            })
+
+            lastColumns.forEach((column) => {
+                columns.push(column)
+            })
+
+            this.columns = columns;
         },
-    }
+        getSourceMessages() {
+            let self = this;
+            axios.get('database-translations/api/index')
+            .then(function (response) {
+                self.sourceMessages = response.data.sourceMessages;
+                self.locales = response.data.locales;
+                self.getColumns();
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+        },
+        updateData() {
+            // database-translations/translations/update
+        }
+    },
+    created: function() {
+        this.$root.$on('emit-source-messages', (sourceMessages) => {
+            this.sourceMessages = sourceMessages;
+        })
+
+        this.$root.$on('emit-locales', (locales) => {
+            this.locales = locales;
+
+            this.getColumns()
+        })
+
+        this.$root.$on('emit-categories', (categories) => {
+            this.categories = categories;
+        })
+    },
+    data: function() {
+        return {
+            locales: [],
+            columns: [],
+            sourceMessages: [],
+            direction: 'asc',
+            column: 'category'
+        }
+    },
+}
 </script>
