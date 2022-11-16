@@ -6,6 +6,7 @@ use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
 use craft\helpers\Template;
 use craft\web\UploadedFile;
+use digitalpulsebe\database_translations\DatabaseTranslations;
 use digitalpulsebe\database_translations\helpers\TemplateHelper;
 use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
@@ -14,7 +15,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\Response;
 use craft\web\Controller;
 
-class ImportController extends Controller
+class CsvImportController extends Controller
 {
 
     /**
@@ -36,7 +37,7 @@ class ImportController extends Controller
 
         $tempPath = Craft::$app->getPath()->getTempPath(true);
         if ($uploadedFile->saveAs("$tempPath/$sessionKey.csv")) {
-            return $this->redirect('database-translations/import/map/'.$sessionKey);
+            return $this->redirect('database-translations/csv-import/map/'.$sessionKey);
         }
 
         Craft::$app->session->setError("upload failed");
@@ -67,7 +68,7 @@ class ImportController extends Controller
             $fields[$siteLocaleId] = 'Translations: '.$siteLocaleId;
         }
 
-        return $this->renderTemplate('database-translations/_import/map.twig', compact('header', 'rows', 'fields', 'sessionKey'));
+        return $this->renderTemplate('database-translations/_csv-import/map.twig', compact('header', 'rows', 'fields', 'sessionKey'));
     }
 
     public function actionImport()
@@ -103,7 +104,6 @@ class ImportController extends Controller
         $header = $this->getCsvHeader($fileStream);
         $rows = $this->getCsvRows($fileStream);
         // list of values we don't want
-        $emptyValues = [''];
         $rowCount = count($rows);
 
         foreach ($rows as $rowIndex => $row) {
@@ -125,31 +125,10 @@ class ImportController extends Controller
             foreach ($row as $i => $value) {
                 // the translation to fill, is the column selected in mapping before
                 $language = $columns[$i] ?? null;
-                if (in_array($language, Craft::$app->i18n->getSiteLocaleIds())) {
-                    if (in_array($value, $emptyValues)) {
-                        // empty value
-                        $cleanValue = null;
-                    } else {
-                        // string fields
-                        $cleanValue = trim($value);
-                    }
 
-                    $translation = $sourceMessage->getMessage($language);
-                    $originalValue = null;
-
-                    if (!$translation) {
-                        $translation = new Message();
-                        $translation->id = $sourceMessage->id;
-                        $translation->language = $language;
-                    } else {
-                        $originalValue = $translation->translation;
-                    }
-
-                    if ($cleanValue != $originalValue) {
-                        $translation->translation = $cleanValue;
-                        $translation->save();
-                    }
-
+                // update translation if this column is one of the languages
+                if (in_array($language, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
+                    $sourceMessage->updateTranslation($language, $value);
                 }
             }
         }

@@ -14,5 +14,8 @@ use craft\base\Component;
 
 class DatabaseTranslationsService extends Component
 {
-
+    public function languageIds(): array
+    {
+        return \Craft::$app->i18n->getSiteLocaleIds();
+    }
 }

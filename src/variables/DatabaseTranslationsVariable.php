@@ -28,6 +28,11 @@ class DatabaseTranslationsVariable
         return DatabaseTranslations::$plugin->settings->getCategories();
     }
 
+    public function languageIds(): array
+    {
+        return DatabaseTranslations::$plugin->databaseTranslationsService->languageIds();
+    }
+
     public function bestMatch($column, $fields)
     {
         // exact match

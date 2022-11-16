@@ -22,7 +22,7 @@
         <p>Import CSV file</p>
         <form method="post" enctype="multipart/form-data">
             {{ csrfInput() }}
-            {{ actionInput('database-translations/import/upload') }}
+            {{ actionInput('database-translations/csv-import/upload') }}
 
             <div style="margin-bottom: 20px;">
                 <input type="file" name="upload" accept="text/csv">
@@ -35,6 +35,6 @@
 
         <h2>Import</h2>
         <p>Import PHP files from translations-folder</p>
-        <a href="{{ url('database-translations/import/review') }}" class="btn secondary">Review</a>
+        <a href="{{ url('database-translations/php-import/config') }}" class="btn secondary">Start</a>
     </div>
 {% endblock %}

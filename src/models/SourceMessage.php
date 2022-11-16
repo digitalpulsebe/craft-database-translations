@@ -50,6 +50,37 @@ class SourceMessage extends ActiveRecord
         return null;
     }
 
+    public function updateTranslation($language, $value)
+    {
+        $emptyValues = [''];
+
+        if (in_array($value, $emptyValues)) {
+            // empty value
+            $cleanValue = null;
+        } else {
+            // string fields
+            $cleanValue = trim($value);
+        }
+
+        $translation = $this->getMessage($language);
+        $originalValue = null;
+
+        if (!$translation) {
+            $translation = new Message();
+            $translation->id = $this->id;
+            $translation->language = $language;
+        } else {
+            $originalValue = $translation->translation;
+        }
+
+        if ($cleanValue != $originalValue) {
+            $translation->translation = $cleanValue;
+            return $translation->save();
+        }
+
+        return true;
+    }
+
     public function getLastUpdated()
     {
         if ($this->_lastUpdated) {
