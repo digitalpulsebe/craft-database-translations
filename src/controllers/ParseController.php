@@ -18,7 +18,7 @@ class ParseController extends Controller
         return $this->renderTemplate('database-translations/_parse/review.twig', ['templateMessages' => $templateMessages]);
     }
 
-    public function actionImport()
+    public function actionImport(): Response
     {
         $this->requirePostRequest();
 

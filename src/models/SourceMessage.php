@@ -98,7 +98,7 @@ class SourceMessage extends ActiveRecord
         return $this->_lastUpdated = $lastDate;
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             ['message', 'string'] ,
@@ -111,7 +111,7 @@ class SourceMessage extends ActiveRecord
      * @param array|null $filters
      * @return ActiveQuery
      */
-    public static function filter($filters = []): ActiveQuery
+    public static function filter(?array $filters = []): ActiveQuery
     {
         $query = static::find();
 

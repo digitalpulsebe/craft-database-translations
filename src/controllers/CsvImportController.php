@@ -71,7 +71,7 @@ class CsvImportController extends Controller
         return $this->renderTemplate('database-translations/_csv-import/map.twig', compact('header', 'rows', 'fields', 'sessionKey'));
     }
 
-    public function actionImport()
+    public function actionImport(): Response
     {
         $this->requirePostRequest();
         $sessionKey = $this->request->post('sessionKey');
@@ -143,7 +143,8 @@ class CsvImportController extends Controller
         return fopen($filePath,'r');
     }
 
-    protected function getCsvHeader($fileStream) {
+    protected function getCsvHeader($fileStream): array
+    {
         $header = fgetcsv($fileStream, null, ';');
         foreach($header as $i => $column) {
             // clean non-word characters (like a BOM)
@@ -152,7 +153,8 @@ class CsvImportController extends Controller
         return $header;
     }
 
-    protected function getCsvRows($fileStream) {
+    protected function getCsvRows($fileStream): array
+    {
         $rows = [];
         while($row = fgetcsv($fileStream, null, ';')) {
             $rows[] = $row;
