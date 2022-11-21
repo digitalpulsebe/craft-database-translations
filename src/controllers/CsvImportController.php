@@ -119,6 +119,7 @@ class CsvImportController extends Controller
                 $sourceMessage = new SourceMessage();
                 $sourceMessage->category = $row[$categoryColumn];
                 $sourceMessage->message = $row[$messageColumn];
+                $sourceMessage->save();
             }
 
             // loop over columns of one row to be imported
