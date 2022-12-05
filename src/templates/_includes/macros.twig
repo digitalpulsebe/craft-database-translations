@@ -1,7 +1,7 @@
 {% macro registerJsModules(jsModules) -%}
     {% set includeJsModules = [] %}
     {% for jsModule in jsModules %}
-        {% set includeJsModules = includeJsModules | merge([craft.manifest.getModuleUri(jsModule) ?? '']) %}
+        {% set includeJsModules = includeJsModules | merge([craft.databaseTranslationsManifest.getModuleUri(jsModule) ?? '']) %}
     {% endfor %}
     {% for jsModule in includeJsModules if jsModule %}
         {% do view.registerJsFile(jsModule, {

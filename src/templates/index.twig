@@ -8,7 +8,8 @@
 {% block foot %}
     {{ parent() }}
     {% set jsModules = [
-        'app.js'
+        'app.js',
+        'vendors~app.js'
     ] %}
     {{ registerJsModules(jsModules) }}
 {% endblock %}

@@ -87,7 +87,7 @@ class DatabaseTranslations extends Plugin
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('databaseTranslations', DatabaseTranslationsVariable::class);
-                $variable->set('manifest', ManifestVariable::class);
+                $variable->set('databaseTranslationsManifest', ManifestVariable::class);
 
             }
         );
