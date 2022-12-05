@@ -4,6 +4,7 @@ namespace digitalpulsebe\database_translations\models;
 
 use craft\db\ActiveRecord;
 use craft\db\ActiveQuery;
+use digitalpulsebe\database_translations\DatabaseTranslations;
 use yii\db\Query;
 
 /**
@@ -149,7 +150,12 @@ class SourceMessage extends ActiveRecord
 
                     if ($filterKey == 'order') {
                         $orderIsSet = true;
-                        $query->orderBy($filterValues);
+                        if (in_array($filterValues, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
+                            $query->join('LEFT JOIN', Message::tableName(), 'dp_translations_message.id = dp_translations_source_message.id AND dp_translations_message.language = \''.$filterValues.'\'');
+                            $query->orderBy('dp_translations_message.translation');
+                        } else {
+                            $query->orderBy($filterValues);
+                        }
                     }
 
                 }
