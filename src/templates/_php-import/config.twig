@@ -1,0 +1,58 @@
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{% set title = "Import PHP-file Translations" %}
+{% set selectedSubnavItem = 'create' %}
+
+{% set content %}
+
+    {% if craft.app.session.getFlash('cp-error') %}
+        <div class="pane">
+            <p class="error">
+                {{ craft.app.session.getFlash('cp-error') }}
+            </p>
+        </div>
+        {% set old = craft.app.session.get('columns') %}
+    {% endif %}
+
+    <form method="get" action="{{ url('database-translations/php-import/review') }}">
+
+        {% set fileOptions = {} %}
+        {% for file in files %}
+            {% set fileOptions = fileOptions|merge({(file): file}) %}
+        {% endfor %}
+
+        {{ forms.selectField({
+            label: "Source file"|t('database-translations'),
+            id: 'file',
+            name: 'file',
+            options: fileOptions
+        }) }}
+
+        {% set categoryOptions = {} %}
+        {% for category in categories %}
+            {% set categoryOptions = categoryOptions|merge({(category): category}) %}
+        {% endfor %}
+
+        {{ forms.selectField({
+            label: "Destination Category"|t('database-translations'),
+            id: 'category',
+            name: 'category',
+            options: categoryOptions
+        }) }}
+
+        {% set languageOptions = {} %}
+        {% for language in languages %}
+            {% set languageOptions = languageOptions|merge({(language): language}) %}
+        {% endfor %}
+
+        {{ forms.selectField({
+            label: "Destination Language"|t('database-translations'),
+            id: 'language',
+            name: 'language',
+            options: languageOptions
+        }) }}
+
+        <input type="submit" value="Review" class="btn submit">
+    </form>
+{% endset %}

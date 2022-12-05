@@ -19,13 +19,22 @@
         <hr>
 
         <h2>Import</h2>
-        <p>Import CSV files</p>
-        <a href="{{ url('database-translations/import/review') }}" class="btn secondary">Review</a>
+        <p>Import CSV file</p>
+        <form method="post" enctype="multipart/form-data">
+            {{ csrfInput() }}
+            {{ actionInput('database-translations/csv-import/upload') }}
+
+            <div style="margin-bottom: 20px;">
+                <input type="file" name="upload" accept="text/csv">
+            </div>
+
+            <button type="submit" class="btn secondary">Upload and review fields</button>
+        </form>
 
         <hr>
 
         <h2>Import</h2>
         <p>Import PHP files from translations-folder</p>
-        <a href="{{ url('database-translations/import/review') }}" class="btn secondary">Review</a>
+        <a href="{{ url('database-translations/php-import/config') }}" class="btn secondary">Start</a>
     </div>
 {% endblock %}
