@@ -16,7 +16,7 @@
     {% endif %}
 
     <form method="post">
-        {{ actionInput('database-translations/csv-import/import') }}
+        {{ actionInput('database-translations/csv-import/review') }}
         <input type="hidden" name="sessionKey" value="{{ sessionKey }}">
         {{ csrfInput() }}
         <table class="table data field first fullwidth">
@@ -58,6 +58,6 @@
             </tbody>
         </table>
 
-        <input type="submit" value="Import" class="btn submit">
+        <input type="submit" value="Review content" class="btn submit">
     </form>
 {% endset %}

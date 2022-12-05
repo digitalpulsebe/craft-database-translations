@@ -1,0 +1,68 @@
+{% extends "_layouts/cp" %}
+
+{% set title = 'Parse Templates Translations' %}
+{% set selectedSubnavItem = 'create' %}
+
+{% import "_includes/forms" as forms %}
+
+{% block content %}
+    <div class="main">
+        <form action="" method="post">
+            {{ actionInput('database-translations/csv-import/import') }}
+            {{ csrfInput() }}
+
+            {% for language in languages %}
+                <input type="hidden" name="languages[]" value="{{ language }}">
+            {% endfor %}
+
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="all" value="1" checked> all</th>
+                        <th>Message</th>
+                        {% for language in languages %}
+                        <th>Translation {{ language }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% set index = 0 %}
+                {% for importType, messages in foundMessages %}
+                    <tr>
+                        <td colspan="4">
+                            <h2>{{ importType }}</h2>
+                        </td>
+                    </tr>
+                    {% for message in messages %}
+                        <tr>
+                            <td>
+                                <input type="hidden" name="messages[{{ index }}][include]" value="0">
+                                <input type="checkbox" name="messages[{{ index }}][include]" value="1" checked>
+                                <input type="hidden" name="messages[{{ index }}][message]" value="{{ message.message }}">
+                                <input type="hidden" name="messages[{{ index }}][category]" value="{{ message.category }}">
+                            </td>
+                            <td style="max-width: 200px;">
+                                {{ message.message }}
+                            </td>
+                            {% for language in languages %}
+                                <td>
+                                    <input
+                                            type="text"
+                                            name="messages[{{ index }}][translations][{{ language }}]"
+                                            value="{{ message.translations[(language)]|default(null) }}"
+                                            class="text fullwidth"
+                                            readonly
+                                    />
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% set index = index+1 %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn submit">Import</button>
+        </form>
+    </div>
+{% endblock %}

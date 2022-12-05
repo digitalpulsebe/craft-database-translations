@@ -7,6 +7,7 @@ use craft\helpers\StringHelper;
 use craft\helpers\Template;
 use craft\web\UploadedFile;
 use digitalpulsebe\database_translations\DatabaseTranslations;
+use digitalpulsebe\database_translations\helpers\PhpTranslationsHelper;
 use digitalpulsebe\database_translations\helpers\TemplateHelper;
 use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
@@ -71,7 +72,7 @@ class CsvImportController extends Controller
         return $this->renderTemplate('database-translations/_csv-import/map.twig', compact('header', 'rows', 'fields', 'sessionKey'));
     }
 
-    public function actionImport(): Response
+    public function actionReview(): Response
     {
         $this->requirePostRequest();
         $sessionKey = $this->request->post('sessionKey');
@@ -99,28 +100,84 @@ class CsvImportController extends Controller
             return $this->redirectToPostedUrl();
         }
 
+        [$messages, $languages] = $this->findNewTranslations($sessionKey, $columns);
+
+        return $this->renderTemplate('database-translations/_csv-import/review.twig', [
+            'foundMessages' => $messages,
+            'languages' => $languages,
+        ]);
+    }
+
+    public function actionImport(): Response
+    {
+        $this->requirePostRequest();
+
+        $count = 0;
+        $languages = $this->request->post('languages');
+
+        foreach ($this->request->post('messages') as $inputRow) {
+            if ($inputRow['include'] == '1') {
+                $category = $inputRow['category'];
+                $messageKey = $inputRow['message'];
+                $translations = $inputRow['translations'];
+
+                $sourceMessage = SourceMessage::find()->where([
+                    'category' => $category,
+                    'message' => $messageKey,
+                ])->with(['messages'])->one();
+
+                if (!$sourceMessage) {
+                    $sourceMessage = new SourceMessage();
+                    $sourceMessage->category = $category;
+                    $sourceMessage->message = $messageKey;
+                    $sourceMessage->save();
+                }
+
+                if ($sourceMessage) {
+                    foreach ($translations as $language => $value) {
+                        if (in_array($language, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
+                            $sourceMessage->updateTranslation($language, $value);
+                        }
+                    }
+                }
+
+                $count++;
+            }
+        }
+
+        $this->setSuccessFlash("Imported $count new messages");
+        return $this->redirect('database-translations');
+    }
+
+    protected function findNewTranslations(string $sessionKey, array $columns): array
+    {
         $fileStream = $this->getFileStream($sessionKey);
         // take away the header row, we don't need to import
         $header = $this->getCsvHeader($fileStream);
+        $languages = [];
+        foreach ($header as $columnHeader) {
+            if (in_array($columnHeader, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
+                $languages[] = $columnHeader;
+            }
+        }
+
         $rows = $this->getCsvRows($fileStream);
-        // list of values we don't want
         $rowCount = count($rows);
+
+        $existing = SourceMessage::find()->with('messages')->orderBy('message')->indexBy('message')->all();
+        $messages = ['new' => [], 'existing' => []];
 
         foreach ($rows as $rowIndex => $row) {
             $categoryColumn = array_search('category', $columns);
             $messageColumn = array_search('message', $columns);
 
-            $sourceMessage = SourceMessage::find()->where([
+            $message = $row[$messageColumn];
+            $existingSourceMessage = $existing[$message] ?? null;
+
+            $message = [
                 'category' => $row[$categoryColumn],
                 'message' => $row[$messageColumn],
-            ])->with(['messages'])->one();
-
-            if (!$sourceMessage) {
-                $sourceMessage = new SourceMessage();
-                $sourceMessage->category = $row[$categoryColumn];
-                $sourceMessage->message = $row[$messageColumn];
-                $sourceMessage->save();
-            }
+            ];
 
             // loop over columns of one row to be imported
             foreach ($row as $i => $value) {
@@ -129,13 +186,18 @@ class CsvImportController extends Controller
 
                 // update translation if this column is one of the languages
                 if (in_array($language, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
-                    $sourceMessage->updateTranslation($language, $value);
+                    $message['translations'][$language] = $value;
                 }
+            }
+
+            if ($existingSourceMessage) {
+                $messages['new'][] = $message;
+            } else {
+                $messages['existing'][] = $message;
             }
         }
 
-        $this->setSuccessFlash("Imported $rowCount rows");
-        return $this->redirect('database-translations');
+        return [$messages, $languages];
     }
 
     protected function getFileStream($sessionKey) {
@@ -161,4 +223,5 @@ class CsvImportController extends Controller
         }
         return $rows;
     }
+
 }
