@@ -112,7 +112,10 @@
                 this.getColumns()
             })
 
+            // Listen to the emit 'emit-categories'.
             this.$root.$on('emit-categories', (categories) => {
+
+                // Set the categories.
                 this.categories = categories;
             })
         },

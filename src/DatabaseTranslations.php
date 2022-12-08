@@ -75,6 +75,10 @@ class DatabaseTranslations extends Plugin
 
         $this->name = $this->settings->pluginName;
 
+        $this->setComponents([
+            'databaseTranslationsService' => DatabaseTranslationsService::class,
+        ]);
+
         // Register our variables
         Event::on(
             CraftVariable::class,
@@ -83,7 +87,7 @@ class DatabaseTranslations extends Plugin
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('databaseTranslations', DatabaseTranslationsVariable::class);
-                $variable->set('manifest', ManifestVariable::class);
+                $variable->set('databaseTranslationsManifest', ManifestVariable::class);
 
             }
         );
@@ -121,6 +125,10 @@ class DatabaseTranslations extends Plugin
                 $event->rules['database-translations/translations/delete/<id:\d+>'] = 'database-translations/translations/delete';
                 $event->rules['database-translations/api/index'] = 'database-translations/api/index';
                 $event->rules['database-translations/api/messages'] = 'database-translations/api/messages';
+                $event->rules['database-translations/csv-import/map/<sessionKey:{slug}>'] = 'database-translations/csv-import/map';
+                $event->rules['database-translations/csv-import/review/<sessionKey:{slug}>'] = 'database-translations/csv-import/review';
+                $event->rules['database-translations/php-import/config'] = 'database-translations/php-import/config';
+                $event->rules['database-translations/php-import/review'] = 'database-translations/php-import/review';
             }
         );
     }

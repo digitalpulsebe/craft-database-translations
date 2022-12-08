@@ -8,7 +8,8 @@
 {% block foot %}
     {{ parent() }}
     {% set jsModules = [
-        'app.js'
+        'app.js',
+        'vendors~app.js'
     ] %}
     {{ registerJsModules(jsModules) }}
 {% endblock %}
@@ -22,7 +23,7 @@
 
 {% set locales = craft.app.i18n.siteLocales|map(locale => locale.id) %}
 {% set filters = craft.app.request.get('filters') %}
-{% set sourceMessageQuery = craft.databaseTranslations.sourceMessages(filters).limit(10) %}
+{% set sourceMessageQuery = craft.databaseTranslations.sourceMessages(filters).limit(100) %}
 
 {% paginate sourceMessageQuery as pageInfo, sourceMessages %}
 
@@ -40,9 +41,4 @@
 
 {% block footer %}
     <actions></actions>
-    {# <div id="count-container" class="light flex-grow">
-        {% include '_includes/pagination' %}
-    </div>
-    <button type="button" id="export-btn" class="btn">Export</button>
-    <button type="submit" class="btn submit" form="translations-table">Save All</button> #}
 {% endblock %}

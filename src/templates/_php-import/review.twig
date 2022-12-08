@@ -1,0 +1,57 @@
+{% extends "_layouts/cp" %}
+
+{% set title = 'Parse Templates Translations' %}
+{% set selectedSubnavItem = 'create' %}
+
+{% import "_includes/forms" as forms %}
+
+{% block content %}
+    <div class="main">
+        <form action="" method="post">
+            {{ actionInput('database-translations/php-import/import') }}
+            {{ csrfInput() }}
+            <table class="data fullwidth">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="all" value="1" checked></th>
+                        <th>Message</th>
+                        <th>Translation</th>
+                        <th>Existing value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% set index = 0 %}
+                {% for importType, messages in foundMessages %}
+                    <tr>
+                        <td colspan="4">
+                            <h2>{{ importType }}</h2>
+                        </td>
+                    </tr>
+                    {% for message in messages %}
+                        <tr>
+                            <td>
+                                <input type="hidden" name="messages[{{ index }}][include]" value="0">
+                                <input type="checkbox" name="messages[{{ index }}][include]" value="1" checked>
+                                <input type="hidden" name="messages[{{ index }}][message]" value="{{ message.message }}">
+                                <input type="hidden" name="messages[{{ index }}][translation]" value="{{ message.new }}">
+                                <input type="hidden" name="messages[{{ index }}][category]" value="{{ category }}">
+                                <input type="hidden" name="messages[{{ index }}][language]" value="{{ language }}">
+                            </td>
+                            <td>{{ message.message }}</td>
+                            <td>{{ message.new }}</td>
+                            <td>
+                                {% if importType == 'existing' %}
+                                    {{ message.old }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% set index = index+1 %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn submit">Import</button>
+        </form>
+    </div>
+{% endblock %}

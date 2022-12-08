@@ -229,7 +229,7 @@ EOT;
             // Make sure it exists in the manifest
             if (empty($manifest[$moduleName])) {
                 self::reportError(Craft::t(
-                    'database translations',
+                    'database-translations',
                     'Module does not exist in the manifest: {moduleName}',
                     ['moduleName' => $moduleName]
                 ), $soft);
@@ -271,7 +271,7 @@ EOT;
             if ($manifest === null) {
                 // We couldn't find a manifest; throw an error
                 self::reportError(Craft::t(
-                    'database translations',
+                    'database-translations',
                     'Manifest file not found at: {manifestPath}',
                     ['manifestPath' => $manifestPath]
                 ), true);
