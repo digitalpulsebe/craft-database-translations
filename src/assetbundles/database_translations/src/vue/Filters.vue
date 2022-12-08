@@ -19,34 +19,41 @@
 </template>
 
 <script>
-
     // Our component exports
     export default {
-        components: {
-        },
-        props: {
-        },
         methods: {
             reset() {
+
+                // Reset the category.
                 this.category = '';
+
+                // Reset the search.
                 this.search = '';
             },
             save() {
+
+                // Fire the emit 'emit-update'..
                 this.$root.$emit('emit-update');
             }
         },
-        created: function() {
-        },
         mounted: function() {
+
+            // Listen to the emit 'emit-categories'.
             this.$root.$on('emit-categories', (categories) => {
+
+                // Set the categories.
                 this.categories = categories;
             })
         },
         watch: {
             search: function(value) {
+
+                // Fire the emit 'emit-search' with the value.
                 this.$root.$emit('emit-search', value);
             },
             category: function(value) {
+
+                // Fire the emit 'emit-filter category' with the value.
                 this.$root.$emit('emit-filter-category', value);
             }
         },

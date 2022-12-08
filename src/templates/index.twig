@@ -36,73 +36,13 @@
 
 {% block content %}
     <dashboard></dashboard>
-    {# <div class="main">
-        <div class="elements">
-            <div class="tableview tablepane">
-                <form id="translations-table" method="post" accept-charset="UTF-8" saveshortcut data-confirm-unload>
-                    {{ actionInput('database-translations/translations/update') }}
-                    {{ csrfInput() }}
-                    <table class="data fullwidth">
-                        <thead>
-                            <tr>
-                                <th class="{{ filters.order|default(null) == 'category' ? 'ordered asc' }}">
-                                    Category
-                                </th>
-                                <th class="{{ filters.order|default(null) == 'message' ? 'ordered asc' }}">
-                                    Message
-                                </th>
-                                {% for locale in locales %}
-                                    <th class="{{ filters.order|default(null) == 'locale' ? 'ordered asc' }}">
-                                        {{ locale }}
-                                    </th>
-                                {% endfor %}
-                                <th class="{{ filters.order|default(null) == 'dateCreated' ? 'ordered asc' }} {{ filters.order|default(null) == 'dateCreated desc' ? 'ordered desc' }}">
-                                    Created
-                                </th>
-                                <th class="{{ filters.order|default(null) == 'dateUpdated' ? 'ordered asc' }} {{ filters.order|default(null) == 'dateUpdated desc' ? 'ordered desc' }}">
-                                    Updated
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for sourceMessage in sourceMessages %}
-                                <tr>
-                                    <td>
-                                        {{ sourceMessage.category }}
-                                    </td>
-                                    <td>
-                                        {{ sourceMessage.message }}
-                                    </td>
-                                    {% for locale in locales %}
-                                        <td>
-                                            <input
-                                                class="text fullwidth"
-                                                type="text"
-                                                name="messages[{{ sourceMessage.id }}][{{ locale }}]"
-                                                value="{{ sourceMessage.translation(locale) }}"
-                                            >
-                                        </td>
-                                    {% endfor %}
-                                    <td>
-                                        {{ sourceMessage.dateCreated }}
-                                    </td>
-                                    <td>
-                                        {{ sourceMessage.lastUpdated }}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
-    </div> #}
 {% endblock %}
 
 {% block footer %}
-    <div id="count-container" class="light flex-grow">
+    <actions></actions>
+    {# <div id="count-container" class="light flex-grow">
         {% include '_includes/pagination' %}
     </div>
     <button type="button" id="export-btn" class="btn">Export</button>
-    <button type="submit" class="btn submit" form="translations-table">Save All</button>
+    <button type="submit" class="btn submit" form="translations-table">Save All</button> #}
 {% endblock %}

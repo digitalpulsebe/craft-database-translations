@@ -88,7 +88,7 @@ class TranslationsController extends Controller
             $updatedIds = array_keys($inputMessages);
             return $this->asJson([
                 'success' => true,
-                'sourceMessages' => SourceMessage::find()->id($updatedIds)->with('messages')->all()
+                'sourceMessages' => SourceMessage::find()->where(['id' => $updatedIds])->with('messages')->all()
             ]);
         }
 
