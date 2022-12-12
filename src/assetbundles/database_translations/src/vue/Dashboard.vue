@@ -1,30 +1,22 @@
 <template>
-    <div class="main">
-        <div class="elements">
-            <div class="tableview tablepane">
-                <form id="translations-table" method="post" accept-charset="UTF-8" saveshortcut data-confirm-unload>
-                    <table class="data fullwidth">
-                        <thead>
-                            <tr>
-                                <th v-for="item in columns" v-html="item.title" @click="orderBy(item.handle)" :class="{ 'ordered': item.handle == column, 'asc': item.handle == column && direction == 'asc', 'desc': item.handle == column && direction == 'desc' }"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="sourceMessage in sourceMessages">
-                                <td v-html="sourceMessage.category"></td>
-                                <td v-html="sourceMessage.message"></td>
-                                <td v-for="message in sourceMessage.messages">
-                                    <input class="text fullwidth" type="text" v-model="message.translation">
-                                </td>
-                                <td v-html="sourceMessage.dateCreated"></td>
-                                <td v-html="sourceMessage.dateUpdated"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-        </div>
-    </div>
+    <table class="data fullwidth">
+        <thead>
+            <tr>
+                <th v-for="item in columns" v-html="item.title" @click="orderBy(item.handle)" :class="{ 'ordered': item.handle == column, 'asc': item.handle == column && direction == 'asc', 'desc': item.handle == column && direction == 'desc' }"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="sourceMessage in sourceMessages">
+                <td v-html="sourceMessage.category"></td>
+                <td v-html="sourceMessage.message"></td>
+                <td v-for="locale in locales">
+                    <input class="text fullwidth" type="text" v-model="sourceMessage.messages[locale]">
+                </td>
+                <td v-html="sourceMessage.dateCreated"></td>
+                <td v-html="sourceMessage.dateUpdated"></td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <script>
@@ -80,7 +72,7 @@
                 this.locales.forEach((column) => {
                     columns.push({
                         title: column,
-                        handle: 'language_' + column
+                        handle: column
                     })
                 })
 

@@ -150,12 +150,19 @@ class SourceMessage extends ActiveRecord
 
                     if ($filterKey == 'order') {
                         $orderIsSet = true;
-                        if (in_array($filterValues, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
-                            $query->join('LEFT JOIN', Message::tableName(), 'dp_translations_message.id = dp_translations_source_message.id AND dp_translations_message.language = \''.$filterValues.'\'');
-                            $query->orderBy('dp_translations_message.translation');
+                        $filterValueParts = explode(' ', $filterValues);
+                        if (count($filterValueParts) == 2) {
+                            [$column, $direction] = $filterValueParts;
+                            if (in_array($column, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
+                                $query->join('LEFT JOIN', Message::tableName(), 'dp_translations_message.id = dp_translations_source_message.id AND dp_translations_message.language = \''.$column.'\'');
+                                $query->orderBy("dp_translations_message.translation $direction");
+                            } else {
+                                $query->orderBy($filterValues);
+                            }
                         } else {
                             $query->orderBy($filterValues);
                         }
+
                     }
 
                 }
@@ -172,7 +179,15 @@ class SourceMessage extends ActiveRecord
     public function toArray(array $fields = [], array $expand = [], $recursive = true)
     {
         $data = parent::toArray($fields, $expand, $recursive);
-        $data['messages'] = $this->messages ?? [];
+        if ($this->messages) {
+            $data['messages'] = array_reduce($this->messages, function ($result, $message) {
+                $result[$message->language] = $message->translation;
+                return $result;
+            }, []);
+        } else {
+            $data['messages'] = [];
+        }
+
         return $data;
     }
 }

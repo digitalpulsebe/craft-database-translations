@@ -54,11 +54,25 @@ const vm = new Vue({
                 // Set the source messages
                 self.sourceMessages = response.data.sourceMessages;
 
+                for (const i in self.sourceMessages) {
+                    if (self.sourceMessages[i].messages.length === 0) {
+                        // make it an object when empty
+                        self.sourceMessages[i].messages = {};
+                    }
+                    for (const j in response.data.locales) {
+                        const locale = response.data.locales[j];
+                        if (!self.sourceMessages[i].messages.hasOwnProperty(locale)) {
+                            // fill unknown translations with null
+                            self.sourceMessages[i].messages[locale] = null;
+                        }
+                    }
+                }
+
                 // Fire the emit 'emit-source-messages' with the source messages.
                 self.$root.$emit('emit-source-messages', self.sourceMessages);
 
                 // Fire the emit 'emit-locales' with the locales.
-                self.$root.$emit('emit-locales', response.data.locales.reverse());
+                self.$root.$emit('emit-locales', response.data.locales);
 
                 // Fire the emit 'emit-categories' with the categories.
                 self.$root.$emit('emit-categories', response.data.categories);
@@ -123,9 +137,9 @@ const vm = new Vue({
                 let message = {};
 
                 // Loop over the messages in the source message and assign the translation to the message that matches the language.
-                sourceMessage.messages.forEach((item) => { 
-                    message[item.language] = item.translation 
-                });
+                for (const locale in sourceMessage.messages) {
+                    message[locale] = sourceMessage.messages[locale];
+                }
 
                 // Add the message to messages based on the id.
                 messages[sourceMessage.id] = message;
