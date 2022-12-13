@@ -2,11 +2,24 @@
     <table class="data fullwidth">
         <thead>
             <tr>
+                <th class="checkbox-cell selectallcontainer" role="checkbox" tabindex="0" style="width: 4%" @click="toggleSelectAllRows()">
+                    <div
+                        class="checkbox"
+                        :class="checkedState()"
+                    ></div>
+                </th>
                 <th v-for="item in columns" v-html="item.title" @click="orderBy(item.handle)" :class="{ 'ordered': item.handle == column, 'asc': item.handle == column && direction == 'asc', 'desc': item.handle == column && direction == 'desc' }"></th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="sourceMessage in sourceMessages">
+                <td class="checkbox-cell">
+                    <input :id="'source-message-' + sourceMessage.id" type="checkbox" class="checkbox"
+                           title="Select"
+                           :value="sourceMessage.id"
+                           v-model="selectedRows">
+                    <label :for="'source-message-' + sourceMessage.id"></label>
+                </td>
                 <td v-html="sourceMessage.category"></td>
                 <td v-html="sourceMessage.message"></td>
                 <td v-for="locale in locales">
@@ -33,6 +46,25 @@
 
                 // Fire the emit 'emit-order-by' with the column and the direction.
                 this.$root.$emit('emit-order-by', this.column, this.direction);
+            },
+            toggleSelectAllRows() {
+                if (this.selectedRows.length > 0) {
+                    this.selectedRows = [];
+                } else {
+                    for (const sourceMessage of this.sourceMessages) {
+                        this.selectedRows.push(sourceMessage.id);
+                    }
+                }
+            },
+            checkedState() {
+                if (this.selectedRows.length > 0) {
+                    if (this.selectedRows.length === this.sourceMessages.length) {
+                        return 'checked';
+                    } else {
+                        return 'indeterminate';
+                    }
+                }
+                return '';
             },
             getColumns() {
 
@@ -115,6 +147,7 @@
             return {
                 locales: [],
                 columns: [],
+                selectedRows: [],
                 sourceMessages: [],
                 direction: 'asc',
                 column: 'category'

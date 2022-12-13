@@ -41,11 +41,7 @@ const vm = new Vue({
 
             // Post the data with filters.
             axios.post('database-translations/api/index', {
-                filters: {
-                    order: this.column + ' ' + this.direction,
-                    category: this.category,
-                    search: this.search
-                }
+                filters: this.filters
             })
 
             // Catch the response.
@@ -94,11 +90,8 @@ const vm = new Vue({
         // Listen to the emit 'emit-order-by'.
         this.$root.$on('emit-order-by', (column, direction) => {
 
-            // Set the column.
-            this.column = column;
-
-            // Set the direction.
-            this.direction = direction;
+            // set the column and direction
+            this.filters.order = column + ' ' + direction
 
             // Get the data.
             this.getData();
@@ -108,7 +101,7 @@ const vm = new Vue({
         this.$root.$on('emit-filter-category', (category) => {
 
             // Set the category.
-            this.category = category;
+            this.filters.category = category;
 
             // Get the data.
             this.getData();
@@ -118,7 +111,17 @@ const vm = new Vue({
         this.$root.$on('emit-search', (search) => {
 
             // Set the search
-            this.search = search;
+            this.filters.search = search;
+
+            // Get the data.
+            this.getData();
+        });
+
+        // Listen to the emit 'emit-filter-missing'.
+        this.$root.$on('emit-filter-missing', (missing) => {
+
+            // Set the search
+            this.filters.missing = missing;
 
             // Get the data.
             this.getData();
@@ -152,11 +155,10 @@ const vm = new Vue({
     },
     data: function() {
         return {
-            direction: 'asc',
-            column: 'category',
             sourceMessages: [],
-            search: '',
-            category: ''
+            filters: {
+                'order': 'category asc',
+            },
         }
     },
 });
