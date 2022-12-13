@@ -138,6 +138,10 @@ class SourceMessage extends ActiveRecord
                         ]);
                     }
 
+                    if ($filterKey == 'id') {
+                        $query->andWhere(['id' =>  $filterValues]);
+                    }
+
                     if ($filterKey == 'missing') {
                         $query->andWhere(['not exists', (new Query())
                             ->from(Message::tableName())

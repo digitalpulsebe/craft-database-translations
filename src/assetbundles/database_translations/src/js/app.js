@@ -81,6 +81,34 @@ const vm = new Vue({
                 console.log(error);
             });
         },
+        actionDelete(ids) {
+            axios.post('database-translations/translations/delete', {
+                messages: ids,
+                filters: this.filters
+            })
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+            this.getData();
+        },
+        actionExport(ids) {
+            axios.post('database-translations/translations/export', {
+                filters: {id: ids}
+            })
+            .then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data.file]))
+                const link = document.createElement('a')
+                link.href = url
+                link.setAttribute('download', response.data.fileName)
+                document.body.appendChild(link)
+                link.click()
+            })
+            .catch(() => console.log('error occured'));
+        }
     },
     created: function() {
 
@@ -151,6 +179,10 @@ const vm = new Vue({
             // Fire the update function.
             this.updateData(messages);
         });
+
+        // Listen to bulk actions
+        this.$root.$on('emit-action-export', this.actionExport);
+        this.$root.$on('emit-action-delete', this.actionDelete);
 
     },
     data: function() {

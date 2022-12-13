@@ -2,6 +2,7 @@
 
 namespace digitalpulsebe\database_translations\controllers;
 
+use digitalpulsebe\database_translations\DatabaseTranslations;
 use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
 use yii\web\Response;
@@ -104,6 +105,12 @@ class TranslationsController extends Controller
 
         SourceMessage::deleteAll(['id' => $id]);
 
+        if ($this->request->getAcceptsJson()) {
+            return $this->asJson([
+                'success' => true,
+            ]);
+        }
+
         return $this->redirect('database-translations');
     }
 
@@ -116,9 +123,9 @@ class TranslationsController extends Controller
 
         $this->requirePostRequest();
         $filters = $this->request->post('filters');
-        $separatorName = $this->request->post('separator');
+        $separatorName = $this->request->post('separator', 'semicolon');
         $separator = $separatorsMap[$separatorName];
-        $languages = $this->request->post('languages');
+        $languages = $this->request->post('languages', DatabaseTranslations::$plugin->databaseTranslationsService->languageIds());
 
         $sourceMessages = SourceMessage::filter($filters)->orderBy('message')->with('messages')->all();
 
@@ -137,6 +144,18 @@ class TranslationsController extends Controller
         }
 
         $date = strftime('%Y%m%d_%H%M%S');
+
+        if ($this->request->getAcceptsJson()) {
+            fseek($file, 0);
+            $content = stream_get_contents($file);
+            return $this->asJson([
+                'success' => true,
+                'fileSize' => strlen($content),
+                'fileName' => "export_translations-$date.csv",
+                'file' => $content,
+            ]);
+        }
+
         return $this->response->sendStreamAsFile($file, "export_translations-$date.csv");
     }
 }

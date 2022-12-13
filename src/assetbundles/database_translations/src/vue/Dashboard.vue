@@ -143,6 +143,11 @@
                 this.categories = categories;
             })
         },
+        watch: {
+            selectedRows: function (value) {
+                this.$root.$emit('emit-selection-changed', value);
+            }
+        },
         data: function() {
             return {
                 locales: [],

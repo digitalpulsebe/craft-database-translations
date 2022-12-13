@@ -123,6 +123,8 @@ class DatabaseTranslations extends Plugin
                 $event->rules['database-translations/parse/review'] = 'database-translations/parse/review';
                 $event->rules['database-translations/translations/update'] = 'database-translations/translations/update';
                 $event->rules['database-translations/translations/delete/<id:\d+>'] = 'database-translations/translations/delete';
+                $event->rules['database-translations/translations/delete'] = 'database-translations/translations/delete';
+                $event->rules['database-translations/translations/export'] = 'database-translations/translations/export';
                 $event->rules['database-translations/api/index'] = 'database-translations/api/index';
                 $event->rules['database-translations/api/messages'] = 'database-translations/api/messages';
                 $event->rules['database-translations/csv-import/map/<sessionKey:{slug}>'] = 'database-translations/csv-import/map';
