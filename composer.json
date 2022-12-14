@@ -21,8 +21,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "craftcms/cms": "^3.7.0"
+        "craftcms/cms": "^4.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -40,8 +39,5 @@
             "utmTrackerService": "DatabaseTranslationsService"
         },
         "class": "digitalpulsebe\\database_translations\\DatabaseTranslations"
-    },
-    "require-dev": {
-        "verbb/formie": "1.6"
     }
 }

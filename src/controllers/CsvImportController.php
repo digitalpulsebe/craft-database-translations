@@ -108,7 +108,7 @@ class CsvImportController extends Controller
         ]);
     }
 
-    public function actionImport()
+    public function actionImport(): Response
     {
         $this->requirePostRequest();
 
@@ -205,7 +205,8 @@ class CsvImportController extends Controller
         return fopen($filePath,'r');
     }
 
-    protected function getCsvHeader($fileStream) {
+    protected function getCsvHeader($fileStream): array
+    {
         $header = fgetcsv($fileStream, null, ';');
         foreach($header as $i => $column) {
             // clean non-word characters (like a BOM)
@@ -214,7 +215,8 @@ class CsvImportController extends Controller
         return $header;
     }
 
-    protected function getCsvRows($fileStream) {
+    protected function getCsvRows($fileStream): array
+    {
         $rows = [];
         while($row = fgetcsv($fileStream, null, ';')) {
             $rows[] = $row;

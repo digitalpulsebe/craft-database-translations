@@ -11,6 +11,7 @@
 namespace digitalpulsebe\database_translations;
 
 use Craft;
+use craft\base\Model;
 use craft\base\Plugin;
 use craft\events\RegisterUrlRulesEvent;
 use craft\helpers\App;
@@ -56,17 +57,17 @@ class DatabaseTranslations extends Plugin
     /**
      * @inheritdoc
      */
-    public $schemaVersion = '1.0.0';
+    public string $schemaVersion = '1.0.0';
 
     /**
      * @inheritdoc
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     /**
      * @inheritdoc
      */
-    public $hasCpSection = true;
+    public bool $hasCpSection = true;
 
     public function init()
     {
@@ -161,7 +162,10 @@ class DatabaseTranslations extends Plugin
         }
     }
 
-    public function getCpNavItem()
+    /**
+     * @inheritdoc
+     */
+    public function getCpNavItem(): ?array
     {
         $nav = parent::getCpNavItem();
         $nav['subnav']['translations'] = ['label' => 'Translations', 'url' => 'database-translations'];
@@ -180,20 +184,15 @@ class DatabaseTranslations extends Plugin
     // =========================================================================
 
     /**
-     * Creates and returns the model used to store the plugin’s settings.
-     *
-     * @return \craft\base\Model|null
+     * @inheritdoc
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?Model
     {
         return new Settings();
     }
 
     /**
-     * Returns the rendered settings HTML, which will be inserted into the content
-     * block on the settings page.
-     *
-     * @return string The rendered settings HTML
+     * @inheritdoc
      */
     protected function settingsHtml(): string
     {
