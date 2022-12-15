@@ -26,7 +26,7 @@
                 <td v-html="sourceMessage.category"></td>
                 <td v-html="sourceMessage.message" style="max-width: 200px;"></td>
                 <td v-for="locale in selectedLocales">
-                    <input class="text fullwidth" type="text" v-model="sourceMessage.messages[locale]">
+                    <textarea class="text fullwidth" v-model="sourceMessage.messages[locale]" rows="1"></textarea>
                 </td>
                 <td v-html="sourceMessage.dateCreated" v-if="selectedColumns.includes('dateCreated')"></td>
                 <td v-html="sourceMessage.dateUpdated" v-if="selectedColumns.includes('dateUpdated')"></td>
