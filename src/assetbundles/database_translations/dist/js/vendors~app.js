@@ -2,8 +2,8 @@
  * @project        Craft Database Translations
  * @name           vendors~app.js
  * @author         Digital Pulse
- * @build          Wed, Dec 14, 2022 4:52 PM ET
- * @release        5033567b144999e150b7a796b6eb129076d60ef4 [feature/vue]
+ * @build          Fri, Dec 16, 2022 10:45 AM ET
+ * @release        5aab56ed4acbd4c89c4b32a7b0d74375376d975c [feature/vue]
  * @copyright      Copyright (c) 2022 digitalpulse
  *
  */
