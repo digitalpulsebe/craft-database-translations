@@ -13,26 +13,24 @@ const vm = new Vue({
     },
     methods: {
         updateData(messages) {
-
             let self = this;
+            self.isBusy = true;
 
             // Post the data.
             axios.post('admin/database-translations/translations/update', {
                 messages: messages
             })
-
-            // Catch the response.
             .then(function (response) {
-                
-                // Set the source messages
                 self.sourceMessages = response.data.sourceMessages;
+                window.Craft.cp.displayNotice('Save successful');
             })
-
-            // Catch the error.
             .catch(function (error) {
-
                 // Handle the error.
+                window.Craft.cp.displayError(error);
                 console.log(error);
+            })
+            .finally(function () {
+                self.isBusy = false;
             });
         },
         getData() {
@@ -85,15 +83,18 @@ const vm = new Vue({
             });
         },
         actionDelete(ids) {
+            this.isBusy = true;
+
             axios.post('database-translations/translations/delete', {
                 messages: ids,
                 filters: this.filters
             })
             .then(function (response) {
-                console.log(response.data);
+                window.Craft.cp.displayNotice('Row(s) deleted');
             })
             .catch(function (error) {
                 console.log(error);
+                window.Craft.cp.displayError(error);
             });
 
             this.getData();
@@ -110,7 +111,7 @@ const vm = new Vue({
                 document.body.appendChild(link)
                 link.click()
             })
-            .catch(() => console.log('error occured'));
+            .catch((error) => window.Craft.cp.displayError(error));
         }
     },
     created: function() {
