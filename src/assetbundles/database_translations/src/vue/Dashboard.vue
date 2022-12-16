@@ -9,11 +9,13 @@
                     </th>
                     <th
                         v-for="item in columns"
-                        v-html="item.title"
                         @click="orderBy(item.handle)"
+                        class="orderable"
                         :class="{ 'ordered': item.handle === column, 'asc': item.handle === column && direction === 'asc', 'desc': item.handle === column && direction === 'desc' }"
                         :style="{ 'width': item.width }"
-                    ></th>
+                    >
+                        <button v-html="item.title"></button>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
