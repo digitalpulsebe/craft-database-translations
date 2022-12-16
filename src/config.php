@@ -15,5 +15,7 @@
  */
 
 return [
-
+    'pluginName' => 'Translations',
+    'categories' => [['key' => 'site']],
+    'handleMissingTranslationEvent' => false,
 ];
