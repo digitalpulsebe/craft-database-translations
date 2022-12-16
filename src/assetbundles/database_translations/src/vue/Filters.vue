@@ -71,12 +71,13 @@
             this.$root.$on('emit-locales', (locales) => {
                 // Set the categories.
                 this.locales = locales;
+                if (this.selectedLocales.length === 0) {
+                    this.selectedLocales = locales
+                }
             });
 
             if (localStorage.getItem('selectedLocales')) {
                 this.selectedLocales = JSON.parse(localStorage.getItem('selectedLocales'));
-            } else {
-                this.selectedLocales = this.locales;
             }
             if (localStorage.getItem('selectedColumns')) {
                 this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
