@@ -38,6 +38,7 @@ const vm = new Vue({
         getData() {
 
             let self = this;
+            self.isBusy = true;
 
             // Post the data with filters.
             axios.post('database-translations/api/index', {
@@ -73,12 +74,14 @@ const vm = new Vue({
                 // Fire the emit 'emit-categories' with the categories.
                 self.$root.$emit('emit-categories', response.data.categories);
             })
-
             // Catch the error.
             .catch(function (error) {
 
                 // Handle the error.
                 console.log(error);
+            })
+            .finally(function () {
+                self.isBusy = false;
             });
         },
         actionDelete(ids) {
@@ -185,9 +188,15 @@ const vm = new Vue({
         this.$root.$on('emit-action-delete', this.actionDelete);
 
     },
+    watch: {
+        isBusy: function (value) {
+            this.$root.$emit('emit-busy', value);
+        }
+    },
     data: function() {
         return {
             sourceMessages: [],
+            isBusy: true,
             filters: {
                 'order': 'category asc',
             },

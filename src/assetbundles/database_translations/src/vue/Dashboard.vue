@@ -1,38 +1,42 @@
 <template>
-    <table class="data fullwidth">
-        <thead>
-            <tr>
-                <th class="checkbox-cell selectallcontainer" role="checkbox" tabindex="0" style="width: 50px" @click="toggleSelectAllRows()">
-                    <div class="checkbox" :class="checkedState()"></div>
-                </th>
-                <th
-                    v-for="item in columns"
-                    v-html="item.title"
-                    @click="orderBy(item.handle)"
-                    :class="{ 'ordered': item.handle === column, 'asc': item.handle === column && direction === 'asc', 'desc': item.handle === column && direction === 'desc' }"
-                    :style="{ 'width': item.width }"
-                ></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="sourceMessage in sourceMessages">
-                <td class="checkbox-cell">
-                    <input :id="'source-message-' + sourceMessage.id" type="checkbox" class="checkbox"
-                           title="Select"
-                           :value="sourceMessage.id"
-                           v-model="selectedRows">
-                    <label :for="'source-message-' + sourceMessage.id"></label>
-                </td>
-                <td v-html="sourceMessage.category"></td>
-                <td v-html="sourceMessage.message" style="max-width: 200px;"></td>
-                <td v-for="locale in selectedLocales">
-                    <textarea class="text fullwidth" v-model="sourceMessage.messages[locale]" rows="1"></textarea>
-                </td>
-                <td v-html="sourceMessage.dateCreated" v-if="selectedColumns.includes('dateCreated')"></td>
-                <td v-html="sourceMessage.dateUpdated" v-if="selectedColumns.includes('dateUpdated')"></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="elements"  :class="{'busy': isBusy}">
+        <div class="tableview tablepane">
+            <table class="data fullwidth">
+                <thead>
+                <tr>
+                    <th class="checkbox-cell selectallcontainer" role="checkbox" tabindex="0" style="width: 50px" @click="toggleSelectAllRows()">
+                        <div class="checkbox" :class="checkedState()"></div>
+                    </th>
+                    <th
+                        v-for="item in columns"
+                        v-html="item.title"
+                        @click="orderBy(item.handle)"
+                        :class="{ 'ordered': item.handle === column, 'asc': item.handle === column && direction === 'asc', 'desc': item.handle === column && direction === 'desc' }"
+                        :style="{ 'width': item.width }"
+                    ></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="sourceMessage in sourceMessages">
+                    <td class="checkbox-cell">
+                        <input :id="'source-message-' + sourceMessage.id" type="checkbox" class="checkbox"
+                               title="Select"
+                               :value="sourceMessage.id"
+                               v-model="selectedRows">
+                        <label :for="'source-message-' + sourceMessage.id"></label>
+                    </td>
+                    <td v-html="sourceMessage.category"></td>
+                    <td v-html="sourceMessage.message" style="max-width: 200px;"></td>
+                    <td v-for="locale in selectedLocales">
+                        <textarea class="text fullwidth" v-model="sourceMessage.messages[locale]" rows="1"></textarea>
+                    </td>
+                    <td v-html="sourceMessage.dateCreated" v-if="selectedColumns.includes('dateCreated')"></td>
+                    <td v-html="sourceMessage.dateUpdated" v-if="selectedColumns.includes('dateUpdated')"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -126,6 +130,14 @@
                 this.columns = columns;
             }
         },
+        mounted: function () {
+            if (localStorage.getItem('selectedLocales')) {
+                this.selectedLocales = JSON.parse(localStorage.getItem('selectedLocales'));
+            }
+            if (localStorage.getItem('selectedColumns')) {
+                this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
+            }
+        },
         created: function() {
 
             // Listen to the emit 'emit-source-messages'.
@@ -133,6 +145,11 @@
 
                 // Set the source messages.
                 this.sourceMessages = sourceMessages;
+            })
+
+            // Listen to the emit 'emit-busy'.
+            this.$root.$on('emit-busy', (isBusy) => {
+                this.isBusy = isBusy;
             })
 
             // Listen to the emit 'emit-locales'.
@@ -187,6 +204,7 @@
                 columns: [],
                 selectedRows: [],
                 sourceMessages: [],
+                isBusy: true,
                 direction: 'asc',
                 column: 'category'
             }
