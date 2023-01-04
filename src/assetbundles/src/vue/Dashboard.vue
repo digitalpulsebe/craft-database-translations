@@ -9,11 +9,13 @@
                     </th>
                     <th
                         v-for="item in columns"
-                        v-html="item.title"
                         @click="orderBy(item.handle)"
                         :class="{ 'ordered': item.handle === column, 'asc': item.handle === column && direction === 'asc', 'desc': item.handle === column && direction === 'desc' }"
                         :style="{ 'width': item.width }"
-                    ></th>
+                    >
+                        <div v-if="item.handle === 'message'" v-html="item.title" style="resize: horizontal; min-width: 100px; overflow: auto;"></div>
+                        <div v-else v-html="item.title"></div>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -28,7 +30,7 @@
                     <td v-html="sourceMessage.category"></td>
                     <td v-html="sourceMessage.message" style="max-width: 200px;"></td>
                     <td v-for="locale in selectedLocales">
-                        <textarea class="text fullwidth" v-model="sourceMessage.messages[locale]" rows="1"></textarea>
+                        <textarea class="text fullwidth" v-model="sourceMessage.messages[locale]" rows="1" style="resize: vertical"></textarea>
                     </td>
                     <td v-html="sourceMessage.dateCreated" v-if="selectedColumns.includes('dateCreated')"></td>
                     <td v-html="sourceMessage.dateUpdated" v-if="selectedColumns.includes('dateUpdated')"></td>

@@ -2,9 +2,9 @@
  * @project        Craft Database Translations
  * @name           vendors~app.js
  * @author         Digital Pulse
- * @build          Fri, Dec 16, 2022 11:14 AM ET
- * @release        ab729ee01445a42b9cb4f528ad7294f285eb9985 [feature/vue]
- * @copyright      Copyright (c) 2022 digitalpulse
+ * @build          Wed, Jan 4, 2023 9:53 AM ET
+ * @release        2281b9be17f896d4366569aa9ac66157d2376cf2 [feature/vue-clean]
+ * @copyright      Copyright (c) 2023 digitalpulse
  *
  */
 (window.webpackJsonp=window.webpackJsonp||[]).push([[1],[function(t,e,n){"use strict";function r(t,e,n,r,o,i,a,s){var c,u="function"==typeof t?t.options:t;if(e&&(u.render=e,u.staticRenderFns=n,u._compiled=!0),r&&(u.functional=!0),i&&(u._scopeId="data-v-"+i),a?(c=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),o&&o.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(a)},u._ssrRegister=c):o&&(c=s?function(){o.call(this,(u.functional?this.parent:this).$root.$options.shadowRoot)}:o),c)if(u.functional){u._injectStyles=c;var l=u.render;u.render=function(t,e){return c.call(e),l(t,e)}}else{var f=u.beforeCreate;u.beforeCreate=f?[].concat(f,c):[c]}return{exports:t,options:u}}n.d(e,"a",(function(){return r}))},function(t,e){var n;n=function(){return this}();try{n=n||new Function("return this")()}catch(t){"object"==typeof window&&(n=window)}t.exports=n},function(t,e){function n(t,e,n){var r,o,i,a,s;function c(){var u=Date.now()-a;u<e&&u>=0?r=setTimeout(c,e-u):(r=null,n||(s=t.apply(i,o),i=o=null))}null==e&&(e=100);var u=function(){i=this,o=arguments,a=Date.now();var u=n&&!r;return r||(r=setTimeout(c,e)),u&&(s=t.apply(i,o),i=o=null),s};return u.clear=function(){r&&(clearTimeout(r),r=null)},u.flush=function(){r&&(s=t.apply(i,o),i=o=null,clearTimeout(r),r=null)},u}n.debounce=n,t.exports=n},function(t,e,n){(function(e,n){

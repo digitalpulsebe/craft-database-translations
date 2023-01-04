@@ -2,9 +2,6 @@
 
 {% from 'database-translations/_includes/macros.twig' import registerJsModules %}
 
-{% do view.registerAssetBundle("digitalpulsebe\\database_translations\\assetbundles\\CraftDatabaseTranslationsAsset") %}
-{% set baseAssetsUrl = view.getAssetManager().getPublishedUrl('@digitalpulsebe/database_translations/assetbundles/database_translations/dist', true) %}
-
 {% block foot %}
     {{ parent() }}
     {% set jsModules = [

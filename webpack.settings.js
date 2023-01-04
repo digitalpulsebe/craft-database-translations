@@ -10,12 +10,12 @@ module.exports = {
     copyright: "digitalpulse",
     paths: {
         src: {
-            base: "./src/assetbundles/database_translations/src/",
-            css: "./src/assetbundles/database_translations/src/css/",
-            js: "./src/assetbundles/database_translations/src/js/"
+            base: "./src/assetbundles/src/",
+            css: "./src/assetbundles/src/css/",
+            js: "./src/assetbundles/src/js/"
         },
         dist: {
-            base: "./src/assetbundles/database_translations/dist/",
+            base: "./src/assetbundles/dist/",
             clean: [
                 '**/*'
             ]
@@ -50,11 +50,10 @@ module.exports = {
     },
     purgeCssConfig: {
         paths: [
-            "./src/templates/**/*.{twig,html}",
-            "./src/assetbundles/database_translations/src/vue/**/*.{vue,html}"
+            "./src/assetbundles/src/vue/**/*.{vue,html}"
         ],
         whitelist: [
-            "./src/assetbundles/database_translations/src/css/components/*.css",
+            "./src/assetbundles/src/css/components/*.css",
             "./node_modules/tokenfield/dist/tokenfield.css",
             "./node_modules/@riophae/vue-treeselect/dist/vue-treeselect.css"
         ],
