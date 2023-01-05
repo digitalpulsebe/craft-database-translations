@@ -68,9 +68,12 @@
         methods: {
             orderBy(column) {
                 // Set the direction.
-                this.store.direction = this.store.column === column ? this.store.direction === 'asc' ? 'desc' : 'asc' : 'asc';
+                const direction = this.store.column === column ? this.store.direction === 'asc' ? 'desc' : 'asc' : 'asc'
+                this.store.direction = direction;
                 // Set the column
                 this.store.column = column;
+                this.store.filters.order = column + ' ' + direction;
+                this.store.getData();
             },
             toggleSelectAllRows() {
                 if (this.store.selectedRows.length > 0) {
