@@ -3,11 +3,11 @@
         <div class="btn menubtn statusmenubtn">Columns</div>
         <div class="menu">
             <ul style="padding: 2px">
-                <li v-for="locale in locales" style="padding: 3px 0px">
+                <li v-for="locale in store.locales" style="padding: 3px 0">
                     <input :id="`selected-locale-${locale}`"
                            class="checkbox"
                            type="checkbox"
-                           v-model="selectedLocales"
+                           v-model="store.selectedLocales"
                            :value="locale"
                     >
                     <label :for="`selected-locale-${locale}`">Language: {{ locale }}</label>
@@ -16,7 +16,7 @@
                     <input :id="`selected-locale-${column.value}`"
                            class="checkbox"
                            type="checkbox"
-                           v-model="selectedColumns"
+                           v-model="store.selectedColumns"
                            :value="column.value"
                     >
                     <label :for="`selected-locale-${column.value}`">{{ column.label }}</label>
@@ -26,13 +26,13 @@
         <div class="select">
             <select id="filter-category" v-model="category">
                 <option value="">Category</option>
-                <option v-for="item in categories" :value="item">{{ item }}</option>
+                <option v-for="item in store.categories" :value="item">{{ item }}</option>
             </select>
         </div>
         <div class="select">
             <select id="filter-category" v-model="missing">
                 <option value="">Filter missing</option>
-                <option v-for="item in locales" :value="item">{{ item }}</option>
+                <option v-for="item in store.locales" :value="item">{{ item }}</option>
             </select>
         </div>
         <div class="flex-grow texticon search icon clearable">
@@ -43,44 +43,33 @@
 </template>
 
 <script>
-    // Our component exports
     import {debounce} from "debounce";
+    import {useDashboardStore} from "../js/store";
 
     export default {
+        setup() {
+            const store = useDashboardStore();
+
+            return { store }
+        },
         methods: {
             reset() {
                 this.category = '';
                 this.search = '';
                 this.missing = '';
             },
-            save() {
-                // Fire the emit 'emit-update'..
-                this.$root.$emit('emit-update');
-            },
             handleSearch(value) {
-              // Fire the emit 'emit-search' with the value.
-              this.$root.$emit('emit-search', value);
+                this.store.filters.search = value;
+                this.store.getData();
             }
         },
         mounted: function() {
-            this.$root.$on('emit-categories', (categories) => {
-                // Set the categories.
-                this.categories = categories;
-            });
-
-            this.$root.$on('emit-locales', (locales) => {
-                // Set the categories.
-                this.locales = locales;
-                if (this.selectedLocales.length === 0) {
-                    this.selectedLocales = locales
-                }
-            });
-
-            if (localStorage.getItem('selectedLocales')) {
-                this.selectedLocales = JSON.parse(localStorage.getItem('selectedLocales'));
+            if (localStorage.getItem('selectedSearch')) {
+                this.search = localStorage.getItem('selectedSearch');
+                this.search = localStorage.getItem('selectedSearch');
             }
-            if (localStorage.getItem('selectedColumns')) {
-                this.selectedColumns = JSON.parse(localStorage.getItem('selectedColumns'));
+            if (localStorage.getItem('selectedCategory')) {
+                this.category = localStorage.getItem('selectedCategory');
             }
         },
         created: function() {
@@ -88,35 +77,27 @@
         },
         watch: {
             search: function(value) {
-              this.handleSearch(value);
+                localStorage.setItem('selectedSearch', value);
+                this.handleSearch(value);
             },
             category: function(value) {
-                // Fire the emit 'emit-filter category' with the value.
-                this.$root.$emit('emit-filter-category', value);
+                localStorage.setItem('selectedCategory', value);
+                this.store.filters.category = value;
+                this.store.getData();
             },
             missing: function(value) {
-                // Fire the emit 'emit-filter category' with the value.
-                this.$root.$emit('emit-filter-missing', value);
+                this.store.filters.missing = value;
+                this.store.getData();
             },
-            selectedLocales: function(value) {
-                // Fire the emit 'emit-selected-locales' with the value.
+            'store.selectedLocales': function(value) {
                 localStorage.setItem('selectedLocales', JSON.stringify(value));
-                this.$root.$emit('emit-selected-locales', value);
             },
-            selectedColumns: function(value) {
-                // Fire the emit 'emit-selected-columns' with the value.
+            'store.selectedColumns': function(value) {
                 localStorage.setItem('selectedColumns', JSON.stringify(value));
-                this.$root.$emit('emit-selected-columns', value);
             }
         },
         data: function() {
             return {
-                categories: [],
-                locales: [],
-                selectedLocales: [],
-                selectedColumns: [
-                    'dateUpdated'
-                ],
                 columnOptions: [
                     {'label': 'Date Created','value': 'dateCreated'},
                     {'label': 'Date Updated','value': 'dateUpdated'}

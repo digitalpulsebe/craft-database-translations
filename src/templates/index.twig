@@ -2,14 +2,7 @@
 
 {% from 'database-translations/_includes/macros.twig' import registerJsModules %}
 
-{% block foot %}
-    {{ parent() }}
-    {% set jsModules = [
-        'app.js',
-        'vendors~app.js'
-    ] %}
-    {{ registerJsModules(jsModules) }}
-{% endblock %}
+{% do view.registerAssetBundle("digitalpulsebe\\database_translations\\assets\\DatabaseTranslatesBundle") %}
 
 {% set title = 'Translations' %}
 

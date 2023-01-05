@@ -13,7 +13,6 @@ namespace digitalpulsebe\database_translations;
 use Craft;
 use craft\base\Plugin;
 use craft\events\RegisterUrlRulesEvent;
-use craft\helpers\App;
 use craft\i18n\I18N;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\UrlManager;
@@ -22,7 +21,6 @@ use digitalpulsebe\database_translations\models\Settings;
 use digitalpulsebe\database_translations\models\SourceMessage;
 use digitalpulsebe\database_translations\services\DatabaseTranslationsService;
 use digitalpulsebe\database_translations\variables\DatabaseTranslationsVariable;
-use digitalpulsebe\database_translations\variables\ManifestVariable;
 use yii\base\Event;
 use yii\i18n\MessageSource;
 use yii\i18n\MissingTranslationEvent;
@@ -87,7 +85,6 @@ class DatabaseTranslations extends Plugin
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
                 $variable->set('databaseTranslations', DatabaseTranslationsVariable::class);
-                $variable->set('databaseTranslationsManifest', ManifestVariable::class);
 
             }
         );
