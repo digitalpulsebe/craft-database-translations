@@ -1,6 +1,0 @@
-{
-  "app.js": "js/app.js",
-  "app.js.map": "js/app.js.map",
-  "vendors~app.js": "js/vendors~app.js",
-  "vendors~app.js.map": "js/vendors~app.js.map"
-}
