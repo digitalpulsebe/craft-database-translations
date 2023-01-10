@@ -18,7 +18,7 @@
             <table class="data fullwidth">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" name="all" value="1" checked> all</th>
+                        <th><input type="checkbox" name="all" value="1" checked onchange="toggleAllCheckboxes(this)"> all</th>
                         <th>Message</th>
                         {% for language in languages %}
                         <th>Translation {{ language }}</th>
@@ -37,7 +37,7 @@
                         <tr>
                             <td>
                                 <input type="hidden" name="messages[{{ index }}][include]" value="0">
-                                <input type="checkbox" name="messages[{{ index }}][include]" value="1" checked>
+                                <input type="checkbox" name="messages[{{ index }}][include]" class="toggle-target" value="1" checked>
                                 <input type="hidden" name="messages[{{ index }}][message]" value="{{ message.message }}">
                                 <input type="hidden" name="messages[{{ index }}][category]" value="{{ message.category }}">
                             </td>
@@ -64,4 +64,16 @@
             <button type="submit" class="btn submit">Import</button>
         </form>
     </div>
+{% endblock %}
+
+{% block foot %}
+    {{ parent() }}
+    <script>
+        function toggleAllCheckboxes(initiator) {
+            var checkboxes = document.getElementsByClassName('toggle-target');
+            for(let i = 0; i<checkboxes.length; i++) {
+                checkboxes[i].checked = initiator.checked;
+            }
+        }
+    </script>
 {% endblock %}
