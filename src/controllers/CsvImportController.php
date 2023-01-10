@@ -191,9 +191,9 @@ class CsvImportController extends Controller
             }
 
             if ($existingSourceMessage) {
-                $messages['new'][] = $message;
-            } else {
                 $messages['existing'][] = $message;
+            } else {
+                $messages['new'][] = $message;
             }
         }
 
