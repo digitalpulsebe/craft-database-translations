@@ -10,11 +10,12 @@
                     <th
                         v-for="item in getColumns()"
                         @click="orderBy(item.handle)"
+                        class="orderable"
                         :class="{ 'ordered': item.handle === store.column, 'asc': item.handle === store.column && store.direction === 'asc', 'desc': item.handle === store.column && store.direction === 'desc' }"
                         :style="{ 'width': item.width }"
                     >
-                        <div v-if="item.handle === 'message'" v-html="item.title" style="resize: horizontal; min-width: 100px; overflow: auto;"></div>
-                        <div v-else v-html="item.title"></div>
+                        <button v-if="item.handle === 'message'" v-html="item.title" style="resize: horizontal; min-width: 100px; overflow: auto;"></button>
+                        <button v-else v-html="item.title"></button>
                     </th>
                 </tr>
                 </thead>

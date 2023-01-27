@@ -3,9 +3,11 @@
     {% for jsModule in jsModules %}
         {% set includeJsModules = includeJsModules | merge([craft.databaseTranslationsManifest.getModuleUri(jsModule) ?? '']) %}
     {% endfor %}
-    {% for jsModule in includeJsModules if jsModule %}
-        {% do view.registerJsFile(jsModule, {
-            'depends': ['craft\\web\\assets\\cp\\CpAsset']
-        }) %}
+    {% for jsModule in includeJsModules %}
+        {% if jsModule %}
+            {% do view.registerJsFile(jsModule, {
+                'depends': 'craft\\web\\assets\\cp\\CpAsset'
+            }) %}
+        {% endif %}
     {% endfor %}
 {%- endmacro %}
