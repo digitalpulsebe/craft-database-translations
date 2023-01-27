@@ -46,7 +46,7 @@ class PhpImportController extends Controller
         ]);
     }
 
-    public function actionImport()
+    public function actionImport(): Response
     {
         $this->requirePostRequest();
 
