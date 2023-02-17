@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.2 - 2023-02-17
+### Added
+- handle ctrl+s keydown
+### Fixed
+- remove deleted locales from selected locales in frontend
+
 ## 1.0.1 - 2023-02-13
 ### Updated
 - Remove database charset options for new installs

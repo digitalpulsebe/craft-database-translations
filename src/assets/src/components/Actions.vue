@@ -18,7 +18,19 @@
             const store = useDashboardStore();
             return { store }
         },
+        mounted() {
+            document.addEventListener("keydown", this.handleKeyDown);
+        },
+        beforeDestroy() {
+            document.removeEventListener("keydown", this.handleKeyDown);
+        },
         methods: {
+            handleKeyDown(e) {
+                if (e.keyCode === 83 && e.ctrlKey) {
+                    e.preventDefault();
+                    this.store.save();
+                }
+            },
             actionSave() {
                 this.store.save()
             },
