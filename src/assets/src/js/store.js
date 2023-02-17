@@ -53,7 +53,17 @@ export const useDashboardStore = defineStore('dashboard', {
                 self.categories = response.data.categories;
 
                 if (self.selectedLocales.length === 0) {
+                    // first time
                     self.selectedLocales = self.locales;
+                } else {
+                    // check if all selectedLocales still exist
+                    for (const i in self.selectedLocales) {
+                        if (!self.locales.includes(self.selectedLocales[i])) {
+                            // language must have been removed
+                            self.selectedLocales.splice(i,1);
+                            localStorage.setItem('selectedLocales', JSON.stringify(self.selectedLocales));
+                        }
+                    }
                 }
             })
             .catch(function (error) {
