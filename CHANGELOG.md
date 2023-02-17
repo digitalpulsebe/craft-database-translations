@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.0.0 - 2023-01-27
 ### Added
 - Craft 4 support
-
+- 
 ## 1.0.1 - 2023-02-13
 ### Updated
 - Remove database charset options for new installs
