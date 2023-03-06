@@ -19,6 +19,12 @@ class Settings extends Model
     public array $categories = [['key' => 'site']];
 
     /**
+     * list of mapped locales
+     * @var array|string[][]|string|null
+     */
+    public $mapLocales = [];
+
+    /**
      * enable to handle \yii\i18n\MessageSource::EVENT_MISSING_TRANSLATION
      * and insert missing as a new record
      * @var bool
@@ -38,6 +44,24 @@ class Settings extends Model
             }
         }
         return $categories;
+    }
+
+    /**
+     * mapLocales as [destination => source]
+     * @return array
+     */
+    public function getDestinationMapping(): array
+    {
+        $map = [];
+        if (is_array($this->mapLocales)) {
+            foreach ($this->mapLocales as $row) {
+                if (is_array($row) && isset($row['source']) && isset($row['destination'])) {
+                    $map[$row['destination']] = $row['source'];
+                }
+            }
+        }
+
+        return $map;
     }
 
     /**
