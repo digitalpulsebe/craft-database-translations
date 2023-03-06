@@ -26,7 +26,7 @@
         },
         methods: {
             handleKeyDown(e) {
-                if (e.keyCode === 83 && e.ctrlKey) {
+                if (e.keyCode === 83 && (e.ctrlKey||e.metaKey)) {
                     e.preventDefault();
                     this.store.save();
                 }

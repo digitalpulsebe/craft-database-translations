@@ -7,62 +7,68 @@
 
 {% block content %}
     <div class="main">
-        <form action="" method="post">
-            {{ actionInput('database-translations/csv-import/import') }}
-            {{ csrfInput() }}
+        {% if (foundMessages['new']|length or foundMessages['existing']|length) %}
+            <form action="" method="post">
+                {{ actionInput('database-translations/csv-import/import') }}
+                {{ csrfInput() }}
 
-            {% for language in languages %}
-                <input type="hidden" name="languages[]" value="{{ language }}">
-            {% endfor %}
+                {% for language in languages %}
+                    <input type="hidden" name="languages[]" value="{{ language }}">
+                {% endfor %}
 
-            <table class="data fullwidth">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" name="all" value="1" checked onchange="toggleAllCheckboxes(this)"> all</th>
-                        <th>Message</th>
-                        {% for language in languages %}
-                        <th>Translation {{ language }}</th>
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                {% set index = 0 %}
-                {% for importType, messages in foundMessages %}
-                    <tr>
-                        <td colspan="4">
-                            <h2>{{ importType }}</h2>
-                        </td>
-                    </tr>
-                    {% for message in messages %}
+                <table class="data fullwidth">
+                    <thead>
                         <tr>
-                            <td>
-                                <input type="hidden" name="messages[{{ index }}][include]" value="0">
-                                <input type="checkbox" name="messages[{{ index }}][include]" class="toggle-target" value="1" checked>
-                                <input type="hidden" name="messages[{{ index }}][message]" value="{{ message.message }}">
-                                <input type="hidden" name="messages[{{ index }}][category]" value="{{ message.category }}">
-                            </td>
-                            <td style="max-width: 200px;">
-                                {{ message.message }}
-                            </td>
+                            <th><input type="checkbox" name="all" value="1" checked onchange="toggleAllCheckboxes(this)"> all</th>
+                            <th>Message</th>
                             {% for language in languages %}
-                                <td>
-                                    <textarea
-                                        name="messages[{{ index }}][translations][{{ language }}]"
-                                        class="text fullwidth"
-                                        rows="1"
-                                        readonly
-                                    >{{ message.translations[(language)]|default(null) }}</textarea>
-                                </td>
+                            <th>Translation {{ language }}</th>
                             {% endfor %}
                         </tr>
-                        {% set index = index+1 %}
+                    </thead>
+                    <tbody>
+                    {% set index = 0 %}
+                    {% for importType, messages in foundMessages %}
+                        {% if messages|length %}
+                            <tr>
+                                <td colspan="4">
+                                    <h2>{{ importType }}</h2>
+                                </td>
+                            </tr>
+                            {% for message in messages %}
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="messages[{{ index }}][include]" value="0">
+                                        <input type="checkbox" name="messages[{{ index }}][include]" class="toggle-target" value="1" checked>
+                                        <input type="hidden" name="messages[{{ index }}][message]" value="{{ message.message }}">
+                                        <input type="hidden" name="messages[{{ index }}][category]" value="{{ message.category }}">
+                                    </td>
+                                    <td style="max-width: 200px;">
+                                        {{ message.message }}
+                                    </td>
+                                    {% for language in languages %}
+                                        <td>
+                                            <textarea
+                                                name="messages[{{ index }}][translations][{{ language }}]"
+                                                class="text fullwidth"
+                                                rows="1"
+                                                readonly
+                                            >{{ message.translations[(language)]|default(null) }}</textarea>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                {% set index = index+1 %}
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
-                {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            <button type="submit" class="btn submit">Import</button>
-        </form>
+                <button type="submit" class="btn submit">Import</button>
+            </form>
+        {% else %}
+            <p>no rows found in file</p>
+        {% endif %}
     </div>
 {% endblock %}
 
