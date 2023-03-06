@@ -11,26 +11,32 @@
     { label: 'Translations', url: url('database-translations') }
 ] %}
 
-{% set locales = craft.app.i18n.siteLocales|map(locale => locale.id) %}
-{% set filters = craft.app.request.get('filters') %}
-{% set sourceMessageQuery = craft.databaseTranslations.sourceMessages(filters).limit(100) %}
-
-{% paginate sourceMessageQuery as pageInfo, sourceMessages %}
+{% set sourceMessageCount = craft.databaseTranslations.sourceMessages({}).count() %}
 
 {% block actionButton %}
     {# <button type="submit" class="btn submit" form="translations-table">Save All</button> #}
 {% endblock %}
 
 {% block toolbar %}
-    <filters></filters>
+    {% if sourceMessageCount %}
+        <filters></filters>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
     <div class="main">
-        <dashboard></dashboard>
+        {% if sourceMessageCount %}
+            <dashboard></dashboard>
+        {% else %}
+            <h2>Hi!</h2>
+            <p>Your database is empty</p>
+            <p>Start with <a href="{{ url('database-translations/create') }}">an import</a> or enable event to listen to missing translations in <a href="{{ url('database-translations/settings') }}">the settings</a>.</p>
+        {% endif %}
     </div>
 {% endblock %}
 
 {% block footer %}
-    <actions></actions>
+    {% if sourceMessageCount %}
+        <actions></actions>
+    {% endif %}
 {% endblock %}
