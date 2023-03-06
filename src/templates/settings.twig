@@ -2,6 +2,8 @@
 
 {% import "_includes/forms" as forms %}
 
+{% set availableLocales = craft.app.i18n.siteLocales|map(locale => locale.id) %}
+
 {{ forms.textField({
     label: "Plugin Name"|t('database-translations'),
     instructions: "Override the plugin name for use in the control panel."|t('database-translations'),
@@ -10,7 +12,6 @@
     value: settings.pluginName,
     errors: settings.getErrors('pluginName')
 }) }}
-
 
 {{ forms.editableTableField({
     label: "Translation categories"|t('database-translations'),
@@ -31,6 +32,31 @@
     addRowLabel: 'Add a category'|t('database-translations'),
     errors: settings.getErrors('categories'),
     required: true
+})|spaceless }}
+
+{{ forms.editableTableField({
+    label: "Map source languages to other languages"|t('database-translations'),
+    instructions: 'For example to use a site language as another site language or admin user interface language. Current available sources: ['~availableLocales|join(', ')~']',
+    name: "mapLocales",
+    id: "mapLocales",
+    cols: {
+        'source': {
+            type: 'singleline',
+            heading: "Source",
+            rows: 1
+        },
+        'destination': {
+            type: 'singleline',
+            heading: "Destination",
+            rows: 1
+        },
+    },
+    rows: settings.mapLocales,
+    allowAdd: true,
+    allowDelete: true,
+    allowReorder: true,
+    addRowLabel: 'Add a mapping'|t('database-translations'),
+    errors: settings.getErrors('mapLocales')
 })|spaceless }}
 
 {{ forms.lightswitchField({
