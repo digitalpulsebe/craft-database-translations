@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.1.0 - 2023-03-06
+### Added
+- Map locale sources to other locales
+- Event cmd+s to save
+- Handy messages in views for empty data
+
 ## 2.0.2 - 2023-02-17
 ### Added
 - handle ctrl+s keydown
