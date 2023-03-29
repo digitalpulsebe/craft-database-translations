@@ -59,6 +59,8 @@
     errors: settings.getErrors('mapLocales')
 })|spaceless }}
 
+<h2>Handle <a href="https://www.yiiframework.com/doc/api/2.0/yii-i18n-missingtranslationevent" target="_blank">missing translations</a></h2>
+
 {{ forms.lightswitchField({
     label: "Add missing translations"|t("database-translations"),
     instructions: "Create new translations when missing translations occur."|t("database-translations"),
@@ -66,4 +68,13 @@
     name: "handleMissingTranslationEvent",
     on: settings.handleMissingTranslationEvent,
     errors: settings.getErrors("handleMissingTranslationEvent"),
+}) }}
+
+{{ forms.lightswitchField({
+    label: "Only in devMode"|t("database-translations"),
+    instructions: "Handle missing translations event only in devMode."|t("database-translations"),
+    id: "handleMissingTranslationEventOnlyInDevMode",
+    name: "handleMissingTranslationEventOnlyInDevMode",
+    on: settings.handleMissingTranslationEventOnlyInDevMode,
+    errors: settings.getErrors("handleMissingTranslationEventOnlyInDevMode"),
 }) }}

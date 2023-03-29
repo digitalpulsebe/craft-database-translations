@@ -30,6 +30,7 @@ class Settings extends Model
      * @var bool
      */
     public bool $handleMissingTranslationEvent = false;
+    public bool $handleMissingTranslationEventOnlyInDevMode = false;
 
     /**
      * categories as array
@@ -62,6 +63,22 @@ class Settings extends Model
         }
 
         return $map;
+    }
+
+    /**
+     * check settings to determine if the event should be handled
+     * @return bool
+     */
+    public function getHandleMissingTranslations()
+    {
+        if ($this->handleMissingTranslationEvent) {
+            if ($this->handleMissingTranslationEventOnlyInDevMode) {
+                return \Craft::$app->config->general->devMode;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**

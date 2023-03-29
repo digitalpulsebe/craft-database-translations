@@ -133,7 +133,7 @@ class DatabaseTranslations extends Plugin
     }
 
     private function initHandleMissingTranslations() {
-        if ($this->settings->handleMissingTranslationEvent) {
+        if ($this->settings->getHandleMissingTranslations()) {
             Event::on(
                 MessageSource::class,
                 MessageSource::EVENT_MISSING_TRANSLATION,
