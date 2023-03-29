@@ -7,6 +7,8 @@ export const useDashboardStore = defineStore('dashboard', {
         locales: [],
         selectedLocales: [],
         selectedColumns: [
+            'category',
+            'message',
             'dateUpdated'
         ],
         columns: [],
