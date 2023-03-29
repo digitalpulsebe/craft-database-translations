@@ -94,7 +94,7 @@ export const useDashboardStore = defineStore('dashboard', {
             })
 
             // Post the data.
-            axios.post('admin/database-translations/translations/update', {
+            axios.post('database-translations/translations/update', {
                 messages: messages
             })
             .then(function (response) {
@@ -127,7 +127,7 @@ export const useDashboardStore = defineStore('dashboard', {
             let self = this;
             this.isBusy = true;
 
-            axios.post('admin/database-translations/translations/delete', {
+            axios.post('database-translations/translations/delete', {
                 messages: self.selectedRows,
             })
             .then(function (response) {
