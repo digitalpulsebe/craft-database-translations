@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.1.1 - 2023-03-29
+### Fixed
+- api endpoints for custom CP_TRIGGER
+### Updated
+- UI improvement: hide messages and site columns
+- UI improvement: minimum width of value columns
+- UI improvement: auto resize textarea
+
 ## 1.1.1 - 2023-03-29
 ### Fixed
 - api endpoints for custom CP_TRIGGER
