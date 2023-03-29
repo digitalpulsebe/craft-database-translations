@@ -99,6 +99,8 @@
         data: function() {
             return {
                 columnOptions: [
+                    {'label': 'Category','value': 'category'},
+                    {'label': 'Message','value': 'message'},
                     {'label': 'Date Created','value': 'dateCreated'},
                     {'label': 'Date Updated','value': 'dateUpdated'}
                 ],
