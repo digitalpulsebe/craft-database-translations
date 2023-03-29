@@ -12,7 +12,7 @@
                         @click="orderBy(item.handle)"
                         class="orderable"
                         :class="{ 'ordered': item.handle === store.column, 'asc': item.handle === store.column && store.direction === 'asc', 'desc': item.handle === store.column && store.direction === 'desc' }"
-                        :style="{ 'width': item.width }"
+                        :style="{ 'width': item.width, 'min-width': item.minWidth }"
                     >
                         <button v-if="item.handle === 'message'" v-html="item.title" style="resize: horizontal; min-width: 100px; overflow: auto;"></button>
                         <button v-else v-html="item.title"></button>
@@ -28,11 +28,13 @@
                                v-model="store.selectedRows">
                         <label :for="'source-message-' + sourceMessage.id"></label>
                     </td>
-                    <td v-html="sourceMessage.category"></td>
-                    <td v-html="sourceMessage.message" style="max-width: 200px;"></td>
-                    <td v-for="locale in store.selectedLocales">
-                        <textarea class="text fullwidth" v-model="sourceMessage.messages[locale]" rows="1" style="resize: vertical"></textarea>
-                    </td>
+                    <td v-html="sourceMessage.category" v-if="store.selectedColumns.includes('category')"></td>
+                    <td v-html="sourceMessage.message" style="max-width: 200px;" v-if="store.selectedColumns.includes('message')"></td>
+                    <template v-for="locale in store.locales">
+                        <td v-if="store.selectedLocales.includes(locale)">
+                            <textarea class="text fullwidth text-auto-size" v-model="sourceMessage.messages[locale]" rows="1" @input="autosizeTextarea" @click="autosizeRowTextareas" style="resize: none"></textarea>
+                        </td>
+                    </template>
                     <td v-html="sourceMessage.dateCreated" v-if="store.selectedColumns.includes('dateCreated')"></td>
                     <td v-html="sourceMessage.dateUpdated" v-if="store.selectedColumns.includes('dateUpdated')"></td>
                 </tr>
@@ -95,6 +97,20 @@
                 }
                 return '';
             },
+            autosizeRowTextareas(e) {
+                const row = e.target.parentNode.parentNode;
+                const textareas = row.getElementsByClassName('text-auto-size')
+                for (var i = 0; i < textareas.length; i++) {
+                    let textarea = textareas[i];
+                    textarea.style.height = 0;
+                    textarea.style.height = (textarea.scrollHeight) + 2 + "px";
+                }
+            },
+            autosizeTextarea(e) {
+                let textarea = e.target;
+                textarea.style.height = 0;
+                textarea.style.height = (textarea.scrollHeight) + 2 + "px";
+            },
             getColumns() {
 
                 // Set the first two columns.
@@ -107,7 +123,8 @@
                     {
                         title: 'Message',
                         handle: 'message',
-                        width: '250px'
+                        width: '270px',
+                        minWidth: '270px',
                     }
                 ];
 
@@ -116,12 +133,14 @@
                     {
                         title: 'Created',
                         handle: 'dateCreated',
-                        width: '200px'
+                        width: '180px',
+                        minWidth: '180px',
                     },
                     {
                         title: 'Updated',
                         handle: 'dateUpdated',
-                        width: '200px'
+                        width: '180px',
+                        minWidth: '180px',
                     }
                 ];
 
@@ -130,15 +149,20 @@
 
                 // Add the first two columns to the columns array.
                 firstColumns.forEach((column) => {
-                    columns.push(column)
+                    if (this.store.selectedColumns.includes(column.handle)) {
+                        columns.push(column)
+                    }
                 })
 
                 // Add foreach locale a column to the columns array.
-                this.store.selectedLocales.forEach((column) => {
-                    columns.push({
-                        title: column,
-                        handle: column
-                    })
+                this.store.locales.forEach((column) => {
+                    if (this.store.selectedLocales.includes(column)) {
+                        columns.push({
+                            title: column,
+                            handle: column,
+                            minWidth: '250px',
+                        })
+                    }
                 })
 
                 // Add the last two columns to the columns array.
