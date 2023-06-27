@@ -33,6 +33,12 @@ class Settings extends Model
     public bool $handleMissingTranslationEventOnlyInDevMode = false;
 
     /**
+     * trim spaces at begin and ending of values when saved
+     * @var bool
+     */
+    public bool $trimValuesOnSave = true;
+
+    /**
      * categories as array
      * @return array
      */

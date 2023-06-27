@@ -17,7 +17,7 @@ class TranslationsController extends Controller
         $this->requirePostRequest();
 
         $sourceMessage = new SourceMessage();
-        $sourceMessage->message = $this->request->post('message');
+        $sourceMessage->message = trim($this->request->post('message'));
         $sourceMessage->category = $this->request->post('category');
 
         if (!$sourceMessage->validate()) {
@@ -63,6 +63,10 @@ class TranslationsController extends Controller
                         $message = new Message();
                         $message->id = $id;
                         $message->language = $language;
+                    }
+
+                    if (DatabaseTranslations::$plugin->settings->trimValuesOnSave) {
+                        $value = trim($value);
                     }
 
                     if ($value === '') {
