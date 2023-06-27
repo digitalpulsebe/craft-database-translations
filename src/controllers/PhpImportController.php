@@ -22,11 +22,13 @@ class PhpImportController extends Controller
     {
         $files = PhpTranslationsHelper::findFiles();
         $categories = DatabaseTranslations::$plugin->settings->getCategories();
+        $disabledCategories = PhpTranslationsHelper::findDisabledCategories();
         $languages = DatabaseTranslations::$plugin->databaseTranslationsService->languageIds();
 
         return $this->renderTemplate('database-translations/_php-import/config.twig', [
             'files' => $files,
             'categories' => $categories,
+            'disabledCategories' => $disabledCategories,
             'languages' => $languages,
         ]);
     }

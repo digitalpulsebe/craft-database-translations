@@ -30,7 +30,12 @@
         }) }}
 
         {% set categoryOptions = {} %}
+        {% set categoryOptions = categoryOptions|merge([{optgroup: 'Enabled categories'}]) %}
         {% for category in categories %}
+            {% set categoryOptions = categoryOptions|merge({(category): category}) %}
+        {% endfor %}
+        {% set categoryOptions = categoryOptions|merge([{optgroup: 'Disabled categories'}]) %}
+        {% for category in disabledCategories %}
             {% set categoryOptions = categoryOptions|merge({(category): category}) %}
         {% endfor %}
 

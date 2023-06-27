@@ -67,6 +67,12 @@ class DatabaseTranslations extends Plugin
      */
     public bool $hasCpSection = true;
 
+    /**
+     *
+     * @var array
+     */
+    public array $originalCategories = [];
+
     public function init()
     {
         parent::init();
@@ -99,6 +105,8 @@ class DatabaseTranslations extends Plugin
     {
         /** @var I18N $i18n */
         $i18n = Craft::$app->getComponents(false)['i18n'];
+
+        $this->originalCategories = $i18n->translations;
 
         foreach ($this->settings->getCategories() as $category) {
             $i18n->translations[$category] = [
