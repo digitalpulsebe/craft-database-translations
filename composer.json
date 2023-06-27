@@ -39,5 +39,11 @@
             "utmTrackerService": "DatabaseTranslationsService"
         },
         "class": "digitalpulsebe\\database_translations\\DatabaseTranslations"
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
+        }
     }
 }

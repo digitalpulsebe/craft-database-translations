@@ -59,6 +59,17 @@
     errors: settings.getErrors('mapLocales')
 })|spaceless }}
 
+<h2>Options</h2>
+
+{{ forms.lightswitchField({
+    label: "Trim spaces"|t("database-translations"),
+    instructions: "Trim spaces at begin and ending of values when saved."|t("database-translations"),
+    id: "trimValuesOnSave",
+    name: "trimValuesOnSave",
+    on: settings.trimValuesOnSave,
+    errors: settings.getErrors("trimValuesOnSave"),
+}) }}
+
 <h2>Handle <a href="https://www.yiiframework.com/doc/api/2.0/yii-i18n-missingtranslationevent" target="_blank">missing translations</a></h2>
 
 {{ forms.lightswitchField({
