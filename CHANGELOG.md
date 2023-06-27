@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.2.0 - 2023-06-27
+### Added
+- option to trim values on save
+- list vendor php translation files to import
+
 ## 2.1.2 - 2023-03-29
 ### Added
 - Setting to handle missing translations only in devMode
