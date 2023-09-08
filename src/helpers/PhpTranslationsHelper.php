@@ -25,10 +25,9 @@ class PhpTranslationsHelper
         $i18n = Craft::$app->getComponents(false)['i18n'];
 
         $files = FileHelper::findFiles(Craft::$app->path->getSiteTranslationsPath(), ['only' => ['*.php']]);
-        $enabledCategories = DatabaseTranslations::$plugin->settings->getCategories();
 
-        foreach ($i18n->translations as $i18nCategory => $categorySettings) {
-            if (!in_array($i18nCategory, $enabledCategories)) {
+        foreach (DatabaseTranslations::$plugin->originalCategories as $i18nCategory => $categorySettings) {
+            if ($categorySettings) {
                 if ($categorySettings instanceof PhpMessageSource) {
                     $basePath = $categorySettings->basePath;
                 } elseif (is_array($categorySettings)) {
