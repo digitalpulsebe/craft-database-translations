@@ -96,9 +96,12 @@ class DatabaseTranslations extends Plugin
             }
         );
 
-        $this->initRoutes();
-        $this->initDbMessageSource();
-        $this->initHandleMissingTranslations();
+        Craft::$app->onInit(function() {
+            $this->initRoutes();
+            $this->initDbMessageSource();
+            $this->initHandleMissingTranslations();
+        });
+
     }
 
     private function initDbMessageSource()
