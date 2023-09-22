@@ -15,7 +15,10 @@
  */
 
 return [
-    'pluginName' => 'Translations',
-    'categories' => [['key' => 'site']],
-    'handleMissingTranslationEvent' => false,
+//    'pluginName' => 'Translations',
+//    'categories' => [['key' => 'site']],
+//    'mapLocales' => [],
+//    'handleMissingTranslationEvent' => false,
+//    'handleMissingTranslationEventOnlyInDevMode' => true,
+//    'trimValuesOnSave' => true,
 ];
