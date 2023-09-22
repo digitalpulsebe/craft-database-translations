@@ -32,6 +32,18 @@ Configure options in the Craft control panel or create a file in config/database
 
 Only the categories defined in the settings will be translated.
 
+### Map languages
+
+Do you need to use the same translated values for different languages
+(for example different regions nl-BE and nl-NL)?
+You can map one language to another.
+
+This might also be useful to provide translations for admin user in the control panel.
+
+### Trim spaces
+
+Trim spaces at begin or ending of values when they are saved.
+
 ### Add missing translations
 
 When a new unknown translation is used while rendering templates, an event is triggered.
@@ -65,6 +77,9 @@ message rows in the database:
 
    The native translation files in ./translations folder can be mapped to database rows.
    The found results are listed in a review-step, select the rows you want to add to the database.
+   You can even import files from plugins in the vendor folder.
+
+   ![Screenshot](resources/img/screenshot_import_vendor.png)
 
 ## Exporting
 
