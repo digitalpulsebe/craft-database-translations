@@ -89,3 +89,13 @@
     on: settings.handleMissingTranslationEventOnlyInDevMode,
     errors: settings.getErrors("handleMissingTranslationEventOnlyInDevMode"),
 }) }}
+
+<h2>Copy Entry bulk action</h2>
+
+{{ forms.lightswitchField({
+    label: "Enable bulk copy"|t("database-translations"),
+    id: "enableCopyAction",
+    name: "enableCopyAction",
+    on: settings.enableCopyAction,
+    errors: settings.getErrors("enableCopyAction"),
+}) }}

@@ -39,6 +39,18 @@ class Settings extends Model
     public bool $trimValuesOnSave = true;
 
     /**
+     * enable bulk copy action
+     * @var bool
+     */
+    public bool $enableCopyAction = true;
+
+    /**
+     * time to reserve for the queue jobs
+     * @var int
+     */
+    public int $queueJobTtr = 3600;
+
+    /**
      * categories as array
      * @return array
      */
