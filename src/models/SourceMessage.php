@@ -60,7 +60,11 @@ class SourceMessage extends ActiveRecord
             $cleanValue = null;
         } else {
             // string fields
-            $cleanValue = trim($value);
+            $cleanValue = $value;
+
+            if (DatabaseTranslations::$plugin->settings->trimValuesOnSave) {
+                $cleanValue = trim($cleanValue);
+            }
         }
 
         $translation = $this->getMessage($language);
