@@ -21,4 +21,5 @@ return [
 //    'handleMissingTranslationEvent' => false,
 //    'handleMissingTranslationEventOnlyInDevMode' => true,
 //    'trimValuesOnSave' => true,
+//    'enableCopyAction' => true,
 ];

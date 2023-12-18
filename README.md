@@ -89,3 +89,15 @@ message rows in the database:
 ## Manage translations
 
 ![Screenshot](resources/img/screenshot_table.png)
+
+## Copy entries in bulk action
+
+To enable this functionality both enable this in the settings 
+and set the permission for the user ("Copy content bulk action").
+
+You can also enable this in `config/database-translations.php`
+
+You can now select Entries in the index table, and select the bulk action.
+The content will be copied over to the other site in a queue job.
+
+![Screenshot](resources/img/screenshot_copy.png)

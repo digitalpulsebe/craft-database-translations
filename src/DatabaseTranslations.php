@@ -11,15 +11,22 @@
 namespace digitalpulsebe\database_translations;
 
 use Craft;
+use craft\base\Element;
 use craft\base\Model;
 use craft\base\Plugin;
+use craft\elements\Entry;
+use craft\events\RegisterElementActionsEvent;
 use craft\events\RegisterUrlRulesEvent;
+use craft\events\RegisterUserPermissionsEvent;
 use craft\i18n\I18N;
+use craft\services\UserPermissions;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\UrlManager;
+use digitalpulsebe\database_translations\elements\actions\Copy;
 use digitalpulsebe\database_translations\components\DbMessageSource;
 use digitalpulsebe\database_translations\models\Settings;
 use digitalpulsebe\database_translations\models\SourceMessage;
+use digitalpulsebe\database_translations\services\CopyService;
 use digitalpulsebe\database_translations\services\DatabaseTranslationsService;
 use digitalpulsebe\database_translations\variables\DatabaseTranslationsVariable;
 use yii\base\Event;
@@ -33,6 +40,7 @@ use yii\i18n\MissingTranslationEvent;
  * @since     1.0.0
  *
  * @property  DatabaseTranslationsService $databaseTranslationsService
+ * @property  CopyService $copyService
  * @property  Settings $settings
  * @method    Settings getSettings()
  */
@@ -82,6 +90,7 @@ class DatabaseTranslations extends Plugin
 
         $this->setComponents([
             'databaseTranslationsService' => DatabaseTranslationsService::class,
+            'copyService' => CopyService::class,
         ]);
 
         // Register our variables
@@ -100,6 +109,8 @@ class DatabaseTranslations extends Plugin
             $this->initRoutes();
             $this->initDbMessageSource();
             $this->initHandleMissingTranslations();
+            $this->registerPermissions();
+            $this->registerActions();
         });
 
     }
@@ -168,6 +179,50 @@ class DatabaseTranslations extends Plugin
                 }
             );
         }
+    }
+
+    private function registerActions(): void
+    {
+        if ($this->settings->enableCopyAction) {
+            Event::on(
+                Entry::class,
+                Element::EVENT_REGISTER_ACTIONS,
+                function(RegisterElementActionsEvent $event) {
+                    $defaultSiteHandle = Craft::$app->sites->currentSite->handle;
+                    $sourceSiteHandle = Craft::$app->request->getParam('site', $defaultSiteHandle);
+
+                    if (Craft::$app->user->checkPermission('bulkCopyElements')) {
+                        $event->actions[] = [
+                            'type' => Copy::class,
+                            'sourceSiteHandle' => $sourceSiteHandle
+                        ];
+                    }
+                }
+            );
+        }
+    }
+
+    /**
+     * Register custom permission
+     *
+     * @return void
+     */
+    private function registerPermissions(): void
+    {
+        Event::on(
+            UserPermissions::class,
+            UserPermissions::EVENT_REGISTER_PERMISSIONS,
+            function (RegisterUserPermissionsEvent $event) {
+                $event->permissions[] = [
+                    'heading' => 'Database Translations',
+                    'permissions' => [
+                        'bulkCopyElements' => [
+                            'label' => 'Copy content bulk action',
+                        ],
+                    ],
+                ];
+            }
+        );
     }
 
     /**
