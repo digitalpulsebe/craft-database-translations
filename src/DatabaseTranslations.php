@@ -109,6 +109,7 @@ class DatabaseTranslations extends Plugin
             $this->initRoutes();
             $this->initDbMessageSource();
             $this->initHandleMissingTranslations();
+            $this->registerPermissions();
             $this->registerActions();
         });
 
