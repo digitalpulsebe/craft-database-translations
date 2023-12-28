@@ -129,8 +129,6 @@ class DatabaseTranslations extends Plugin
                 'forceTranslation' => true,
             ];
         }
-
-        Craft::$app->setComponents(['i18n' => $i18n]);
     }
 
     private function initRoutes()

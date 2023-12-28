@@ -2,11 +2,8 @@
 
 namespace digitalpulsebe\database_translations\controllers;
 
-use craft\helpers\Template;
 use digitalpulsebe\database_translations\helpers\TemplateHelper;
-use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
-use Craft;
 use yii\web\Response;
 use craft\web\Controller;
 
