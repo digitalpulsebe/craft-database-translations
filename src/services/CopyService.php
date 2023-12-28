@@ -20,11 +20,6 @@ use Craft;
 
 class CopyService extends Component
 {
-    static array $textFields = [
-        'craft\fields\PlainText',
-        'craft\redactor\Field',
-        'craft\ckeditor\Field',
-    ];
     static array $matrixFields = [
         'craft\fields\Matrix',
         'benf\neo\Field',
@@ -44,25 +39,21 @@ class CopyService extends Component
     {
         $targetEntry = $this->findTargetEntry($source, $targetSite->id);
 
-        if (isset($source->title)) {
-            $targetEntry->title = $source->title;
+        $targetValues = $this->copyElement($source, $sourceSite, $targetSite);
+
+        if (isset($targetValues['title'])) {
+            $targetEntry->title = $targetValues['title'];
             $targetEntry->slug = null;
+            unset($targetValues['title']);
         }
 
-        $targetEntry->setFieldValues($source->getSerializedFieldValues());
+        $targetEntry->setFieldValues($targetValues);
 
         Craft::$app->elements->saveElement($targetEntry);
         return $targetEntry;
     }
 
-
-    /**
-     * @param Element $source
-     * @param Site $sourceSite
-     * @param Site $targetSite
-     * @return array
-     */
-    public function translateElement(Element $source, Site $sourceSite, Site $targetSite): array
+    public function copyElement(Element $source, Site $sourceSite, Site $targetSite)
     {
         $target = [];
 
@@ -71,62 +62,39 @@ class CopyService extends Component
         }
 
         foreach ($source->fieldLayout->getCustomFields() as $field) {
-            $target[$field->handle] = $source->getSerializedFieldValues([$field->handle])[$field->handle];
-            /*$translatedValue = null;
-            $fieldTranslatable = $field->translationMethod != Field::TRANSLATION_METHOD_NONE;
-
-            if (in_array(get_class($field), static::$textFields)) {
-                // normal text fields
-                $translatedValue = $this->translateTextField($source, $field, $sourceSite, $targetSite);
-            } elseif (in_array(get_class($field), static::$matrixFields)) {
+            if (in_array(get_class($field), static::$matrixFields)) {
                 // dig deeper in Matrix fields
-                $translatedValue = $this->translateMatrixField($source, $field, $sourceSite, $targetSite);
-            } elseif (get_class($field) == Table::class) {
-                // loop over table
-                $translatedValue = $this->translateTable($source, $field, $sourceSite, $targetSite);
-            } elseif (get_class($field) == 'lenz\linkfield\fields\LinkField') {
-                // translate linkfield custom label
-                $translatedValue = $this->translateLinkField($source, $field, $sourceSite, $targetSite);
+                $target[$field->handle] = $this->copyMatrixField($source, $field, $sourceSite, $targetSite);
+            } else {
+                $target[$field->handle] = $source->getSerializedFieldValues([$field->handle])[$field->handle] ?? null;
             }
-
-            if ($translatedValue) {
-                $target[$field->handle] = $translatedValue;
-            }*/
         }
 
         return $target;
     }
 
-    public function translateTextField(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): ?string
-    {
-        return $field->serializeValue($element->getFieldValue($field->handle), $element);
-    }
-
-    public function translateTable(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): array
-    {
-        return $field->serializeValue($element->getFieldValue($field->handle), $element);
-    }
-
-    public function translateMatrixField(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): array
+    public function copyMatrixField(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): array
     {
         $query = $element->getFieldValue($field->handle);
 
         // serialize current value
-        return $element->getSerializedFieldValues([$field->handle])[$field->handle];
-    }
+        $serialized = $element->getSerializedFieldValues([$field->handle])[$field->handle];
 
-    public function translateLinkField(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): ?array
-    {
-        $value = $element->getFieldValue($field->handle);
-        if ($value) {
-            try {
-                return $value->toArray();
-            } catch (\Throwable $throwable) {
-                // too bad, f*** linkfields
-                return null;
+        foreach ($query->all() as $matrixElement) {
+            $copiedMatrixValues = $this->copyElement($matrixElement, $sourceSite, $targetSite);
+            foreach ($copiedMatrixValues as $matrixFieldHandle => $value) {
+                // only set translated values in matrix array
+                if ($value && isset($serialized[$matrixElement->id])) {
+                    if ($matrixFieldHandle == 'title') {
+                        $serialized[$matrixElement->id][$matrixFieldHandle] = $value;
+                    } else {
+                        $serialized[$matrixElement->id]['fields'][$matrixFieldHandle] = $value;
+                    }
+                }
             }
         }
-        return null;
+
+        return $serialized;
     }
 
     public function findTargetEntry(Entry $source, int $targetSiteId): Entry
