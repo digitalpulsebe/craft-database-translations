@@ -11,16 +11,12 @@
 namespace digitalpulsebe\database_translations\variables;
 
 use digitalpulsebe\database_translations\DatabaseTranslations;
-use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
-use digitalpulsebe\database_translations\variables\ManifestVariable as Manifest;
 
 use yii\db\Query;
 
 /**
  * Database Translations defines the `databaseTranslations` global template variable.
- *
- * @property Manifest   manifest
  *
  * @author    digitalpulsebe
  * @package   Database Translations

@@ -2,14 +2,9 @@
 
 namespace digitalpulsebe\database_translations\controllers;
 
-use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
-use craft\helpers\Template;
 use craft\web\UploadedFile;
 use digitalpulsebe\database_translations\DatabaseTranslations;
-use digitalpulsebe\database_translations\helpers\PhpTranslationsHelper;
-use digitalpulsebe\database_translations\helpers\TemplateHelper;
-use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
 use Craft;
 use yii\web\BadRequestHttpException;
@@ -31,7 +26,7 @@ class CsvImportController extends Controller
 
         $uploadedFile = UploadedFile::getInstanceByName('upload');
 
-        if (empty($uploadedFile) || strpos($uploadedFile->type, 'csv') === false) {
+        if (empty($uploadedFile) || !str_contains($uploadedFile->type, 'csv')) {
             Craft::$app->session->setError("not a correct file type");
             return $this->redirectToPostedUrl();
         }
@@ -210,7 +205,7 @@ class CsvImportController extends Controller
         $header = fgetcsv($fileStream, null, ';');
         foreach($header as $i => $column) {
             // clean non-word characters (like a BOM)
-            $header[$i] = preg_replace('/[^\w &%\'-\/]/','', $column);;
+            $header[$i] = preg_replace('/[^\w &%\'-\/]/','', $column);
         }
         return $header;
     }

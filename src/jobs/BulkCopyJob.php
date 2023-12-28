@@ -2,7 +2,7 @@
 
 namespace digitalpulsebe\database_translations\jobs;
 
-use \Craft;
+use Craft;
 use craft\elements\Entry;
 use craft\queue\BaseJob;
 use digitalpulsebe\database_translations\DatabaseTranslations;

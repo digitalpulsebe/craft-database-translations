@@ -5,26 +5,20 @@ namespace digitalpulsebe\database_translations\helpers;
 use craft\helpers\App;
 use craft\helpers\FileHelper;
 use craft\i18n\I18N;
-use craft\web\View;
 use digitalpulsebe\database_translations\DatabaseTranslations;
 use digitalpulsebe\database_translations\models\SourceMessage;
-use Twig\Node\Expression\ConstantExpression;
-use Twig\Node\Expression\FilterExpression;
-use Twig\Node\Expression\TempNameExpression;
-use Twig\Node\SetNode;
-use Twig\Source;
 use Craft;
-use Exception;
 use yii\i18n\PhpMessageSource;
 
 class PhpTranslationsHelper
 {
     public static function findFiles(): array
     {
-        /** @var I18N $i18n */
-        $i18n = Craft::$app->getComponents(false)['i18n'];
-
-        $files = FileHelper::findFiles(Craft::$app->path->getSiteTranslationsPath(), ['only' => ['*.php']]);
+        if (!is_dir(Craft::$app->path->getSiteTranslationsPath())) {
+            $files = [];
+        } else {
+            $files = FileHelper::findFiles(Craft::$app->path->getSiteTranslationsPath(), ['only' => ['*.php']]);
+        }
 
         foreach (DatabaseTranslations::$plugin->originalCategories as $i18nCategory => $categorySettings) {
             if ($categorySettings) {

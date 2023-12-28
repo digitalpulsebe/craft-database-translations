@@ -42,8 +42,6 @@ class CopyService extends Component
      */
     public function copyEntry(Entry $source, Site $sourceSite, Site $targetSite): Entry
     {
-//        $translatedValues = $this->translateElement($source, $sourceSite, $targetSite);
-
         $targetEntry = $this->findTargetEntry($source, $targetSite->id);
 
         if (isset($source->title)) {
@@ -53,7 +51,7 @@ class CopyService extends Component
 
         $targetEntry->setFieldValues($source->getSerializedFieldValues());
 
-        \Craft::$app->elements->saveElement($targetEntry);
+        Craft::$app->elements->saveElement($targetEntry);
         return $targetEntry;
     }
 

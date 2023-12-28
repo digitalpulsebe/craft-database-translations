@@ -43,7 +43,7 @@ JS, [static::class]);
     {
         $entryIds = $query->ids();
 
-        if (!\Craft::$app->user->checkPermission('bulkCopyElements')) {
+        if (!Craft::$app->user->checkPermission('bulkCopyElements')) {
             throw new UnauthorizedHttpException('You are not allowed to copy Entries');
         }
 
