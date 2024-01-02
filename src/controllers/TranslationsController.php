@@ -3,10 +3,13 @@
 namespace digitalpulsebe\database_translations\controllers;
 
 use digitalpulsebe\database_translations\DatabaseTranslations;
+use digitalpulsebe\database_translations\jobs\BulkTranslateJob;
 use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
+use yii\base\Exception;
 use yii\web\Response;
 use craft\web\Controller;
+use Craft;
 
 class TranslationsController extends Controller
 {
@@ -161,5 +164,46 @@ class TranslationsController extends Controller
         }
 
         return $this->response->sendStreamAsFile($file, "export_translations-$date.csv");
+    }
+
+    public function actionTranslate()
+    {
+        try {
+            $this->requirePostRequest();
+            $ids = $this->request->post('messages');
+
+            if(!DatabaseTranslations::getInstance()->translateService->isAvailable()) {
+                throw new Exception('Multi Translator not available');
+            }
+
+            $sourceLocale = $this->request->post('sourceLocale');
+            $targetLocale = $this->request->post('targetLocale');
+
+            Craft::$app->getQueue()->push(new BulkTranslateJob([
+                'messageIds' => $ids,
+                'sourceLocale' => $sourceLocale,
+                'targetLocale' => $targetLocale,
+            ]));
+
+            if ($this->request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => true
+                ]);
+            }
+
+            $this->setSuccessFlash();
+            return $this->redirectToPostedUrl();
+        } catch (\Throwable $throwable) {
+            if ($this->request->getAcceptsJson()) {
+                return $this->asJson([
+                    'success' => false,
+                    'error' => $throwable->getMessage(),
+                ]);
+            }
+
+            $this->setFailFlash($throwable->getMessage());
+            return $this->redirectToPostedUrl();
+        }
+
     }
 }
