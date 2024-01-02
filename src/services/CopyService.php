@@ -11,8 +11,6 @@
 namespace digitalpulsebe\database_translations\services;
 
 use craft\base\Component;
-use craft\base\Element;
-use craft\base\FieldInterface;
 use craft\elements\Entry;
 use craft\models\Section;
 use craft\models\Site;
@@ -20,17 +18,6 @@ use Craft;
 
 class CopyService extends Component
 {
-    static array $textFields = [
-        'craft\fields\PlainText',
-        'craft\redactor\Field',
-        'craft\ckeditor\Field',
-    ];
-    static array $matrixFields = [
-        'craft\fields\Matrix',
-        'benf\neo\Field',
-        'verbb\supertable\fields\SuperTableField',
-    ];
-
     /**
      * @param Entry $source
      * @param Site $sourceSite
@@ -42,8 +29,6 @@ class CopyService extends Component
      */
     public function copyEntry(Entry $source, Site $sourceSite, Site $targetSite): Entry
     {
-//        $translatedValues = $this->translateElement($source, $sourceSite, $targetSite);
-
         $targetEntry = $this->findTargetEntry($source, $targetSite->id);
 
         if (isset($source->title)) {
@@ -55,80 +40,6 @@ class CopyService extends Component
 
         \Craft::$app->elements->saveElement($targetEntry);
         return $targetEntry;
-    }
-
-
-    /**
-     * @param Element $source
-     * @param Site $sourceSite
-     * @param Site $targetSite
-     * @return array
-     */
-    public function translateElement(Element $source, Site $sourceSite, Site $targetSite): array
-    {
-        $target = [];
-
-        if ($source->title) {
-            $target['title'] = $source->title;
-        }
-
-        foreach ($source->fieldLayout->getCustomFields() as $field) {
-            $target[$field->handle] = $source->getSerializedFieldValues([$field->handle])[$field->handle];
-            /*$translatedValue = null;
-            $fieldTranslatable = $field->translationMethod != Field::TRANSLATION_METHOD_NONE;
-
-            if (in_array(get_class($field), static::$textFields)) {
-                // normal text fields
-                $translatedValue = $this->translateTextField($source, $field, $sourceSite, $targetSite);
-            } elseif (in_array(get_class($field), static::$matrixFields)) {
-                // dig deeper in Matrix fields
-                $translatedValue = $this->translateMatrixField($source, $field, $sourceSite, $targetSite);
-            } elseif (get_class($field) == Table::class) {
-                // loop over table
-                $translatedValue = $this->translateTable($source, $field, $sourceSite, $targetSite);
-            } elseif (get_class($field) == 'lenz\linkfield\fields\LinkField') {
-                // translate linkfield custom label
-                $translatedValue = $this->translateLinkField($source, $field, $sourceSite, $targetSite);
-            }
-
-            if ($translatedValue) {
-                $target[$field->handle] = $translatedValue;
-            }*/
-        }
-
-        return $target;
-    }
-
-    public function translateTextField(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): ?string
-    {
-        return $field->serializeValue($element->getFieldValue($field->handle), $element);
-    }
-
-    public function translateTable(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): array
-    {
-        return $field->serializeValue($element->getFieldValue($field->handle), $element);
-    }
-
-    public function translateMatrixField(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): array
-    {
-        $query = $element->getFieldValue($field->handle);
-
-        // serialize current value
-        return $element->getSerializedFieldValues([$field->handle])[$field->handle];
-    }
-
-    public function translateLinkField(Element $element, FieldInterface $field, Site $sourceSite, Site $targetSite): ?array
-    {
-        $value = $element->getFieldValue($field->handle);
-        if ($value) {
-            try {
-                return $value->toArray();
-            } catch (\Throwable $throwable) {
-                // too bad, f*** linkfields
-                return null;
-            }
-        }
-        return null;
     }
 
     public function findTargetEntry(Entry $source, int $targetSiteId): Entry

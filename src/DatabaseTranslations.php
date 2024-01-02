@@ -28,6 +28,7 @@ use digitalpulsebe\database_translations\models\Settings;
 use digitalpulsebe\database_translations\models\SourceMessage;
 use digitalpulsebe\database_translations\services\CopyService;
 use digitalpulsebe\database_translations\services\DatabaseTranslationsService;
+use digitalpulsebe\database_translations\services\TranslateService;
 use digitalpulsebe\database_translations\variables\DatabaseTranslationsVariable;
 use yii\base\Event;
 use yii\i18n\MessageSource;
@@ -41,6 +42,7 @@ use yii\i18n\MissingTranslationEvent;
  *
  * @property  DatabaseTranslationsService $databaseTranslationsService
  * @property  CopyService $copyService
+ * @property  TranslateService $translateService
  * @property  Settings $settings
  * @method    Settings getSettings()
  */
@@ -91,6 +93,7 @@ class DatabaseTranslations extends Plugin
         $this->setComponents([
             'databaseTranslationsService' => DatabaseTranslationsService::class,
             'copyService' => CopyService::class,
+            'translateService' => TranslateService::class,
         ]);
 
         // Register our variables
@@ -145,6 +148,7 @@ class DatabaseTranslations extends Plugin
                 $event->rules['database-translations/translations/delete/<id:\d+>'] = 'database-translations/translations/delete';
                 $event->rules['database-translations/translations/delete'] = 'database-translations/translations/delete';
                 $event->rules['database-translations/translations/export'] = 'database-translations/translations/export';
+                $event->rules['database-translations/translations/translate'] = 'database-translations/translations/translate';
                 $event->rules['database-translations/api/index'] = 'database-translations/api/index';
                 $event->rules['database-translations/api/messages'] = 'database-translations/api/messages';
                 $event->rules['database-translations/csv-import/map/<sessionKey:{slug}>'] = 'database-translations/csv-import/map';
