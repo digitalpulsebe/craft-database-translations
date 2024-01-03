@@ -150,9 +150,10 @@ class CsvImportController extends Controller
         // take away the header row, we don't need to import
         $header = $this->getCsvHeader($fileStream);
         $languages = [];
-        foreach ($header as $columnHeader) {
-            if (in_array($columnHeader, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
-                $languages[] = $columnHeader;
+        foreach ($header as $i => $columnHeader) {
+            $mappedColumn = $columns[$i];
+            if (in_array($mappedColumn, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
+                $languages[] = $mappedColumn;
             }
         }
 
