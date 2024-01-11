@@ -20,7 +20,8 @@ export const useDashboardStore = defineStore('dashboard', {
         sourceMessages: [],
         isBusy: true,
         direction: 'asc',
-        column: 'message'
+        column: 'message',
+        translateHudActive: false,
     }),
     mounted: () => {
         console.log(this)
@@ -133,6 +134,28 @@ export const useDashboardStore = defineStore('dashboard', {
             .then(function (response) {
                 self.getData();
                 window.Craft.cp.displayNotice('Row(s) deleted');
+            })
+            .catch(function (error) {
+                console.log(error);
+                window.Craft.cp.displayError(error);
+            })
+        },
+        translate(sourceLocale, targetLocale) {
+            let self = this;
+            this.isBusy = true;
+
+            axios.post('database-translations/translations/translate', {
+                messages: self.selectedRows,
+                sourceLocale: sourceLocale,
+                targetLocale: targetLocale,
+            })
+            .then(function (response) {
+                self.getData();
+                if (response.data.success) {
+                    window.Craft.cp.displayNotice('Job added to queue');
+                } else {
+                    window.Craft.cp.displayError(response.data.error);
+                }
             })
             .catch(function (error) {
                 console.log(error);
