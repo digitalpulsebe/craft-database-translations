@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Craft 5 support
 
+## 2.5.0 - 2024-01-11
+### Added
+- Bulk translate action (requires [Multi Translator Plugin](https://plugins.craftcms.com/multi-translator))
+
 ## 2.4.0 - 2023-12-18
 ### Added
 - Bulk copy entry action
