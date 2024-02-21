@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.5.1 - 2024-02-21
+### Fixed
+- fix missing i18n by avoiding setComponents
+
 ## 2.5.0 - 2024-01-11
 ### Added
 - Bulk translate action (requires [Multi Translator Plugin](https://plugins.craftcms.com/multi-translator))
