@@ -120,8 +120,7 @@ class DatabaseTranslations extends Plugin
 
     private function initDbMessageSource()
     {
-        /** @var I18N $i18n */
-        $i18n = Craft::$app->getComponents(false)['i18n'];
+        $i18n = Craft::$app->getI18n();
 
         $this->originalCategories = $i18n->translations;
 
@@ -132,8 +131,6 @@ class DatabaseTranslations extends Plugin
                 'forceTranslation' => true,
             ];
         }
-
-        Craft::$app->setComponents(['i18n' => $i18n]);
     }
 
     private function initRoutes()
