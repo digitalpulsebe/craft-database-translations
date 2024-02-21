@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.5.2 - 2024-02-21
+### Fixed
+- fix check correct import file type with getMimeType()
+
 ## 2.5.1 - 2024-02-21
 ### Fixed
 - fix missing i18n by avoiding setComponents
