@@ -26,7 +26,7 @@ class CsvImportController extends Controller
 
         $uploadedFile = UploadedFile::getInstanceByName('upload');
 
-        if (empty($uploadedFile) || !str_contains($uploadedFile->type, 'csv')) {
+        if (empty($uploadedFile) || !str_contains($uploadedFile->getMimeType(), 'csv')) {
             Craft::$app->session->setError("not a correct file type");
             return $this->redirectToPostedUrl();
         }
