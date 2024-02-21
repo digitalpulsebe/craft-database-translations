@@ -21,9 +21,6 @@ class PhpTranslationsHelper
 {
     public static function findFiles(): array
     {
-        /** @var I18N $i18n */
-        $i18n = Craft::$app->getComponents(false)['i18n'];
-
         $files = FileHelper::findFiles(Craft::$app->path->getSiteTranslationsPath(), ['only' => ['*.php']]);
 
         foreach (DatabaseTranslations::$plugin->originalCategories as $i18nCategory => $categorySettings) {
@@ -50,8 +47,7 @@ class PhpTranslationsHelper
 
     public static function findDisabledCategories(): array
     {
-        /** @var I18N $i18n */
-        $i18n = Craft::$app->getComponents(false)['i18n'];
+        $i18n = Craft::$app->getI18n();
 
         $categories = [];
         $enabledCategories = DatabaseTranslations::getInstance()->originalCategories;
