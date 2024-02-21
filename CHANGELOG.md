@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.1.1 - 2024-02-21
+### Fixed
+- fix check correct import file type with getMimeType()
+- fix missing i18n by avoiding setComponents
+
 ## 3.1.0 - 2024-01-11
 ### Added
 - Bulk translate action (requires [Multi Translator Plugin](https://plugins.craftcms.com/multi-translator))
@@ -17,6 +22,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 3.0.0 - 2023-12-28
 ### Added
 - Craft 5 support
+
+## 2.5.2 - 2024-02-21
+### Fixed
+- fix check correct import file type with getMimeType()
+
+## 2.5.1 - 2024-02-21
+### Fixed
+- fix missing i18n by avoiding setComponents
 
 ## 2.5.0 - 2024-01-11
 ### Added
