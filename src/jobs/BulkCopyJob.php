@@ -5,6 +5,7 @@ namespace digitalpulsebe\database_translations\jobs;
 use Craft;
 use craft\elements\Entry;
 use craft\queue\BaseJob;
+use digitalpulsebe\database_translations\helpers\EntryHelper;
 use digitalpulsebe\database_translations\DatabaseTranslations;
 
 class BulkCopyJob extends BaseJob
@@ -24,7 +25,7 @@ class BulkCopyJob extends BaseJob
         $sourceSite = Craft::$app->getSites()->getSiteByHandle($this->sourceSiteHandle);
         $targetSite = Craft::$app->getSites()->getSiteByHandle($this->targetSiteHandle);
 
-        $entries = Entry::find()->status(null)->id($this->entryIds)->siteId($sourceSite->id)->all();
+        $entries = EntryHelper::all($this->entryIds, $sourceSite->id);
 
         $entryCount = count($entries);
 
