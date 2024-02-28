@@ -15,6 +15,7 @@ use craft\elements\Entry;
 use craft\models\Section;
 use craft\models\Site;
 use Craft;
+use digitalpulsebe\database_translations\helpers\EntryHelper;
 
 class CopyService extends Component
 {
@@ -38,13 +39,18 @@ class CopyService extends Component
 
         $targetEntry->setFieldValues($source->getSerializedFieldValues());
 
-        \Craft::$app->elements->saveElement($targetEntry);
+        if ($targetEntry->getIsDraft()) {
+            Craft::$app->drafts->saveElementAsDraft($targetEntry);
+        } else {
+            Craft::$app->elements->saveElement($targetEntry);
+        }
+
         return $targetEntry;
     }
 
     public function findTargetEntry(Entry $source, int $targetSiteId): Entry
     {
-        $targetEntry = Entry::find()->status(null)->id($source->id)->siteId($targetSiteId)->one();
+        $targetEntry = EntryHelper::one($source->id, $targetSiteId);
 
         if (empty($targetEntry)) {
             // we need to create one for this target site
@@ -61,8 +67,14 @@ class CopyService extends Component
                 }
 
                 $source->setEnabledForSite($sitesEnabled);
-                Craft::$app->elements->saveElement($source);
-                $targetEntry = Entry::find()->status(null)->id($source->id)->siteId($targetSiteId)->one();
+
+                if ($source->getIsDraft()) {
+                    Craft::$app->drafts->saveElementAsDraft($source);
+                } else {
+                    Craft::$app->elements->saveElement($source);
+                }
+
+                $targetEntry = EntryHelper::one($source->id, $targetSiteId);
             } elseif ($source->section->propagationMethod == Section::PROPAGATION_METHOD_ALL) {
                 // it should have been there, so propagate
                 $targetEntry = Craft::$app->elements->propagateElement($source, $targetSiteId, false);
