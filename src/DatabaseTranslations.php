@@ -145,6 +145,7 @@ class DatabaseTranslations extends Plugin
                 $event->rules['database-translations/translations/delete/<id:\d+>'] = 'database-translations/translations/delete';
                 $event->rules['database-translations/translations/delete'] = 'database-translations/translations/delete';
                 $event->rules['database-translations/translations/export'] = 'database-translations/translations/export';
+                $event->rules['database-translations/translations/export-migration'] = 'database-translations/translations/export-migration';
                 $event->rules['database-translations/translations/translate'] = 'database-translations/translations/translate';
                 $event->rules['database-translations/api/index'] = 'database-translations/api/index';
                 $event->rules['database-translations/api/messages'] = 'database-translations/api/messages';

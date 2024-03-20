@@ -11,7 +11,11 @@
                     :disabled="this.store.selectedRows.length === 0">
                 Translate
             </button>
-            <button @click="actionExport" class="btn" :class="{ disabled: this.store.selectedRows.length === 0}"
+            <button @click="actionToggleExportHud" 
+                    id="export-action-toggle-hud" 
+                    class="btn" 
+                    :class="{ disabled: this.store.selectedRows.length === 0, active: this.store.exportHudActive}"
+                    :aria-expanded="this.store.exportHudActive === true"
                     :disabled="this.store.selectedRows.length === 0">
                 Export
             </button>
@@ -49,9 +53,6 @@
             },
             actionSave() {
                 this.store.save()
-            },
-            actionExport() {
-                this.store.export()
             },
             actionDelete() {
                 if (confirm("Do you really want to delete "+this.store.selectedRows.length+" selected rows?")){
@@ -129,6 +130,55 @@
 
                         store.translate(sourceLocale, targetLocale)
                     }
+                }));
+            },
+            actionToggleExportHud() {
+                this.store.exportHudActive = true;
+                const toggleBtn = document.getElementById('export-action-toggle-hud');
+
+                const form = document.createElement("form");
+                form.className = "translate-form";
+
+                const infoField = document.createElement("p")
+                infoField.innerHTML = 'Export the selected rows<br> with selected languages to:';
+                form.append(infoField);
+                
+                let formatOptions = [
+                    {label: 'CSV', value: 'csv'},
+                    {label: 'Migration', value: 'migration'}
+                ];
+                const formatSelect = Craft.ui.createSelectField({
+                    label: "Format",
+                    options: formatOptions,
+                    class: "fullwidth",
+                    required: true,
+                }).appendTo(form);
+
+                var submitButton = Craft.ui.createSubmitButton({
+                    class: "fullwidth",
+                    label: "Export",
+                    spinner: 1
+                }).appendTo(form);
+                const multiFunctionBtn = new Garnish.MultiFunctionBtn(submitButton);
+
+                let store = this.store;
+
+                const hud = new Garnish.HUD(toggleBtn, form);
+
+                hud.on("hide", (function() {
+                    store.exportHudActive = false;
+                }));
+
+                form.addEventListener("submit", (function(submitEvent) {
+                    submitEvent.preventDefault();
+                    const format = formatSelect.find("select").val();
+                    console.log(format);
+                    if (format === 'csv') {
+                        store.exportCsv();
+                    } else {
+                        store.exportMigration();
+                    }
+                    
                 }));
             },
         }
