@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Fixed
 - migration update statement
+- slashes in translation values in migration files
 
 ## 3.2.0 - 2024-03-20
 
@@ -42,6 +43,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Craft 5 support
+
+## 2.6.2 - 2024-03-20
+
+### Fixed
+- slashes in translation values in migration files
 
 ## 2.6.1 - 2024-03-20
 
