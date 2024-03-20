@@ -30,7 +30,7 @@
             </select>
         </div>
         <div class="select">
-            <select id="filter-category" v-model="missing">
+            <select id="filter-missing" v-model="missing">
                 <option value="">Filter missing</option>
                 <option v-for="item in store.locales" :value="item">{{ item }}</option>
             </select>

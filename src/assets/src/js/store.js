@@ -22,6 +22,7 @@ export const useDashboardStore = defineStore('dashboard', {
         direction: 'asc',
         column: 'message',
         translateHudActive: false,
+        exportHudActive: false,
     }),
     mounted: () => {
         console.log(this)
@@ -109,10 +110,11 @@ export const useDashboardStore = defineStore('dashboard', {
                 self.isBusy = false;
             });
         },
-        export() {
+        exportCsv() {
             let self = this;
             axios.post('database-translations/translations/export', {
-                filters: {id: self.selectedRows}
+                filters: {id: self.selectedRows},
+                languages: self.selectedLocales
             })
             .then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response.data.file]))
@@ -121,6 +123,18 @@ export const useDashboardStore = defineStore('dashboard', {
                 link.setAttribute('download', response.data.fileName)
                 document.body.appendChild(link)
                 link.click()
+            })
+            .catch((error) => window.Craft.cp.displayError(error));
+        },
+        exportMigration() {
+            let self = this;
+            axios.post('database-translations/translations/export-migration', {
+                filters: {id: self.selectedRows},
+                languages: self.selectedLocales
+            })
+            .then((response) => {
+                const fileName = response.data.fileName;
+                window.Craft.cp.displayNotice('Migration created: ' + fileName);
             })
             .catch((error) => window.Craft.cp.displayError(error));
         },
