@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.1 - 2024-03-20
+
+### Fixed
+- migration update statement
+- slashes in translation values in migration files
+
 ## 3.2.0 - 2024-03-20
 
 ### Added
@@ -37,6 +43,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Craft 5 support
+
+## 2.6.2 - 2024-03-20
+
+### Fixed
+- slashes in translation values in migration files
+
+## 2.6.1 - 2024-03-20
+
+### Fixed
+- migration update statement
 
 ## 2.6.0 - 2024-03-20
 
