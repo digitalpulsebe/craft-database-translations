@@ -150,7 +150,7 @@ class TranslationsController extends Controller
             fputcsv($file, $row, $separator);
         }
 
-        $date = strftime('%Y%m%d_%H%M%S');
+        $date = date('Ymd_His');
 
         if ($this->request->getAcceptsJson()) {
             fseek($file, 0);
@@ -164,6 +164,21 @@ class TranslationsController extends Controller
         }
 
         return $this->response->sendStreamAsFile($file, "export_translations-$date.csv");
+    }
+
+    public function actionExportMigration()
+    {
+        $this->requirePostRequest();
+        $filters = $this->request->post('filters');
+        $languages = $this->request->post('languages', null);
+        $sourceMessages = SourceMessage::filter($filters)->orderBy('message')->with('messages')->all();
+
+        $filename = DatabaseTranslations::getInstance()->databaseTranslationsService->createMigration($sourceMessages, $languages);
+
+        return $this->asJson([
+            'fileName' => $filename,
+            'success' => true,
+        ]);
     }
 
     public function actionTranslate()
