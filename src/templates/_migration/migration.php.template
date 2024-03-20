@@ -32,14 +32,14 @@ class <?= $className ?> extends Migration
     {
 <?php foreach($sourceMessages as $sourceMessage): ?>
         // --- '<?= $sourceMessage->message ?>' (category: <?= $sourceMessage->category ?>) ---
-        $sourceMessageData = ['category' => '<?= $sourceMessage->category ?>','message' => '<?= $sourceMessage->message ?>'];
+        $sourceMessageData = ['category' => '<?= $sourceMessage->category ?>','message' => '<?= addslashes($sourceMessage->message) ?>'];
         $sourceMessage = SourceMessage::find()->where($sourceMessageData)->one();
         if (empty($sourceMessage)) {
             $this->insert('{{%dp_translations_source_message}}', $sourceMessageData);
             $sourceMessage = SourceMessage::find()->where($sourceMessageData)->one();
         }
 <?php foreach($sourceMessage->messages as $message): if(empty($languages) || in_array($message->language, $languages)): ?>
-        $this->upsert('{{%dp_translations_message}}', ['id' => $sourceMessage->id, 'language' => '<?= $message->language ?>', 'translation' => '<?= $message->translation ?>'], ['translation' => '<?= $message->translation ?>']);
+        $this->upsert('{{%dp_translations_message}}', ['id' => $sourceMessage->id, 'language' => '<?= $message->language ?>', 'translation' => '<?= addslashes($message->translation) ?>'], ['translation' => '<?= addslashes($message->translation) ?>']);
 <?php endif; endforeach; ?>
 
 <?php endforeach; ?>
