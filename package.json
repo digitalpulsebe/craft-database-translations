@@ -1,6 +1,6 @@
 {
   "name": "craft-database-translations",
-  "version": "2.6.0",
+  "version": "3.2.0",
   "description": "A translations plugin for Craft CMS",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --progress --config=webpack.config.js",
