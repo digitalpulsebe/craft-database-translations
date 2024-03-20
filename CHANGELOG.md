@@ -33,6 +33,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Craft 5 support
 
+## 2.6.0 - 2024-03-20
+
+### Added
+- migration file export type
+
 ## 2.5.3 - 2024-02-28
 
 ### Added

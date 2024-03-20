@@ -1,0 +1,57 @@
+<?php
+
+namespace craft\migrations;
+
+/**
+ * 
+ * The following variables are available in this view:
+ */
+/** @var $namespace         string The namespace of the generated migration. */
+/** @var $className         string The new migration class name. */
+/** @var $sourceMessages    the translation rows to be migrated. */
+/** @var $languages         the selected languages. */
+
+echo "<?php\n";
+?>
+
+namespace <?= $namespace ?>;
+
+use Craft;
+use craft\db\Migration;
+use digitalpulsebe\database_translations\models\SourceMessage;
+
+/**
+ * <?= $className ?> migration.
+ */
+class <?= $className ?> extends Migration
+{
+    /**
+     * @inheritdoc
+     */
+    public function safeUp(): bool
+    {
+<?php foreach($sourceMessages as $sourceMessage): ?>
+        // --- '<?= $sourceMessage->message ?>' (category: <?= $sourceMessage->category ?>) ---
+        $sourceMessageData = ['category' => '<?= $sourceMessage->category ?>','message' => '<?= $sourceMessage->message ?>'];
+        $sourceMessage = SourceMessage::find()->where($sourceMessageData)->one();
+        if (empty($sourceMessage)) {
+            $this->insert('{{%dp_translations_source_message}}', $sourceMessageData);
+            $sourceMessage = SourceMessage::find()->where($sourceMessageData)->one();
+        }
+<?php foreach($sourceMessage->messages as $message): if(empty($languages) || in_array($message->language, $languages)): ?>
+        $this->upsert('{{%dp_translations_message}}', ['id' => $sourceMessage->id, 'language' => '<?= $message->language ?>', 'translation' => '<?= $message->translation ?>'], ['translation' => true]);
+<?php endif; endforeach; ?>
+
+<?php endforeach; ?>
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function safeDown(): bool
+    {
+        echo "<?= $className ?> cannot be reverted.\n";
+        return true;
+    }
+}
