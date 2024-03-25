@@ -17,7 +17,7 @@
 return [
 //    'pluginName' => 'Translations',
 //    'categories' => [['key' => 'site']],
-//    'mapLocales' => [],
+//    'mapLocales' => [['source'=>'nl', 'destination'=>'nl-BE']],   
 //    'handleMissingTranslationEvent' => false,
 //    'handleMissingTranslationEventOnlyInDevMode' => true,
 //    'trimValuesOnSave' => true,
