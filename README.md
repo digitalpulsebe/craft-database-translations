@@ -49,6 +49,10 @@ Trim spaces at begin or ending of values when they are saved.
 When a new unknown translation is used while rendering templates, an event is triggered.
 Handling this event is optional. A new empty translation row will be added for the missing message.
 
+### Copy Entry bulk action
+
+Enable [this feature](#copy-entries-in-bulk-action)
+
 ## Importing translations
 
 ![Screenshot](resources/img/screenshot_import.png)
@@ -84,7 +88,13 @@ message rows in the database:
 ## Exporting
 
 1. Export all the rows using the export tab
-2. Or select the rows in the table to export
+2. Or, in the overview table, select the rows and languages to export
+   - as csv file
+   - as a content migration file
+
+### Migration file export
+
+The advantage of exporting to a migration file is that your content can be pushed to git and then the server when deploying. The migration file adds the rows to your database when `craft up` or `craft migrate/all` is executed.
 
 ## Manage translations
 
@@ -94,8 +104,6 @@ message rows in the database:
 
 To enable this functionality both enable this in the settings 
 and set the permission for the user ("Copy content bulk action").
-
-You can also enable this in `config/database-translations.php`
 
 You can now select Entries in the index table, and select the bulk action.
 The content will be copied over to the other site in a queue job.
