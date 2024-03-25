@@ -30,7 +30,13 @@
         {% else %}
             <h2>Hi!</h2>
             <p>Your database is empty</p>
-            <p>Start with <a href="{{ url('database-translations/create') }}">an import</a> or enable event to listen to missing translations in <a href="{{ url('database-translations/settings') }}">the settings</a>.</p>
+            <p>
+                Start with <a href="{{ url('database-translations/create') }}">an import</a>
+                {% if currentUser.admin and craft.app.config.general.allowAdminChanges %}
+                    or enable event to listen to missing translations in 
+                    <a href="{{ url('database-translations/settings') }}">the settings</a>.
+                {% endif %}
+            </p>
         {% endif %}
     </div>
 {% endblock %}
