@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.2.3 - 2024-04-10
+
+### Fixed
+- fix queries for installs with db prefix
+
 ## 3.2.2 - 2024-03-25
 
 ### Updated
@@ -48,6 +53,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Craft 5 support
+
+## 2.6.4 - 2024-04-10
+
+### Fixed
+- fix queries for installs with db prefix
 
 ## 2.6.3 - 2024-03-25
 
