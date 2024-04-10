@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.6.4 - 2024-04-10
+
+### Fixed
+- fix queries for installs with db prefix
+
 ## 2.6.3 - 2024-03-25
 
 ### Updated

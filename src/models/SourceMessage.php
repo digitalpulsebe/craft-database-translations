@@ -136,7 +136,7 @@ class SourceMessage extends ActiveRecord
                             ['like', 'message', $filterValues],
                             ['exists', (new Query())
                                 ->from(Message::tableName())
-                                ->where('dp_translations_message.id = dp_translations_source_message.id')
+                                ->where('{{%dp_translations_message}}.id = {{%dp_translations_source_message}}.id')
                                 ->andWhere(['like', 'translation', $filterValues])
                             ]
                         ]);
@@ -149,7 +149,7 @@ class SourceMessage extends ActiveRecord
                     if ($filterKey == 'missing') {
                         $query->andWhere(['not exists', (new Query())
                             ->from(Message::tableName())
-                            ->where('dp_translations_message.id = dp_translations_source_message.id')
+                            ->where('{{%dp_translations_message}}.id = {{%dp_translations_source_message}}.id')
                             ->andWhere(['language' => $filterValues])
                             ->andWhere('translation is not null')
                             ->andWhere('translation <> \'\'')
@@ -162,8 +162,8 @@ class SourceMessage extends ActiveRecord
                         if (count($filterValueParts) == 2) {
                             [$column, $direction] = $filterValueParts;
                             if (in_array($column, DatabaseTranslations::$plugin->databaseTranslationsService->languageIds())) {
-                                $query->join('LEFT JOIN', Message::tableName(), 'dp_translations_message.id = dp_translations_source_message.id AND dp_translations_message.language = \''.$column.'\'');
-                                $query->orderBy("dp_translations_message.translation $direction");
+                                $query->join('LEFT JOIN', Message::tableName(), '{{%dp_translations_message}}.id = {{%dp_translations_source_message}}.id AND {{%dp_translations_message}}.language = \''.$column.'\'');
+                                $query->orderBy("{{%dp_translations_message}}.translation $direction");
                             } else {
                                 $query->orderBy($filterValues);
                             }
