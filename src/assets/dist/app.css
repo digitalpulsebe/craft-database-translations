@@ -1,0 +1,3 @@
+table.data tbody tr.sel input, table.data tbody tr.sel textarea {
+  color: black;
+}

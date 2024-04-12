@@ -38,7 +38,10 @@
         <div class="flex-grow texticon search icon clearable">
             <input type="text" class="text fullwidth" placeholder="search..." v-model="search" autocomplete="off">
         </div>
-        <button @click="reset" class="btn submit">Reset</button>
+        <button @click="reset" class="btn">Reset</button>
+        <button @click="actionSave" class="btn" title="Ctrl+S / ⌘+S" :class="{ submit: this.store.hasChanges}">
+            Save All
+        </button>
     </div>
 </template>
 
@@ -57,6 +60,9 @@
                 this.category = '';
                 this.search = '';
                 this.missing = '';
+            },
+            actionSave() {
+                this.store.save()
             },
             handleSearch(value) {
                 this.store.filters.search = value;

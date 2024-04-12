@@ -20,6 +20,10 @@ class DatabaseTranslatesBundle extends AssetBundle
             'main.js'
         ];
 
+        $this->css = [
+            'app.css'
+        ];
+
         parent::init();
     }
 }
