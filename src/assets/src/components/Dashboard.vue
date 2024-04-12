@@ -20,19 +20,31 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="sourceMessage in store.sourceMessages">
+                <tr v-for="sourceMessage in store.sourceMessages" :class="{sel: store.selectedRows.includes(sourceMessage.id)}">
                     <td class="checkbox-cell">
-                        <input :id="'source-message-' + sourceMessage.id" type="checkbox" class="checkbox"
-                               title="Select"
-                               :value="sourceMessage.id"
-                               v-model="store.selectedRows">
-                        <label :for="'source-message-' + sourceMessage.id"></label>
+                        <div 
+                            role="checkbox" 
+                            class="checkbox" 
+                            title="Shift+click for range" 
+                            aria-label="Select" 
+                            aria-checked="true"
+                            :data-id="sourceMessage.id"
+                            @click="toggleSelect"
+                        ></div>
                     </td>
                     <td v-html="sourceMessage.category" v-if="store.selectedColumns.includes('category')"></td>
                     <td v-html="sourceMessage.message" style="max-width: 200px;" v-if="store.selectedColumns.includes('message')"></td>
                     <template v-for="locale in store.locales">
                         <td v-if="store.selectedLocales.includes(locale)">
-                            <textarea class="text fullwidth text-auto-size" v-model="sourceMessage.messages[locale]" rows="1" @input="autosizeTextarea" @click="autosizeRowTextareas" style="resize: none"></textarea>
+                            <textarea 
+                                class="text fullwidth text-auto-size" 
+                                v-model="sourceMessage.messages[locale]" 
+                                rows="1" 
+                                @input="autosizeTextarea" 
+                                @click="autosizeRowTextareas" 
+                                @change="textChange" 
+                                style="resize: none"
+                            ></textarea>
                         </td>
                     </template>
                     <td v-html="sourceMessage.dateCreated" v-if="store.selectedColumns.includes('dateCreated')"></td>
@@ -68,6 +80,7 @@
             store.getData();
             return { store }
         },
+        lastSelected: null,
         methods: {
             orderBy(column) {
                 // Set the direction.
@@ -86,6 +99,33 @@
                         this.store.selectedRows.push(sourceMessage.id);
                     }
                 }
+            },
+            toggleSelect(e) {
+                const rowId = parseInt(e.target.getAttribute('data-id'));
+                const index = this.store.selectedRows.indexOf(rowId);
+
+                // toggle selected value
+                if (index < 0) {
+                    this.store.selectedRows.push(rowId);
+                } else {
+                    this.store.selectedRows.splice(index, 1);
+                }
+
+                // select range of checkboxes when shift clicked
+                if (e.shiftKey) {
+                    let inBetween =  false;
+                    this.store.sourceMessages.forEach( sourceMessage => {
+                        if (sourceMessage.id === rowId || sourceMessage.id === this.lastSelected) {
+                            inBetween = !inBetween;
+                        }
+                        if (inBetween && this.store.selectedRows.indexOf(sourceMessage.id) < 0) {
+                            this.store.selectedRows.push(sourceMessage.id);
+                        }
+                    });
+                }
+
+                // remember last clicked for next range selection
+                this.lastSelected = rowId;
             },
             checkedState() {
                 if (this.store.selectedRows.length > 0) {
@@ -110,6 +150,9 @@
                 let textarea = e.target;
                 textarea.style.height = 0;
                 textarea.style.height = (textarea.scrollHeight) + 2 + "px";
+            },
+            textChange(e) {
+                this.store.hasChanges = true;
             },
             getColumns() {
 

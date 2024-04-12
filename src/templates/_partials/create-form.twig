@@ -1,7 +1,7 @@
 <form action="" accept-charset="UTF-8" method="post">
     {{ actionInput('database-translations/translations/create') }}
     {{ csrfInput() }}
-    <input type="text" class="text" name="message" placeholder="New message...">
+    <input type="text" class="text" name="message" placeholder="New message key...">
     <div class="select">
         <select class="select" name="category">
             {% for category in craft.databaseTranslations.categories %}

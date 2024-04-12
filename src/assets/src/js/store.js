@@ -18,20 +18,24 @@ export const useDashboardStore = defineStore('dashboard', {
         categories: [],
         selectedRows: [],
         sourceMessages: [],
+        hasChanges: false,
         isBusy: true,
         direction: 'asc',
         column: 'message',
         translateHudActive: false,
         exportHudActive: false,
     }),
-    mounted: () => {
-        console.log(this)
-    },
     actions: {
         getData() {
             let self = this;
 
             self.isBusy = true;
+
+            if (self.hasChanges) {
+                if (confirm('Save changes first?')) {
+                    this.save();
+                }
+            }
 
             // Post the data with filters.
             axios.post('database-translations/api/index', {
@@ -75,6 +79,7 @@ export const useDashboardStore = defineStore('dashboard', {
             })
             .finally(function () {
                 self.isBusy = false;
+                self.hasChanges = false;
             });
         },
         save() {
@@ -108,6 +113,7 @@ export const useDashboardStore = defineStore('dashboard', {
             })
             .finally(function () {
                 self.isBusy = false;
+                self.hasChanges = false;
             });
         },
         exportCsv() {

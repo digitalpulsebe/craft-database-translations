@@ -23,7 +23,7 @@
                     :disabled="this.store.selectedRows.length === 0">
                 Delete
             </button>
-            <button @click="actionSave" class="btn submit">
+            <button @click="actionSave" class="btn" title="Ctrl+S / ⌘+S" :class="{ submit: this.store.hasChanges}">
                 Save All
             </button>
         </div>
@@ -178,7 +178,6 @@
                     } else {
                         store.exportMigration();
                     }
-                    
                 }));
             },
         }
