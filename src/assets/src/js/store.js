@@ -1,9 +1,8 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 import axios from "axios";
 
 export const useDashboardStore = defineStore('dashboard', {
-    state: () => (
-        {
+    state: () => ({
         locales: [],
         selectedLocales: [],
         selectedColumns: [
@@ -18,6 +17,7 @@ export const useDashboardStore = defineStore('dashboard', {
         categories: [],
         selectedRows: [],
         sourceMessages: [],
+        exportFormats: [],
         hasChanges: false,
         isBusy: true,
         direction: 'asc',
@@ -81,6 +81,13 @@ export const useDashboardStore = defineStore('dashboard', {
                 self.isBusy = false;
                 self.hasChanges = false;
             });
+
+            // get available export formats
+            axios
+                .post('database-translations/api/export-formats')
+                .then(function (response) {
+                    self.exportFormats = response.data.options;
+                });
         },
         save() {
             let self = this;
