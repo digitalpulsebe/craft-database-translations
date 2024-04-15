@@ -63,6 +63,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 2.6.5 - 2024-04-12
 
 ### Added
+- permission for migration export format
+
+## 2.6.5 - 2024-04-12
+
+### Added
 - Shift click to select range of rows
 - minor UI improvements
 

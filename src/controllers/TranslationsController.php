@@ -169,6 +169,7 @@ class TranslationsController extends Controller
     public function actionExportMigration()
     {
         $this->requirePostRequest();
+        $this->requirePermission('exportTranslationMigration');
         $filters = $this->request->post('filters');
         $languages = $this->request->post('languages', null);
         $sourceMessages = SourceMessage::filter($filters)->orderBy('message')->with('messages')->all();
