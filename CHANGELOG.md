@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.0 - 2024-04-19
+
+### Added
+- permission for migration export format
+- Settings to clear caches after saving translations
+
 ## 3.2.4 - 2024-04-12
 
 ### Added
@@ -59,6 +65,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Craft 5 support
+
+## 2.7.0 - 2024-04-19
+
+### Added
+- permission for migration export format
+- Settings to clear caches after saving translations
 
 ## 2.6.5 - 2024-04-12
 

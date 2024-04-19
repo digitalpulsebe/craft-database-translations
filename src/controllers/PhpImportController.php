@@ -71,6 +71,8 @@ class PhpImportController extends Controller
             }
         }
 
+        DatabaseTranslations::$plugin->databaseTranslationsService->afterUpdate();
+
         $this->setSuccessFlash("Imported $count new messages");
         return $this->redirect('database-translations');
     }
