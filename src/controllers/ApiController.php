@@ -2,7 +2,7 @@
 
 namespace digitalpulsebe\database_translations\controllers;
 
-use craft\helpers\UrlHelper;
+use Craft;
 use digitalpulsebe\database_translations\DatabaseTranslations;
 use digitalpulsebe\database_translations\models\SourceMessage;
 use yii\web\Response;
@@ -22,6 +22,21 @@ class ApiController extends Controller
             'categories' => $settings->getCategories(),
             'locales' => \Craft::$app->i18n->getSiteLocaleIds(),
             'sourceMessages' => SourceMessage::filter($filters)->with('messages')->all()
+        ]);
+    }
+
+    public function actionExportFormats()
+    {
+        $options = [
+            ['label' => 'CSV', 'value' => 'csv'],
+        ];
+
+        if (Craft::$app->user->checkPermission('exportTranslationMigration')) {
+            $options[] = ['label' => 'Migration', 'value' => 'migration'];
+        }
+
+        return $this->asJson([
+            'options' => $options,
         ]);
     }
 

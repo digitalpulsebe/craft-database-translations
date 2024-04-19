@@ -149,6 +149,7 @@ class DatabaseTranslations extends Plugin
                 $event->rules['database-translations/translations/translate'] = 'database-translations/translations/translate';
                 $event->rules['database-translations/api/index'] = 'database-translations/api/index';
                 $event->rules['database-translations/api/messages'] = 'database-translations/api/messages';
+                $event->rules['database-translations/api/export-formats'] = 'database-translations/api/export-formats';
                 $event->rules['database-translations/csv-import/map/<sessionKey:{slug}>'] = 'database-translations/csv-import/map';
                 $event->rules['database-translations/csv-import/review/<sessionKey:{slug}>'] = 'database-translations/csv-import/review';
                 $event->rules['database-translations/php-import/config'] = 'database-translations/php-import/config';
@@ -220,6 +221,9 @@ class DatabaseTranslations extends Plugin
                     'permissions' => [
                         'bulkCopyElements' => [
                             'label' => 'Copy content bulk action',
+                        ],
+                        'exportTranslationMigration' => [
+                            'label' => 'Export translations to migration file',
                         ],
                     ],
                 ];

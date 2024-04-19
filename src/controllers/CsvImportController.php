@@ -2,14 +2,9 @@
 
 namespace digitalpulsebe\database_translations\controllers;
 
-use craft\helpers\FileHelper;
 use craft\helpers\StringHelper;
-use craft\helpers\Template;
 use craft\web\UploadedFile;
 use digitalpulsebe\database_translations\DatabaseTranslations;
-use digitalpulsebe\database_translations\helpers\PhpTranslationsHelper;
-use digitalpulsebe\database_translations\helpers\TemplateHelper;
-use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
 use Craft;
 use yii\web\BadRequestHttpException;
@@ -144,6 +139,8 @@ class CsvImportController extends Controller
                 $count++;
             }
         }
+
+        DatabaseTranslations::$plugin->databaseTranslationsService->afterUpdate();
 
         $this->setSuccessFlash("Imported $count new messages");
         return $this->redirect('database-translations');

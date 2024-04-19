@@ -143,13 +143,9 @@
                 infoField.innerHTML = 'Export the selected rows<br> with selected languages to:';
                 form.append(infoField);
                 
-                let formatOptions = [
-                    {label: 'CSV', value: 'csv'},
-                    {label: 'Migration', value: 'migration'}
-                ];
                 const formatSelect = Craft.ui.createSelectField({
                     label: "Format",
-                    options: formatOptions,
+                    options: this.store.exportFormats,
                     class: "fullwidth",
                     required: true,
                 }).appendTo(form);
@@ -172,7 +168,6 @@
                 form.addEventListener("submit", (function(submitEvent) {
                     submitEvent.preventDefault();
                     const format = formatSelect.find("select").val();
-                    console.log(format);
                     if (format === 'csv') {
                         store.exportCsv();
                     } else {
