@@ -85,6 +85,8 @@ class TranslationsController extends Controller
             }
         }
 
+        DatabaseTranslations::$plugin->databaseTranslationsService->afterUpdate();
+
         if (count($errors)) {
             return $this->asJson([
                 'success' => false,

@@ -60,10 +60,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Craft 5 support
 
-## 2.6.5 - 2024-04-12
+## 2.7.0 - 2024-04-19
 
 ### Added
 - permission for migration export format
+- Settings to clear caches after saving translations
 
 ## 2.6.5 - 2024-04-12
 

@@ -51,6 +51,18 @@ class Settings extends Model
     public int $queueJobTtr = 3600;
 
     /**
+     * enable clearing the cache after saving translations
+     * @var bool
+     */
+    public bool $clearDataCache = false;
+
+    /**
+     * enable refreshing the blitz cache after saving translations
+     * @var bool
+     */
+    public bool $refreshBlitzCache = false;
+
+    /**
      * categories as array
      * @return array
      */
