@@ -2,11 +2,9 @@
 
 namespace digitalpulsebe\database_translations\controllers;
 
-use craft\helpers\Template;
+use digitalpulsebe\database_translations\DatabaseTranslations;
 use digitalpulsebe\database_translations\helpers\TemplateHelper;
-use digitalpulsebe\database_translations\models\Message;
 use digitalpulsebe\database_translations\models\SourceMessage;
-use Craft;
 use yii\web\Response;
 use craft\web\Controller;
 
@@ -34,6 +32,8 @@ class ParseController extends Controller
                 }
             }
         }
+
+        DatabaseTranslations::$plugin->databaseTranslationsService->afterUpdate();
 
         $this->setSuccessFlash("Imported $count new messages");
         return $this->redirect('database-translations');

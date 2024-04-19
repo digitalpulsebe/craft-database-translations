@@ -99,3 +99,23 @@
     on: settings.enableCopyAction,
     errors: settings.getErrors("enableCopyAction"),
 }) }}
+
+<h2>Clear caches</h2>
+
+{{ forms.lightswitchField({
+    label: "Data cache"|t("database-translations"),
+    instructions: "Clear data caches after saving translations."|t("database-translations"),
+    id: "clearDataCache",
+    name: "clearDataCache",
+    on: settings.clearDataCache,
+    errors: settings.getErrors("clearDataCache"),
+}) }}
+
+{{ forms.lightswitchField({
+    label: "Blitz cache"|t("database-translations"),
+    instructions: "Refresh blitz cache after saving translations."|t("database-translations"),
+    id: "refreshBlitzCache",
+    name: "refreshBlitzCache",
+    on: settings.refreshBlitzCache,
+    errors: settings.getErrors("refreshBlitzCache"),
+}) }}
