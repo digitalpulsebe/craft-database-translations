@@ -15,6 +15,7 @@ use craft\base\Element;
 use craft\base\Model;
 use craft\base\Plugin;
 use craft\elements\Entry;
+use craft\errors\SiteNotFoundException;
 use craft\events\RegisterElementActionsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterUserPermissionsEvent;
@@ -125,11 +126,15 @@ class DatabaseTranslations extends Plugin
         $this->originalCategories = $i18n->translations;
 
         foreach ($this->settings->getCategories() as $category) {
-            $i18n->translations[$category] = [
-                'class' => DbMessageSource::class,
-                'sourceLanguage' => Craft::$app->getSites()->getPrimarySite()->language,
-                'forceTranslation' => true,
-            ];
+            try {
+                $i18n->translations[$category] = [
+                    'class' => DbMessageSource::class,
+                    'sourceLanguage' => Craft::$app->getSites()->getPrimarySite()->language,
+                    'forceTranslation' => true,
+                ];
+            } catch (SiteNotFoundException $e) {
+                // ignore, during install or tests, there might be no primary site.
+            }
         }
     }
 
