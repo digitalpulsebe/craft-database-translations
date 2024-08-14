@@ -71,6 +71,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Craft 5 support
 
+## 2.7.2 - 2024-08-14
+
+### Updated
+
+- update axios to 1.7.4 in response to CVE-2024-39338, new build
+
+### Fixed
+
+- js syntax when registering action trigger
+
 ## 2.7.1 - 2024-06-28
 
 ### Fixed
