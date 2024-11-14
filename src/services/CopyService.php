@@ -14,6 +14,7 @@ use craft\base\Component;
 use craft\base\Element;
 use craft\base\FieldInterface;
 use craft\elements\Entry;
+use craft\enums\PropagationMethod;
 use craft\models\Section;
 use craft\models\Site;
 use Craft;
@@ -109,7 +110,7 @@ class CopyService extends Component
 
         if (empty($targetEntry)) {
             // we need to create one for this target site
-            if ($source->section->propagationMethod == Section::PROPAGATION_METHOD_CUSTOM) {
+            if ($source->section->propagationMethod == PropagationMethod::Custom) {
                 // create for site first, but keep enabled status
                 $sitesEnabled = $source->getEnabledForSite();
                 if (is_array($sitesEnabled) && !isset($sitesEnabled[$targetSiteId])) {
@@ -130,7 +131,7 @@ class CopyService extends Component
                 }
 
                 $targetEntry = EntryHelper::one($source->id, $targetSiteId);
-            } elseif ($source->section->propagationMethod == Section::PROPAGATION_METHOD_ALL) {
+            } elseif ($source->section->propagationMethod == PropagationMethod::All) {
                 // it should have been there, so propagate
                 $targetEntry = Craft::$app->elements->propagateElement($source, $targetSiteId, false);
             } else {
