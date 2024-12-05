@@ -17,7 +17,7 @@ class TemplateHelper
 {
     public static function searchAllTemplateMessages()
     {
-        $view = new View();
+        $view = clone Craft::$app->getView();
         $view->setTemplateMode('site');
         $twig = $view->getTwig();
         $templateMessages = ['new' => [], 'existing' => []];
