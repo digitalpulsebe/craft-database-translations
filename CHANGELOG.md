@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.4 - 2024-12-05
+
+### Fixed
+
+- use Craft view instance to include custom registered twig functions for parsing the templates
+
 ## 3.3.3 - 2024-11-14
 
 ### Fixed
@@ -86,6 +92,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Craft 5 support
+
+## 2.7.3 - 2024-12-05
+
+### Fixed
+
+- use Craft view instance to include custom registered twig functions for parsing the templates
 
 ## 2.7.2 - 2024-08-14
 
