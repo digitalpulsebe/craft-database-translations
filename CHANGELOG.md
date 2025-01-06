@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.5 - 2025-01-06
+
+### Updated
+
+- new icon-mask logo
+
 ## 3.3.4 - 2024-12-05
 
 ### Fixed
@@ -92,6 +98,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Craft 5 support
+
+## 2.7.4 - 2025-01-06
+
+### Updated
+
+- new icon-mask logo
 
 ## 2.7.3 - 2024-12-05
 
