@@ -26,7 +26,7 @@ class BulkTranslateJob extends BaseJob
 
         foreach ($sourceMessages as $i => $sourceMessage) {
             $iHuman = $i+1;
-            $this->setProgress($queue, $i/$totalCount, "Translating line $iHuman/$totalCount ($sourceMessage->message)");
+            $this->setProgress($queue, $i/$totalCount, "Translating line $iHuman/$totalCount");
 
             if ($this->sourceLocale == 'message') {
                 $sourceText = $sourceMessage->message;
