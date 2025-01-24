@@ -99,6 +99,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - Craft 5 support
 
+## 2.7.5 - 2025-01-24
+
+### Changed
+
+- Remove source message from queue progress (PR #4 thanks to @wakeuphate)
+
 ## 2.7.4 - 2025-01-06
 
 ### Updated
