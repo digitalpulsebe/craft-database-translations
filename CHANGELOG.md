@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.7.5 - 2025-01-24
+
+### Changed
+
+- Remove source message from queue progress (PR #4 thanks to @wakeuphate)
+
 ## 2.7.4 - 2025-01-06
 
 ### Updated
