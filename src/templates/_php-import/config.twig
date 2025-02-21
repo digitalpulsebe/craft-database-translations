@@ -18,8 +18,9 @@
     <form method="get" action="{{ url('database-translations/php-import/review') }}">
 
         {% set fileOptions = {} %}
-        {% for file in files %}
-            {% set fileOptions = fileOptions|merge({(file): file}) %}
+        {% for group, filesPerGroup in files %}
+            {% set fileOptions = fileOptions|merge([{optgroup: group}]) %}
+            {% set fileOptions = fileOptions|merge(filesPerGroup) %}
         {% endfor %}
 
         {{ forms.selectField({

@@ -20,6 +20,15 @@ class PhpTranslationsHelper
             $files = FileHelper::findFiles(Craft::$app->path->getSiteTranslationsPath(), ['only' => ['*.php']]);
         }
 
+        $return = [];
+        foreach($files as $file) {
+            $return['site'][$file] = [
+                'value' => $file,
+                'label' => $file
+            ];
+        }
+
+        $categoryTranslations = [];
         foreach (DatabaseTranslations::$plugin->originalCategories as $i18nCategory => $categorySettings) {
             if ($categorySettings) {
                 if ($categorySettings instanceof PhpMessageSource) {
@@ -29,7 +38,14 @@ class PhpTranslationsHelper
                 }
                 if ($basePath) {
                     try {
-                        $files = array_merge($files, FileHelper::findFiles(App::parseEnv($basePath), ['only' => ['*.php']]));
+                        $files = FileHelper::findFiles(App::parseEnv($basePath), ['only' => ['*.php']]);
+
+                        foreach($files as $file) {
+                            $categoryTranslations[$i18nCategory][$file] = [
+                                'value' => $file,
+                                'label' => $file
+                            ];
+                        }
                     } catch (\Throwable $exception) {
                         // directory does not exist probably
                     }
@@ -37,9 +53,12 @@ class PhpTranslationsHelper
             }
         }
 
-        sort($files);
+        if(!empty($categoryTranslations)) {
+            ksort($categoryTranslations);
+            $return =  array_merge($return, $categoryTranslations);
+        }
 
-        return $files;
+        return $return;
     }
 
     public static function findDisabledCategories(): array

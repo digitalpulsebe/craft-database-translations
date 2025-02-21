@@ -22,4 +22,6 @@ return [
 //    'handleMissingTranslationEventOnlyInDevMode' => true,
 //    'trimValuesOnSave' => true,
 //    'enableCopyAction' => true,
+//    'clearDataCache' => false,
+//    'refreshBlitzCache' => false,
 ];
