@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.7 - 2025-02-17
+
+### Changed
+
+- Group translation files by i18nCategory in import dropdown field
+
+### Added
+
+- Add missing settings to example config
+- Show a warning when a setting is overwritten by the config/database-translations.php file
+
 ## 3.3.6 - 2025-01-24
 
 ### Changed

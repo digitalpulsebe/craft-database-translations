@@ -1,6 +1,7 @@
 {# @var craft \craft\web\twig\variables\CraftVariable #}
 
 {% import "_includes/forms" as forms %}
+{% from "database-translations/_includes/macros.twig" import configWarning %}
 
 {% set availableLocales = craft.app.i18n.siteLocales|map(locale => locale.id) %}
 
@@ -10,6 +11,7 @@
     id: 'pluginName',
     name: 'pluginName',
     value: settings.pluginName,
+    warning: configWarning("pluginName", "database-translations"),
     errors: settings.getErrors('pluginName')
 }) }}
 
@@ -31,6 +33,7 @@
     allowReorder: true,
     addRowLabel: 'Add a category'|t('database-translations'),
     errors: settings.getErrors('categories'),
+    warning: configWarning("categories", "database-translations"),
     required: true
 })|spaceless }}
 
@@ -56,6 +59,7 @@
     allowDelete: true,
     allowReorder: true,
     addRowLabel: 'Add a mapping'|t('database-translations'),
+    warning: configWarning("mapLocales", "database-translations"),
     errors: settings.getErrors('mapLocales')
 })|spaceless }}
 
@@ -67,6 +71,7 @@
     id: "trimValuesOnSave",
     name: "trimValuesOnSave",
     on: settings.trimValuesOnSave,
+    warning: configWarning("trimValuesOnSave", "database-translations"),
     errors: settings.getErrors("trimValuesOnSave"),
 }) }}
 
@@ -79,6 +84,7 @@
     name: "handleMissingTranslationEvent",
     on: settings.handleMissingTranslationEvent,
     errors: settings.getErrors("handleMissingTranslationEvent"),
+    warning: configWarning("handleMissingTranslationEvent", "database-translations"),
 }) }}
 
 {{ forms.lightswitchField({
@@ -88,6 +94,7 @@
     name: "handleMissingTranslationEventOnlyInDevMode",
     on: settings.handleMissingTranslationEventOnlyInDevMode,
     errors: settings.getErrors("handleMissingTranslationEventOnlyInDevMode"),
+    warning: configWarning("handleMissingTranslationEventOnlyInDevMode", "database-translations"),
 }) }}
 
 <h2>Copy Entry bulk action</h2>
@@ -98,6 +105,7 @@
     name: "enableCopyAction",
     on: settings.enableCopyAction,
     errors: settings.getErrors("enableCopyAction"),
+    warning: configWarning("enableCopyAction", "database-translations"),
 }) }}
 
 <h2>Clear caches</h2>
@@ -109,6 +117,7 @@
     name: "clearDataCache",
     on: settings.clearDataCache,
     errors: settings.getErrors("clearDataCache"),
+    warning: configWarning("clearDataCache", "database-translations"),
 }) }}
 
 {{ forms.lightswitchField({
@@ -118,4 +127,5 @@
     name: "refreshBlitzCache",
     on: settings.refreshBlitzCache,
     errors: settings.getErrors("refreshBlitzCache"),
+    warning: configWarning("refreshBlitzCache", "database-translations"),
 }) }}
