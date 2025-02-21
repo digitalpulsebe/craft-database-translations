@@ -17,9 +17,11 @@
 return [
 //    'pluginName' => 'Translations',
 //    'categories' => [['key' => 'site']],
-//    'mapLocales' => [['source'=>'nl', 'destination'=>'nl-BE']],   
+//    'mapLocales' => [['source'=>'nl', 'destination'=>'nl-BE']],
 //    'handleMissingTranslationEvent' => false,
 //    'handleMissingTranslationEventOnlyInDevMode' => true,
 //    'trimValuesOnSave' => true,
 //    'enableCopyAction' => true,
+//    'clearDataCache' => false,
+//    'refreshBlitzCache' => false,
 ];
