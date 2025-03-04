@@ -28,6 +28,17 @@
                 <input type="file" name="upload" accept="text/csv">
             </div>
 
+            {{ forms.selectField({
+                label: "Separator",
+                instructions: "Select the separator for the import format.",
+                id: 'separator',
+                name: 'separator',
+                options: {
+                    semicolon: "Semicolon (;)",
+                    comma: "Comma (,)"
+                }
+            }) }}
+
             <button type="submit" class="btn secondary">Upload and review fields</button>
         </form>
 
