@@ -218,7 +218,7 @@ class CsvImportController extends Controller
 
         foreach($header as $i => $column) {
             // clean non-word characters (like a BOM)
-            $header[$i] = preg_replace('/[^\w &%\'-\/]/','', $column);;
+            $header[$i] = preg_replace('/[^\w &%\'-\/]/','', $column);
         }
         return $header;
     }
