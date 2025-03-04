@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.8 - 2025-03-04
+
+### Added
+
+- Add separator option for import csv. You can now choose between semicolon or comma.
+
 ## 3.3.7 - 2025-02-17
 
 ### Changed
