@@ -13,6 +13,10 @@ use craft\web\Controller;
 
 class CsvImportController extends Controller
 {
+    protected array $separatorsMap = [
+        'semicolon' => ';',
+        'comma' => ',',
+    ];
 
     /**
      * @return mixed
@@ -25,6 +29,9 @@ class CsvImportController extends Controller
         $sessionKey = StringHelper::randomString(16);
 
         $uploadedFile = UploadedFile::getInstanceByName('upload');
+
+        $separatorName = $this->request->post('separator', 'semicolon');
+        $this->setSeparator($sessionKey, $separatorName);
 
         if (empty($uploadedFile) || !str_contains($uploadedFile->getMimeType(), 'csv')) {
             Craft::$app->session->setError("not a correct file type");
@@ -46,9 +53,10 @@ class CsvImportController extends Controller
     public function actionMap($sessionKey)
     {
         try {
+            $separator = $this->getSeparator($sessionKey);
             $fileStream = $this->getFileStream($sessionKey);
-            $header = $this->getCsvHeader($fileStream);
-            $rows = $this->getCsvRows($fileStream);
+            $header = $this->getCsvHeader($fileStream, $separator);
+            $rows = $this->getCsvRows($fileStream, $separator);
         } catch (\Throwable $exception) {
             Craft::$app->session->setError($exception->getMessage());
             return $this->redirect('database-translations/create');
@@ -148,9 +156,10 @@ class CsvImportController extends Controller
 
     protected function findNewTranslations(string $sessionKey, array $columns): array
     {
+        $separator = $this->getSeparator($sessionKey);
         $fileStream = $this->getFileStream($sessionKey);
         // take away the header row, we don't need to import
-        $header = $this->getCsvHeader($fileStream);
+        $header = $this->getCsvHeader($fileStream, $separator);
         $languages = [];
         foreach ($header as $i => $columnHeader) {
             $mappedColumn = $columns[$i];
@@ -159,7 +168,7 @@ class CsvImportController extends Controller
             }
         }
 
-        $rows = $this->getCsvRows($fileStream);
+        $rows = $this->getCsvRows($fileStream, $separator);
         $rowCount = count($rows);
 
         $existing = SourceMessage::find()->with('messages')->orderBy('message')->indexBy('message')->all();
@@ -203,9 +212,10 @@ class CsvImportController extends Controller
         return fopen($filePath,'r');
     }
 
-    protected function getCsvHeader($fileStream): array
+    protected function getCsvHeader($fileStream, $separator = ';'): array
     {
-        $header = fgetcsv($fileStream, null, ';');
+        $header = fgetcsv($fileStream, null, $separator);
+
         foreach($header as $i => $column) {
             // clean non-word characters (like a BOM)
             $header[$i] = preg_replace('/[^\w &%\'-\/]/','', $column);
@@ -213,13 +223,26 @@ class CsvImportController extends Controller
         return $header;
     }
 
-    protected function getCsvRows($fileStream): array
+    protected function getCsvRows($fileStream, $separator = ';'): array
     {
         $rows = [];
-        while($row = fgetcsv($fileStream, null, ';')) {
+        while($row = fgetcsv($fileStream, null, $separator)) {
             $rows[] = $row;
         }
         return $rows;
     }
 
+    protected function setSeparator($sessionKey, $separatorName): void
+    {
+        $handle = DatabaseTranslations::$plugin->getHandle();
+        Craft::$app->session->set($sessionKey . $handle. '_separator', $separatorName);
+    }
+
+    protected function getSeparator($sessionKey): string
+    {
+        $handle = DatabaseTranslations::$plugin->getHandle();
+        $separatorName = Craft::$app->session->get($sessionKey . $handle. '_separator');
+
+        return $this->separatorsMap[$separatorName] ?? ';';
+    }
 }
