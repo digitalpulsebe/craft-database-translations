@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.7.8 - 2025-07-09 
+
+### Fixed
+
+- wait for save to finish before starting other actions
+
 ## 2.7.7 - 2025-03-04
 
 ### Added
