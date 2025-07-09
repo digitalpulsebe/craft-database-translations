@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.9 - 2025-07-09
+
+### Fixed
+
+- wait for save to finish before starting other actions
+
 ## 3.3.8 - 2025-03-04
 
 ### Added
@@ -121,6 +127,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - Craft 5 support
+
+## 2.7.8 - 2025-07-09 
+
+### Fixed
+
+- wait for save to finish before starting other actions
+
+## 2.7.7 - 2025-03-04
+
+### Added
+
+- Add separator option for import csv. You can now choose between semicolon or comma.
+
+## 2.7.6 - 2025-02-17
+
+### Changed
+
+- Group translation files by i18nCategory in import dropdown field
+
+### Added
+
+- Add missing settings to example config
+- Show a warning when a setting is overwritten by the config/database-translations.php file
 
 ## 2.7.5 - 2025-01-24
 
