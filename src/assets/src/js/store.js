@@ -26,14 +26,14 @@ export const useDashboardStore = defineStore('dashboard', {
         exportHudActive: false,
     }),
     actions: {
-        getData() {
+        async getData() {
             let self = this;
 
             self.isBusy = true;
 
             if (self.hasChanges) {
                 if (confirm('Save changes first?')) {
-                    this.save();
+                    await this.saveAsync();
                 }
             }
 
@@ -90,6 +90,9 @@ export const useDashboardStore = defineStore('dashboard', {
                 });
         },
         save() {
+            this.saveAsync();
+        },
+        async saveAsync() {
             let self = this;
             self.isBusy = true;
 
@@ -108,20 +111,20 @@ export const useDashboardStore = defineStore('dashboard', {
             })
 
             // Post the data.
-            axios.post('database-translations/translations/update', {
+            await axios.post('database-translations/translations/update', {
                 messages: messages
             })
-            .then(function (response) {
-                window.Craft.cp.displayNotice('Save successful');
-            })
-            .catch(function (error) {
-                window.Craft.cp.displayError(error);
-                console.log(error);
-            })
-            .finally(function () {
-                self.isBusy = false;
-                self.hasChanges = false;
-            });
+                .then(function (response) {
+                    window.Craft.cp.displayNotice('Save successful');
+                })
+                .catch(function (error) {
+                    window.Craft.cp.displayError(error);
+                    console.log(error);
+                })
+                .finally(function () {
+                    self.isBusy = false;
+                    self.hasChanges = false;
+                });
         },
         exportCsv() {
             let self = this;
@@ -167,9 +170,15 @@ export const useDashboardStore = defineStore('dashboard', {
                 window.Craft.cp.displayError(error);
             })
         },
-        translate(sourceLocale, targetLocale) {
+        async translate(sourceLocale, targetLocale) {
             let self = this;
             this.isBusy = true;
+
+            if (self.hasChanges) {
+                if (confirm('Save changes first?')) {
+                    await this.saveAsync();
+                }
+            }
 
             axios.post('database-translations/translations/translate', {
                 messages: self.selectedRows,

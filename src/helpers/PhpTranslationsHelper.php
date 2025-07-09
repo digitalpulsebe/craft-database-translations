@@ -3,6 +3,7 @@
 namespace digitalpulsebe\database_translations\helpers;
 
 use craft\helpers\App;
+use craft\helpers\ArrayHelper;
 use craft\helpers\FileHelper;
 use craft\i18n\I18N;
 use digitalpulsebe\database_translations\DatabaseTranslations;
