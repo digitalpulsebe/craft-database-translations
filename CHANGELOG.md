@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.3.10 - 2025-09-19
+
+### Changed
+
+- update npm dependencies to fix security vulnerabilities: CVE-2025-58754 and CVE-2025-7783
+
 ## 3.3.9 - 2025-07-09
 
 ### Fixed
