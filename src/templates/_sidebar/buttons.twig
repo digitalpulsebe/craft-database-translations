@@ -1,0 +1,65 @@
+{% import '_includes/forms.twig' as forms %}
+
+{% if currentUser.can('copyElements') %}
+    <fieldset>
+        <legend class="h6">Copy Entry</legend>
+        <div class="meta">
+            {% set existingSiteIds = create('craft\\helpers\\ElementHelper').siteStatusesForElement(element)|keys %}
+            {% set supportedSiteIds = create('craft\\helpers\\ElementHelper').supportedSitesForElement(element, true)|map(site => site.siteId) %}
+            {% set sites = craft.app.sites.allSites %}
+
+            {% set currentDescription = "#{element.site.name} (#{element.site.language})" %}
+
+            <div class="field">
+                <div class="heading">
+                    Copy from
+                </div>
+                <div class="input">
+                    <label>{{ currentDescription }}</label>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="heading">
+                    to:
+                </div>
+                <div class="input">
+                    <button type="button" class="btn menubtn" aria-label="Translate">select target</button>
+                    <div class="menu">
+                        <ul>
+                            {% set userCanEditAllSites = true %}
+                            {% for site in sites %}
+                                {% if currentUser.can('editSite:'~site.uid) %}
+                                    {% if site.id in supportedSiteIds and element.siteId != site.id %}
+                                        <li>
+                                            <a class=""
+                                               href="{{ actionUrl('database-translations/sidebar/copy', {
+                                                   'elementId': element.canonicalId,
+                                                   'sourceSiteId': element.siteId,
+                                                   'targetSiteId': site.id
+                                               }) }}">
+                                                {{ site.name }} ({{ site.locale }})
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% else %}
+                                    {% set userCanEditAllSites = false %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if userCanEditAllSites %}
+                                <li>
+                                    <a href="{{ actionUrl('database-translations/sidebar/copy-to-all', {
+                                        'elementId': element.canonicalId,
+                                        'sourceSiteId': element.siteId
+                                    }) }}">
+                                        <strong>All sites</strong>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+{% endif %}

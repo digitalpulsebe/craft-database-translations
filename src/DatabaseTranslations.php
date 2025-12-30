@@ -16,6 +16,7 @@ use craft\base\Model;
 use craft\base\Plugin;
 use craft\elements\Entry;
 use craft\errors\SiteNotFoundException;
+use craft\events\DefineHtmlEvent;
 use craft\events\RegisterElementActionsEvent;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterUserPermissionsEvent;
@@ -114,6 +115,7 @@ class DatabaseTranslations extends Plugin
             $this->initDbMessageSource();
             $this->initHandleMissingTranslations();
             $this->registerPermissions();
+            $this->registerSidebarHtml();
             $this->registerActions();
         });
 
@@ -210,6 +212,21 @@ class DatabaseTranslations extends Plugin
         }
     }
 
+    private function registerSidebarHtml(): void
+    {
+        Event::on(
+            Entry::class,
+            Element::EVENT_DEFINE_SIDEBAR_HTML,
+            function (DefineHtmlEvent $event) {
+                $template = Craft::$app->getView()->renderTemplate('database-translations/_sidebar/buttons', [
+                    "element" => $event->sender,
+                    "plugin" => $this
+                ]);
+                $event->html .= $template;
+            }
+        );
+    }
+
     /**
      * Register custom permission
      *
@@ -224,6 +241,9 @@ class DatabaseTranslations extends Plugin
                 $event->permissions[] = [
                     'heading' => 'Database Translations',
                     'permissions' => [
+                        'copyElements' => [
+                            'label' => 'Copy entry from sidebar',
+                        ],
                         'bulkCopyElements' => [
                             'label' => 'Copy content bulk action',
                         ],

@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+### Added
+
+- Add sidebar element actions to support entry copy functionality
+
 ## 3.3.10 - 2025-09-19
 
 ### Changed
