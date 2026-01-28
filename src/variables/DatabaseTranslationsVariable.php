@@ -10,6 +10,7 @@
 
 namespace digitalpulsebe\database_translations\variables;
 
+use craft\helpers\ElementHelper;
 use digitalpulsebe\database_translations\DatabaseTranslations;
 use digitalpulsebe\database_translations\models\SourceMessage;
 
@@ -58,5 +59,10 @@ class DatabaseTranslationsVariable
         }
 
         return null;
+    }
+
+    public function getElementHelper()
+    {
+        return new ElementHelper();
     }
 }
