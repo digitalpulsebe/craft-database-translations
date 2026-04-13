@@ -4,12 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 3.4.1 - 2025-01-28
+## 3.4.2 - 2026-04-13
+
+### Fixed
+
+- success message after entry copy action
+
+## 3.4.1 - 2026-01-28
 
 ### Fixed
 
 - Fixed issue after update to craft 5.9, it's no longer possible to instantiate objects that don’t extend yii\base\BaseObject via the create() Twig function, use craft variable instead
-
 
 ## 3.4.0 - 2025-12-30
 
