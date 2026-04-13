@@ -20,7 +20,7 @@ class SidebarController extends Controller
 
         $entry = EntryHelper::one($this->request->get('elementId'), $sourceSite->id);
         $copiedEntry = DatabaseTranslations::getInstance()->copyService->copyEntry($entry, $sourceSite, $targetSite);
-        return $this->asSuccess('Element translated', ['elementId' => $copiedEntry->id], $copiedEntry->getCpEditUrl());
+        return $this->asSuccess('Element copied', ['elementId' => $copiedEntry->id], $copiedEntry->getCpEditUrl());
     }
 
     public function actionCopyToAll()
