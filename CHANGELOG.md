@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Fixed
 
 - success message after entry copy action
+- new javascript build for axios vulnerabilities
 
 ## 3.4.1 - 2026-01-28
 
