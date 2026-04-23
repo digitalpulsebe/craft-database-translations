@@ -20,7 +20,7 @@ class ApiController extends Controller
 
         return $this->asJson([
             'categories' => $settings->getCategories(),
-            'locales' => \Craft::$app->i18n->getSiteLocaleIds(),
+            'locales' => DatabaseTranslations::$plugin->databaseTranslationsService->languageIds(),
             'sourceMessages' => SourceMessage::filter($filters)->with('messages')->all()
         ]);
     }

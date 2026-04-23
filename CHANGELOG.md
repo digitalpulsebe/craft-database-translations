@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.3 - 2026-04-23
+
+### Added
+
+- bulk translate to all locales
+- respect user permissions to select locales
+
 ## 3.4.2 - 2026-04-13
 
 ### Fixed
