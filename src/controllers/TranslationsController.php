@@ -197,11 +197,21 @@ class TranslationsController extends Controller
             $sourceLocale = $this->request->post('sourceLocale');
             $targetLocale = $this->request->post('targetLocale');
 
-            Craft::$app->getQueue()->push(new BulkTranslateJob([
-                'messageIds' => $ids,
-                'sourceLocale' => $sourceLocale,
-                'targetLocale' => $targetLocale,
-            ]));
+            if ($targetLocale == 'all') {
+                $targetLocales = DatabaseTranslations::getInstance()->databaseTranslationsService->languageIds();
+                // except source locale
+                $targetLocales = array_diff($targetLocales, [$sourceLocale]);
+            } else {
+                $targetLocales = [$targetLocale];
+            }
+
+            foreach ($targetLocales as $targetLocale) {
+                Craft::$app->getQueue()->push(new BulkTranslateJob([
+                    'messageIds' => $ids,
+                    'sourceLocale' => $sourceLocale,
+                    'targetLocale' => $targetLocale,
+                ]));
+            }
 
             if ($this->request->getAcceptsJson()) {
                 return $this->asJson([

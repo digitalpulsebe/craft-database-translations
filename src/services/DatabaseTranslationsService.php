@@ -14,6 +14,7 @@ use Craft;
 use craft\base\Component;
 use craft\base\Event;
 use craft\helpers\FileHelper;
+use craft\models\Site;
 use digitalpulsebe\database_translations\DatabaseTranslations;
 use digitalpulsebe\database_translations\models\SourceMessage;
 use Exception;
@@ -23,9 +24,22 @@ class DatabaseTranslationsService extends Component
 {
     const EVENT_AFTER_UPDATE = 'afterUpdateTranslations';
 
+    /**
+     * Returns an array of the site locale IDs that the current user has access to
+     *
+     * @return array An array of locale IDs.
+     */
     public function languageIds(): array
     {
-        return \Craft::$app->i18n->getSiteLocaleIds();
+        // get language ids from sites that the current user has access to
+        $currentUser = Craft::$app->getUser();
+
+        return collect(Craft::$app->getSites()->getAllSites())
+            ->filter(function (Site $site) use ($currentUser) {
+                return !$currentUser || $currentUser->checkPermission('editSite:' . $site->uid);
+            })
+            ->pluck('language')
+            ->unique()->all();
     }
 
     /**

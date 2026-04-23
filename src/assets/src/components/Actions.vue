@@ -71,7 +71,8 @@
                     {label: 'message', value: 'message'}
                 ];
                 let targetOptions = [
-                    {label: '- select target -', value: ''}
+                    {label: '- select target -', value: ''},
+                    {label: 'All languages', value: 'all'}
                 ];
                 for (let i = 0; i < this.store.locales.length; i++) {
                     sourceOptions.push({
