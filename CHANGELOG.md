@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.4 - 2026-05-11
+
+### Updated
+
+- update npm packages for fast-uri CVE-2026-6322
+
 ## 3.4.3 - 2026-04-23
 
 ### Added
