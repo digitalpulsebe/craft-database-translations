@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.5 - 2026-06-18
+
+### Fixed
+
+- fix languageIds parsed as an object in JavaScript
+
 ## 3.4.4 - 2026-05-11
 
 ### Updated
