@@ -39,7 +39,7 @@ class DatabaseTranslationsService extends Component
                 return !$currentUser || $currentUser->checkPermission('editSite:' . $site->uid);
             })
             ->pluck('language')
-            ->unique()->all();
+            ->unique()->values()->all();
     }
 
     /**
