@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.6 - 2026-07-24
+
+### Updated
+
+- update npm packages for axios GHSA-gcfj-64vw-6mp9
+
 ## 3.4.5 - 2026-06-18
 
 ### Fixed
