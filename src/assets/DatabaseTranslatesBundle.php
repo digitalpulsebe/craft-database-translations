@@ -17,11 +17,11 @@ class DatabaseTranslatesBundle extends AssetBundle
         ];
 
         $this->js = [
-            'main.js'
+            'databaseTranslations.js'
         ];
 
         $this->css = [
-            'app.css'
+            'databaseTranslations.css'
         ];
 
         parent::init();

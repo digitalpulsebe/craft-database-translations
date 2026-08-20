@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.7 - 2026-08-20
+
+### Updated
+
+- update npm packages for CVE-2026-67213, CVE-2026-18446 and CVE-2026-69153
+
 ## 3.4.6 - 2026-07-24
 
 ### Updated

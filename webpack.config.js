@@ -12,7 +12,8 @@ module.exports = {
   entry: path.join(srcDir, 'js', 'app.js'),
   mode: env,
   output: {
-    path: outputDir
+    path: outputDir,
+    filename: 'databaseTranslations.js',
   },
   devtool: 'source-map',
   module: {
