@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+## Updated
+
+- update npm package follow-redirects for CVE-2026-111756
+
 ## 3.4.8 - 2026-09-08
 
 ### Updated
