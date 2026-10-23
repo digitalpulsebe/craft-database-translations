@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## Unreleased
 
-## Updated
+### Fixed
+
+- fixes 'TypeError: e.locales.includes is not a function' when localstorage is outdated
+
+### Updated
 
 - update npm package follow-redirects for CVE-2026-111756
 

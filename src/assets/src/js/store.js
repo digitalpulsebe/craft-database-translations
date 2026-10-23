@@ -41,14 +41,18 @@ export const useDashboardStore = defineStore('dashboard', {
             axios.post('database-translations/api/index', {
                 filters: this.filters
             }).then(function (response) {
+                // locales may arrive as an object instead of an array
+                const locales = Array.isArray(response.data.locales)
+                    ? response.data.locales
+                    : Object.values(response.data.locales || {});
+
                 let sourceMessages = response.data.sourceMessages;
                 for (const i in sourceMessages) {
                     if (sourceMessages[i].messages.length === 0) {
                         // make it an object when empty
                         sourceMessages[i].messages = {};
                     }
-                    for (const j in response.data.locales) {
-                        const locale = response.data.locales[j];
+                    for (const locale of locales) {
                         if (!sourceMessages[i].messages.hasOwnProperty(locale)) {
                             // fill unknown translations with null
                             sourceMessages[i].messages[locale] = null;
@@ -57,25 +61,25 @@ export const useDashboardStore = defineStore('dashboard', {
                 }
 
                 self.sourceMessages = sourceMessages;
-                self.locales = response.data.locales;
+                self.locales = locales;
                 self.categories = response.data.categories;
+
+                if (!Array.isArray(self.selectedLocales)) {
+                    self.selectedLocales = [];
+                }
 
                 if (self.selectedLocales.length === 0) {
                     // first time
-                    self.selectedLocales = self.locales;
+                    self.selectedLocales = [...locales];
                 } else {
-                    // check if all selectedLocales still exist
-                    for (const i in self.selectedLocales) {
-                        if (!self.locales.includes(self.selectedLocales[i])) {
-                            // language must have been removed
-                            self.selectedLocales.splice(i,1);
-                            localStorage.setItem('selectedLocales', JSON.stringify(self.selectedLocales));
-                        }
-                    }
+                    // drop selectedLocales that no longer exist (language must have been removed)
+                    self.selectedLocales = self.selectedLocales.filter((l) => locales.includes(l));
+                    localStorage.setItem('selectedLocales', JSON.stringify(self.selectedLocales));
                 }
             })
             .catch(function (error) {
-                alert(error);
+                console.log(error);
+                window.Craft.cp.displayError(error);
             })
             .finally(function () {
                 self.isBusy = false;
