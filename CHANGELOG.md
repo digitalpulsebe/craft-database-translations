@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.9 - 2026-10-23
+
+### Fixed
+
+- fixes 'TypeError: e.locales.includes is not a function' when localstorage is outdated
+
+### Updated
+
+- update npm package follow-redirects for CVE-2026-111756
+
 ## 3.4.8 - 2026-09-08
 
 ### Updated
