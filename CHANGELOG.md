@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.4.10 - 2026-10-27
+
+### Fixed
+
+- Fix nested Neo blocks being flattened to the root level when copying an entry to a site it doesn't exist in yet (sections with custom propagation). The source entry was re-saved before its blocks were serialized, which lost the block levels.
+
 ## 3.4.9 - 2026-10-23
 
 ### Fixed
