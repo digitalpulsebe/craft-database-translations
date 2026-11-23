@@ -34,9 +34,13 @@ class DatabaseTranslationsService extends Component
         // get language ids from sites that the current user has access to
         $currentUser = Craft::$app->getUser();
 
+        // Craft only registers editSite:* permissions on multi-site installs,
+        // so on single-site installs every user may edit the (only) site
+        $isMultiSite = Craft::$app->getIsMultiSite();
+
         return collect(Craft::$app->getSites()->getAllSites())
-            ->filter(function (Site $site) use ($currentUser) {
-                return !$currentUser || $currentUser->checkPermission('editSite:' . $site->uid);
+            ->filter(function (Site $site) use ($currentUser, $isMultiSite) {
+                return !$currentUser || !$isMultiSite || $currentUser->checkPermission('editSite:' . $site->uid);
             })
             ->pluck('language')
             ->unique()->values()->all();
